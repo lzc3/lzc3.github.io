@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>主题替换</title>
+    <link href="/2025/04/20/hexo/%E4%B8%BB%E9%A2%98%E6%9B%BF%E6%8D%A2/"/>
+    <url>/2025/04/20/hexo/%E4%B8%BB%E9%A2%98%E6%9B%BF%E6%8D%A2/</url>
+    
+    <content type="html"><![CDATA[<h5 id="GitHub地址"><a href="#GitHub地址" class="headerlink" title="GitHub地址"></a>GitHub地址</h5><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-keyword">https</span>://github.com/fluid-dev/hexo-theme-fluid?<span class="hljs-literal">tab</span>=readme-ov-<span class="hljs-built_in">file</span><br></code></pre></td></tr></table></figure><h5 id="用户手册"><a href="#用户手册" class="headerlink" title="用户手册"></a>用户手册</h5><figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm"><span class="hljs-symbol">https:</span>//hexo.fluid-dev.com/docs/guide/#<span class="hljs-variable">%E5</span><span class="hljs-variable">%85</span><span class="hljs-variable">%B3</span><span class="hljs-variable">%E4</span><span class="hljs-variable">%BA</span><span class="hljs-variable">%8</span>E<span class="hljs-variable">%E6</span><span class="hljs-variable">%8</span>C<span class="hljs-variable">%87</span><span class="hljs-variable">%E5</span><span class="hljs-variable">%8</span>D<span class="hljs-variable">%97</span><br></code></pre></td></tr></table></figure><h5 id="自定义配置修改"><a href="#自定义配置修改" class="headerlink" title="自定义配置修改"></a>自定义配置修改</h5><p>​修改_config.fluid.yml文件内容</p><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs applescript">slogan：<br><span class="hljs-built_in">text</span>：界面主题介绍文字<br></code></pre></td></tr></table></figure><figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs avrasm"><span class="hljs-symbol">navbar:</span><br>blog_title：导航栏左侧文字<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>使用hexo</title>
+    <link href="/2025/04/20/hexo/use/"/>
+    <url>/2025/04/20/hexo/use/</url>
+    
+    <content type="html"><![CDATA[<p>hexo使用文档</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">https://hexo.io/zh-cn/docs/commands<br></code></pre></td></tr></table></figure><p>新建md文件</p><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">npx hexo <span class="hljs-built_in">new</span> <span class="hljs-built_in">post</span> <span class="hljs-comment">--path hexo/use &quot;使用hexo&quot;</span><br>npx hexo <span class="hljs-built_in">new</span> <span class="hljs-built_in">post</span> <span class="hljs-comment">--path hexo/主题替换 &quot;主题替换&quot;</span><br></code></pre></td></tr></table></figure><p>生成静态文件</p><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">npx hexo <span class="hljs-keyword">generate</span><br></code></pre></td></tr></table></figure><p>启动服务</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">npx hexo s</span><br></code></pre></td></tr></table></figure><p>ps</p><ul><li>区分source下的post、自定义、draft模式</li><li>自定义主题<a href="https://github.com/fluid-dev/hexo-theme-fluid">fluid-dev&#x2F;hexo-theme-fluid: :ocean: 一款 Material Design 风格的 Hexo 主题 &#x2F; An elegant Material-Design theme for Hexo</a></li></ul>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="/2025/04/20/hello-world/"/>
+    <url>/2025/04/20/hello-world/</url>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  
+</search>
