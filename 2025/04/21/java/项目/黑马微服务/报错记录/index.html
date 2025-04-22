@@ -19,22 +19,22 @@
   <meta name="author" content="lzc">
   <meta name="keywords" content="后端开发">
   
-    <meta name="description" content="官方文档1https:&#x2F;&#x2F;hexo.io&#x2F;zh-cn&#x2F;docs&#x2F;one-command-deployment.html   安装工具 1npm install hexo-deployer-git --save  编辑**_config.yml**配置文件，前置条件，GitHub中创建对应仓库 12345deploy:  type: git  repo: &lt;repository url&gt;">
+    <meta name="description" content="报错gateway启动报错启动的时候，构造器中找不到对应的类，  使用命令查看使用到错误类的jar包  1mvn dependency:tree -Dincludes&#x3D;io.projectreactor.netty:reactor-netty   百度，查找spring微服务之间的版本关系  1https:&#x2F;&#x2F;github.com&#x2F;alibaba&#x2F;spring-cloud-alibaba&#x2F;wiki">
 <meta property="og:type" content="article">
-<meta property="og:title" content="部署github">
-<meta property="og:url" content="http://example.com/2025/04/21/hexo/%E9%83%A8%E7%BD%B2github/index.html">
+<meta property="og:title" content="微服务项目-报错记录">
+<meta property="og:url" content="http://example.com/2025/04/21/java/%E9%A1%B9%E7%9B%AE/%E9%BB%91%E9%A9%AC%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E6%8A%A5%E9%94%99%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="Lzc">
-<meta property="og:description" content="官方文档1https:&#x2F;&#x2F;hexo.io&#x2F;zh-cn&#x2F;docs&#x2F;one-command-deployment.html   安装工具 1npm install hexo-deployer-git --save  编辑**_config.yml**配置文件，前置条件，GitHub中创建对应仓库 12345deploy:  type: git  repo: &lt;repository url&gt;">
+<meta property="og:description" content="报错gateway启动报错启动的时候，构造器中找不到对应的类，  使用命令查看使用到错误类的jar包  1mvn dependency:tree -Dincludes&#x3D;io.projectreactor.netty:reactor-netty   百度，查找spring微服务之间的版本关系  1https:&#x2F;&#x2F;github.com&#x2F;alibaba&#x2F;spring-cloud-alibaba&#x2F;wiki">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-04-20T16:22:21.000Z">
-<meta property="article:modified_time" content="2025-04-21T04:45:47.844Z">
+<meta property="article:published_time" content="2025-04-21T12:59:00.000Z">
+<meta property="article:modified_time" content="2025-04-22T15:14:03.564Z">
 <meta property="article:author" content="lzc">
-<meta property="article:tag" content="部署">
+<meta property="article:tag" content="报错">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>部署github - Lzc</title>
+  <title>微服务项目-报错记录 - Lzc</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +200,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="部署github"></span>
+            <span id="subtitle" data-typed-text="微服务项目-报错记录"></span>
           
         </div>
 
@@ -211,8 +211,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-04-21 00:22" pubdate>
-          2025年4月21日 凌晨
+        <time datetime="2025-04-21 20:59" pubdate>
+          2025年4月21日 晚上
         </time>
       </span>
     
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          108 字
+          175 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          1 分钟
+          2 分钟
         
       </span>
     
@@ -271,30 +271,26 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">部署github</h1>
+            <h1 id="seo-header">微服务项目-报错记录</h1>
             
             
               <div class="markdown-body">
                 
-                <h5 id="官方文档"><a href="#官方文档" class="headerlink" title="官方文档"></a>官方文档</h5><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-keyword">https</span>://hexo.io/zh-cn/docs/<span class="hljs-literal">one</span>-<span class="hljs-keyword">command</span><span class="hljs-title">-deployment</span>.<span class="hljs-title">html</span><br></code></pre></td></tr></table></figure>
+                <h3 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h3><h5 id="gateway启动报错"><a href="#gateway启动报错" class="headerlink" title="gateway启动报错"></a>gateway启动报错</h5><p>启动的时候，构造器中找不到对应的类，</p>
+<ul>
+<li>使用命令查看使用到错误类的jar包</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Plain">mvn dependency:tree -Dincludes=io.projectreactor.netty:reactor-netty<br></code></pre></td></tr></table></figure>
 
-<ol>
-<li><p>安装工具</p>
-<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">npm install hexo-deployer-git <span class="hljs-comment">--save</span><br></code></pre></td></tr></table></figure>
-</li>
-<li><p>编辑**_config.yml**配置文件，前置条件，GitHub中创建对应仓库</p>
-<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs dts"><span class="hljs-symbol">deploy:</span><br><span class="hljs-symbol">  type:</span> git<br><span class="hljs-symbol">  repo:</span> <span class="hljs-params">&lt;repository url&gt;</span> <span class="hljs-meta"># https:<span class="hljs-comment">//bitbucket.org/JohnSmith/johnsmith.bitbucket.io</span></span><br><span class="hljs-symbol">  branch:</span> [branch]<br><span class="hljs-symbol">  message:</span> [message]<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>执行部署命令</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs css">hexo <span class="hljs-selector-tag">g</span>（生成）<br>hexo d（上传）<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>访问<a target="_blank" rel="noopener" href="https://lzc3.github.io/%E5%8D%B3%E5%8F%AF">https://lzc3.github.io/即可</a></p>
-</li>
-</ol>
-<p>Github创建仓库</p>
-<p>1.仓库名固定格式   [用户名]github.io   例如，lzc3.github.io </p>
-<p>2.仓库需要公开</p>
-<p>3.添加readme</p>
+<ul>
+<li>百度，查找spring微服务之间的版本关系</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Plain">https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E<br></code></pre></td></tr></table></figure>
+
+<p>最终替换版本解决问题</p>
+<h5 id="maven中nacos自动配置依赖引不进来"><a href="#maven中nacos自动配置依赖引不进来" class="headerlink" title="maven中nacos自动配置依赖引不进来"></a>maven中nacos自动配置依赖引不进来</h5><p>一开始没加版本号，上网查了，特定版本的springcloud，需要指定版本号才行，其父pom中没有此依赖版本配置。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-starter-bootstrap<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.0.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
 
                 
               </div>
@@ -313,8 +309,22 @@
     
       <span class="category-chain">
         
-  <a href="/categories/hexo/" class="category-chain-item">hexo</a>
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E9%A1%B9%E7%9B%AE/" class="category-chain-item">项目</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E9%A1%B9%E7%9B%AE/%E9%BB%91%E9%A9%AC%E5%BE%AE%E6%9C%8D%E5%8A%A1/" class="category-chain-item">黑马微服务</a>
+  
+  
+
+  
+
   
 
       </span>
@@ -328,7 +338,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E9%83%A8%E7%BD%B2/" class="print-no-link">#部署</a>
+        <a href="/tags/%E6%8A%A5%E9%94%99/" class="print-no-link">#报错</a>
       
     </div>
   
@@ -340,8 +350,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>部署github</div>
-      <div>http://example.com/2025/04/21/hexo/部署github/</div>
+      <div>微服务项目-报错记录</div>
+      <div>http://example.com/2025/04/21/java/项目/黑马微服务/报错记录/</div>
     </div>
     <div class="license-meta">
       
@@ -385,18 +395,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/04/21/java/spring/%E6%B3%A8%E8%A7%A3%E4%BD%BF%E7%94%A8/" title="注解使用">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">注解使用</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/04/20/hexo/%E4%B8%BB%E9%A2%98%E6%9B%BF%E6%8D%A2/" title="主题替换">
-                        <span class="hidden-mobile">主题替换</span>
+                      <a href="/2025/04/21/java/%E9%A1%B9%E7%9B%AE/%E9%BB%91%E9%A9%AC%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E9%A1%B9%E7%9B%AE/" title="微服务项目-黑马商城">
+                        <span class="hidden-mobile">微服务项目-黑马商城</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -4,6 +4,91 @@
   
   
   <entry>
+    <title>微服务项目-报错记录</title>
+    <link href="/2025/04/21/java/%E9%A1%B9%E7%9B%AE/%E9%BB%91%E9%A9%AC%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E6%8A%A5%E9%94%99%E8%AE%B0%E5%BD%95/"/>
+    <url>/2025/04/21/java/%E9%A1%B9%E7%9B%AE/%E9%BB%91%E9%A9%AC%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E6%8A%A5%E9%94%99%E8%AE%B0%E5%BD%95/</url>
+    
+    <content type="html"><![CDATA[<h3 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h3><h5 id="gateway启动报错"><a href="#gateway启动报错" class="headerlink" title="gateway启动报错"></a>gateway启动报错</h5><p>启动的时候，构造器中找不到对应的类，</p><ul><li>使用命令查看使用到错误类的jar包</li></ul><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Plain">mvn dependency:tree -Dincludes=io.projectreactor.netty:reactor-netty<br></code></pre></td></tr></table></figure><ul><li>百度，查找spring微服务之间的版本关系</li></ul><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Plain">https://github.com/alibaba/spring-cloud-alibaba/wiki/%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E<br></code></pre></td></tr></table></figure><p>最终替换版本解决问题</p><h5 id="maven中nacos自动配置依赖引不进来"><a href="#maven中nacos自动配置依赖引不进来" class="headerlink" title="maven中nacos自动配置依赖引不进来"></a>maven中nacos自动配置依赖引不进来</h5><p>一开始没加版本号，上网查了，特定版本的springcloud，需要指定版本号才行，其父pom中没有此依赖版本配置。</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-starter-bootstrap<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.0.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java</category>
+      
+      <category>项目</category>
+      
+      <category>黑马微服务</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>报错</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>微服务项目-黑马商城</title>
+    <link href="/2025/04/21/java/%E9%A1%B9%E7%9B%AE/%E9%BB%91%E9%A9%AC%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E9%A1%B9%E7%9B%AE/"/>
+    <url>/2025/04/21/java/%E9%A1%B9%E7%9B%AE/%E9%BB%91%E9%A9%AC%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E9%A1%B9%E7%9B%AE/</url>
+    
+    <content type="html"><![CDATA[<h3 id="网关-gateway部分"><a href="#网关-gateway部分" class="headerlink" title="网关-gateway部分"></a>网关-gateway部分</h3><p>​todo</p><h3 id="nacos部分"><a href="#nacos部分" class="headerlink" title="nacos部分"></a>nacos部分</h3><h5 id="自动配置报错记录"><a href="#自动配置报错记录" class="headerlink" title="自动配置报错记录"></a>自动配置报错记录</h5><p>配置了bootstrap.yaml文件，指定了nacos中的共享配置，但是，本地启动的时候，<br>报错：spring 加载HikariDataSource的时候，如下代码找不到数据库配置导致</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">HikariDataSource</span> <span class="hljs-variable">dataSource</span> <span class="hljs-operator">=</span> (HikariDataSource)DataSourceConfiguration.createDataSource(properties, HikariDataSource.class);<br></code></pre></td></tr></table></figure><p><strong>为什么？</strong></p><p>​一开始以为是这部分的执行顺序在nacos的自动配置之前。</p><p>​先把数据库配置写了一个必要的url在原始配置文件中，结果真的能启动，查看启动日志，发现后续也启动了bootstrap.yaml，但是跑接口的时候发现，启动并没有把我在nacos中的共享配置加载进来。</p><p>​最后实在没办法了，想着总不会是我名字没对上吧，结果还真是，nacos中的配置文件，是我几个月前建立好的共享配置，但是，今天的代码中bootstrap中的共享配置是我直接粘贴的文档内容，还真没对上，有福了，看了半个小时。</p><p>后续问题，在第二个模块中，引入如下依赖的时候，没有指定版本号，但是没报错，项目启动不会启动nacos的自动配置。</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-starter-bootstrap<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java</category>
+      
+      <category>项目</category>
+      
+      <category>黑马微服务</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>微服务</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>注解使用</title>
+    <link href="/2025/04/21/java/spring/%E6%B3%A8%E8%A7%A3%E4%BD%BF%E7%94%A8/"/>
+    <url>/2025/04/21/java/spring/%E6%B3%A8%E8%A7%A3%E4%BD%BF%E7%94%A8/</url>
+    
+    <content type="html"><![CDATA[<h5 id="ConditionalOnProperty-根据配置文件决定是否创建类"><a href="#ConditionalOnProperty-根据配置文件决定是否创建类" class="headerlink" title="@ConditionalOnProperty 根据配置文件决定是否创建类"></a>@ConditionalOnProperty 根据配置文件决定是否创建类</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Component</span><br><span class="hljs-meta">@ConfigurationProperties(&quot;xdap.sql.connector&quot;)</span><br><span class="hljs-meta">@ConditionalOnProperty(name = &quot;xdap.sql.connector.enable&quot;, havingValue = &quot;true&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ApaasSqlConnectorProperties</span> &#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">existConnector</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;/&quot;</span>;<br>    <span class="hljs-meta">@PostConstruct</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">()</span> &#123;<br>        SqlStringUtil.initExistConnector(existConnector);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java</category>
+      
+      <category>spring</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>注解</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>部署github</title>
     <link href="/2025/04/21/hexo/%E9%83%A8%E7%BD%B2github/"/>
     <url>/2025/04/21/hexo/%E9%83%A8%E7%BD%B2github/</url>
@@ -58,7 +143,7 @@
     <link href="/2025/04/20/hexo/use/"/>
     <url>/2025/04/20/hexo/use/</url>
     
-    <content type="html"><![CDATA[<p>hexo使用文档</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">https://hexo.io/zh-cn/docs/commands<br></code></pre></td></tr></table></figure><p>新建md文件</p><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">npx hexo <span class="hljs-built_in">new</span> <span class="hljs-built_in">post</span> <span class="hljs-comment">--path hexo/use &quot;使用hexo&quot;</span><br>npx hexo <span class="hljs-built_in">new</span> <span class="hljs-built_in">post</span> <span class="hljs-comment">--path hexo/主题替换 &quot;主题替换&quot;</span><br></code></pre></td></tr></table></figure><p>生成静态文件</p><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">npx hexo <span class="hljs-keyword">generate</span><br></code></pre></td></tr></table></figure><p>启动服务</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">npx hexo s</span><br></code></pre></td></tr></table></figure><p>ps</p><ul><li>区分source下的post、自定义、draft模式</li><li>自定义主题<a href="https://github.com/fluid-dev/hexo-theme-fluid">fluid-dev&#x2F;hexo-theme-fluid: :ocean: 一款 Material Design 风格的 Hexo 主题 &#x2F; An elegant Material-Design theme for Hexo</a></li></ul>]]></content>
+    <content type="html"><![CDATA[<p>hexo使用文档</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">https://hexo.io/zh-cn/docs/commands<br></code></pre></td></tr></table></figure><p>新建md文件</p><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">npx hexo <span class="hljs-built_in">new</span> <span class="hljs-built_in">post</span> <span class="hljs-comment">--path hexo/use &quot;使用hexo&quot;</span><br>npx hexo <span class="hljs-built_in">new</span> <span class="hljs-built_in">post</span> <span class="hljs-comment">--path hexo/主题替换 &quot;主题替换&quot;</span><br></code></pre></td></tr></table></figure><p>生成静态文件</p><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">npx hexo <span class="hljs-keyword">generate</span><br></code></pre></td></tr></table></figure><p>启动服务</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">npx hexo s</span><br></code></pre></td></tr></table></figure><p>常用的格式</p><figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs subunit">categories:<br>  - [Java, spring]<br>  - [Java, 项目, 黑马微服务]<br><span class="hljs-keyword">tags:</span><br>  - 注解<br>  - 报错<br></code></pre></td></tr></table></figure><p>ps</p><ul><li>区分source下的post、自定义、draft模式</li><li>自定义主题<a href="https://github.com/fluid-dev/hexo-theme-fluid">fluid-dev&#x2F;hexo-theme-fluid: :ocean: 一款 Material Design 风格的 Hexo 主题 &#x2F; An elegant Material-Design theme for Hexo</a></li></ul>]]></content>
     
     
     <categories>
