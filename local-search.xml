@@ -4,6 +4,58 @@
   
   
   <entry>
+    <title>常用命令</title>
+    <link href="/2025/04/23/linux/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
+    <url>/2025/04/23/linux/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    
+    <content type="html"><![CDATA[<h5 id="查找是否存在对应文件"><a href="#查找是否存在对应文件" class="headerlink" title="查找是否存在对应文件"></a>查找是否存在对应文件</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">find</span> [文件夹路径] --name <span class="hljs-string">&quot;文件名&quot;</span><br>例如：在当前文件夹下面查找main.dic的文件<br><span class="hljs-built_in">find</span> -name main.dic<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>linux</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>linux</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>es部署相关</title>
+    <link href="/2025/04/23/docker/es/"/>
+    <url>/2025/04/23/docker/es/</url>
+    
+    <content type="html"><![CDATA[<h3 id="docker命令"><a href="#docker命令" class="headerlink" title="docker命令"></a>docker命令</h3><h5 id="es"><a href="#es" class="headerlink" title="es"></a>es</h5><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -d <span class="hljs-punctuation">\</span><br><span class="hljs-punctuation"></span>  --name es <span class="hljs-punctuation">\</span><br><span class="hljs-punctuation"></span>  -e <span class="hljs-string">&quot;ES_JAVA_OPTS=-Xms512m -Xmx512m&quot;</span> <span class="hljs-punctuation">\</span><br><span class="hljs-punctuation"></span>  -e <span class="hljs-string">&quot;discovery.type=single-node&quot;</span> <span class="hljs-punctuation">\</span><br><span class="hljs-punctuation"></span>  -v es-data:/usr/share/elasticsearch/data <span class="hljs-punctuation">\</span><br><span class="hljs-punctuation"></span>  -v es-plugins:/usr/share/elasticsearch/plugins <span class="hljs-punctuation">\</span><br><span class="hljs-punctuation"></span>  --privileged <span class="hljs-punctuation">\</span><br><span class="hljs-punctuation"></span>  -p <span class="hljs-number">9200</span>:<span class="hljs-number">9200</span> <span class="hljs-punctuation">\</span><br><span class="hljs-punctuation"></span>  -p <span class="hljs-number">9300</span>:<span class="hljs-number">9300</span> <span class="hljs-punctuation">\</span><br><span class="hljs-punctuation"></span>  elasticsearch:<span class="hljs-number">7</span>.<span class="hljs-number">12</span>.<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure><p>访问如下地址，出现响应即可</p><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">192.168.30.130:9200</span><br></code></pre></td></tr></table></figure><h5 id="Kibana"><a href="#Kibana" class="headerlink" title="Kibana"></a>Kibana</h5><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -d <span class="hljs-punctuation">\</span><br><span class="hljs-punctuation"></span>--name kibana <span class="hljs-punctuation">\</span><br><span class="hljs-punctuation"></span>-e ELASTICSEARCH_HOSTS=http://<span class="hljs-number">192.168.30.130:9200</span> <span class="hljs-punctuation">\</span><br><span class="hljs-punctuation"></span>-p <span class="hljs-number">5601</span>:<span class="hljs-number">5601</span>  <span class="hljs-punctuation">\</span><br><span class="hljs-punctuation"></span>kibana:<span class="hljs-number">7</span>.<span class="hljs-number">12</span>.<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure><p>访问如下地址</p><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">192.168.30.130:5601</span><br></code></pre></td></tr></table></figure><p>出现初始化界面，选择选择<code>Explore on my own</code>之后，进入主页面选择<a href="http://192.168.30.130:5601/app/dev_tools#/">Dev Tools</a></p><h5 id="IK分词器"><a href="#IK分词器" class="headerlink" title="IK分词器"></a>IK分词器</h5><p>docker进入es容器</p><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">docker exec -<span class="hljs-keyword">it</span> es bash<br></code></pre></td></tr></table></figure><p>如下连接过期了，只能手动下载安装包</p><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">[root@<span class="hljs-number">4</span>f0ed4099320 bin]<span class="hljs-meta"># elasticsearch-plugin install https:<span class="hljs-comment">//github.com/medcl/elasticsearch-analysis-ik/releases/download/v7.12.1/elasticsearch-analysis-ik-7.12.1.zip</span></span><br></code></pre></td></tr></table></figure><p>下载安装包，复制到docker中</p><figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7">docker cp 待复制文件路径 <span class="hljs-comment">[容器名]</span>:<span class="hljs-comment">[容器内路径]</span><br></code></pre></td></tr></table></figure><p>此处是通过查看挂载卷的方式，直接传输到挂载卷，无需使用docker手动cp</p><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">docker <span class="hljs-keyword">volume</span><span class="language-bash"> inspect es-plugins</span><br></code></pre></td></tr></table></figure><p>一切正常后，添加自定义分词，进入config目录，IKAnalyzer.cfg.xml指定了自定义分词读取 ext.dic文件，首先，我们创建一个 ext.dic文件，然后编辑文件，添加分词即可。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">touch</span> ext.dic<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>docker</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>docker</tag>
+      
+      <tag>es</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>微服务项目-报错记录</title>
     <link href="/2025/04/21/java/%E9%A1%B9%E7%9B%AE/%E9%BB%91%E9%A9%AC%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E6%8A%A5%E9%94%99%E8%AE%B0%E5%BD%95/"/>
     <url>/2025/04/21/java/%E9%A1%B9%E7%9B%AE/%E9%BB%91%E9%A9%AC%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E6%8A%A5%E9%94%99%E8%AE%B0%E5%BD%95/</url>
