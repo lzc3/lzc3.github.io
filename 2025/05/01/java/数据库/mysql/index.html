@@ -19,15 +19,15 @@
   <meta name="author" content="lzc">
   <meta name="keywords" content="后端开发">
   
-    <meta name="description" content="测试">
+    <meta name="description" content="如何定位慢查询 mysql慢日志 压力测试的时候可以看接口耗时，运维工具  索引MySQL的默认存储引擎InnoDB使用的是B+树作为索引的存储结构。 选择B+树的原因包括：  节点可以有更多子节点，路径更短；  磁盘读写代价更低，非叶子节点只存储键值和指针，叶子节点存储数据；  B+树适合范围查询和扫描，因为叶子节点形成了一个双向链表。   聚簇索引：聚簇索引是指数据与索引放在一起，B+树的叶子">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mysql篇">
 <meta property="og:url" content="http://example.com/2025/05/01/java/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql/index.html">
 <meta property="og:site_name" content="Lzc">
-<meta property="og:description" content="测试">
+<meta property="og:description" content="如何定位慢查询 mysql慢日志 压力测试的时候可以看接口耗时，运维工具  索引MySQL的默认存储引擎InnoDB使用的是B+树作为索引的存储结构。 选择B+树的原因包括：  节点可以有更多子节点，路径更短；  磁盘读写代价更低，非叶子节点只存储键值和指针，叶子节点存储数据；  B+树适合范围查询和扫描，因为叶子节点形成了一个双向链表。   聚簇索引：聚簇索引是指数据与索引放在一起，B+树的叶子">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-01T00:21:28.000Z">
-<meta property="article:modified_time" content="2025-05-01T00:22:24.687Z">
+<meta property="article:modified_time" content="2025-05-01T15:47:27.787Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2 字
+          1.8k 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          1 分钟
+          16 分钟
         
       </span>
     
@@ -276,7 +276,176 @@
             
               <div class="markdown-body">
                 
-                <h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3>
+                <h3 id=""><a href="#" class="headerlink" title=""></a></h3><h5 id="如何定位慢查询"><a href="#如何定位慢查询" class="headerlink" title="如何定位慢查询"></a>如何定位慢查询</h5><ul>
+<li>mysql慢日志</li>
+<li>压力测试的时候可以看接口耗时，运维工具</li>
+</ul>
+<h5 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h5><p>MySQL的默认存储引擎InnoDB使用的是B+树作为索引的存储结构。</p>
+<p>选择B+树的原因包括：</p>
+<ul>
+<li><p>节点可以有更多子节点，路径更短；</p>
+</li>
+<li><p>磁盘读写代价更低，非叶子节点只存储键值和指针，叶子节点存储数据；</p>
+</li>
+<li><p>B+树适合范围查询和扫描，因为叶子节点形成了一个双向链表。</p>
+</li>
+</ul>
+<p>聚簇索引：聚簇索引是指数据与索引放在一起，B+树的叶子节点保存了整行数据，通常只有一个聚簇索引，一般是由主键构成。</p>
+<p>非聚簇索引：数据与索引分开存储，B+树的叶子节点保存的是主键值</p>
+<p>覆盖索引：SELECT查询中，返回的列全部能在索引中找到，避免了回表查询，提高了性能。使用覆盖索引可以减少对主键索引的查询次数，提高查询效率。</p>
+<p>回表查询：通过二级索引找到对应的主键值，然后再通过主键值查询聚簇索引中对应的整行数据的过程。</p>
+<p>索引创建原则：</p>
+<ul>
+<li>表中的数据量超过10万以上时考虑创建索引。</li>
+<li>选择查询频繁的字段作为索引，如查询条件、排序字段或分组字段。</li>
+<li>尽量使用复合索引，覆盖SQL的返回值。</li>
+<li>如果字段区分度不高，可以将其放在组合索引的后面。</li>
+<li>对于内容较长的字段，考虑使用前缀索引。</li>
+<li>控制索引数量，因为索引虽然可以提高查询速度，但也会影响插入、更新的速度。</li>
+</ul>
+<p>前缀索引：是指对字符串类型（如CHAR、VARCHAR、TEXT）的字段，仅对其前N个字符建立索引，而非整个字段。例如，对VARCHAR(255)字段的前10个字符建立索引。</p>
+<p>索引失效</p>
+<ul>
+<li>没有遵循最左匹配原则。</li>
+<li>使用了模糊查询且%号在前面。</li>
+<li>在索引字段上进行了运算或类型转换。</li>
+<li>使用了复合索引但在中间使用了范围查询，导致右边的条件索引失效。</li>
+</ul>
+<h5 id="explain命令"><a href="#explain命令" class="headerlink" title="explain命令"></a>explain命令</h5><ul>
+<li>possible_key 当前sql可能会用到的索引</li>
+<li>key 当前sql实际命中的索引</li>
+<li>key_len 索引占用的大小</li>
+<li>extra 额外的优化建议<ul>
+<li>using where; using index 查询使用了索引，需要的数据都在索引列中能找到，不需要回表查询数据</li>
+<li>using index condition 查询使用了索引，但是需要回表查询数据</li>
+</ul>
+</li>
+<li>type sql的连接类型，null、system、const、eq_ref、ref、range、index、all<ul>
+<li>null 没有使用到表</li>
+<li>system 查询系统中的表</li>
+<li>const 根据主键查询</li>
+<li>eq_ref 主键索引查询或者唯一索引查询</li>
+<li>ref 索引查询</li>
+<li>range 范围查询</li>
+<li>index 索引树扫描</li>
+<li>all 全表扫描</li>
+</ul>
+</li>
+</ul>
+<h5 id="优化经验"><a href="#优化经验" class="headerlink" title="优化经验"></a>优化经验</h5><ul>
+<li>建表时选择合适的字段类型。</li>
+<li>使用索引，遵循创建索引的原则。</li>
+<li>编写高效的SQL语句，比如避免使用SELECT *，尽量使用UNION ALL代替UNION，以及在表关联时使用INNER JOIN。</li>
+<li>采用主从复制和读写分离提高性能。</li>
+<li>在数据量大时考虑分库分表。</li>
+</ul>
+<h5 id="并发事务问题"><a href="#并发事务问题" class="headerlink" title="并发事务问题"></a>并发事务问题</h5><p>脏读、不可重复读、幻读</p>
+<ul>
+<li>缓冲池（Buffer pool）：主内存中的区域，缓存磁盘上经常操作的真实数据，执行增删改查操作的时候，先操作缓冲池中的数据（若缓冲池中没有，则从磁盘中加载并缓存），以一定频率刷新到磁盘，从而减少磁盘IO，加快处理速度。</li>
+<li>数据页：是innodb存储引擎磁盘管理的最小单元，每个页的大小默认为16KB，页中存储的是行数据</li>
+</ul>
+<p><strong>redo log</strong>（记录的是物理日志）：重做日志，记录的是事务提交时对物理页的物理修改，是用来实现事务的持久性，由重做日志缓冲（redo log buffer）以及重做日志文件（redo log file）组成，前者在内存中，后者在磁盘中。</p>
+<p>当事务提交后，Buffer pool变化，redo log buffer会记录变化，同时会把所有的修改信息都记录到该日志文件中，用于刷新脏页到磁盘，发生错误时，进行数据恢复使用。</p>
+<p>为什么不把Buffer pool中的数据直接存在对应表磁盘文件ibd文件中呢？因为这个过程io耗时久，由buffer pool交给redo log buffer后，对redo log file的记录是<strong>顺序的磁盘io</strong>，性能高，这种机制又叫WAL（write ahead logging）</p>
+<p>保证了事务的持久性</p>
+<p><strong>undo log</strong>（记录的是逻辑日志）：回滚日志，记录数据被修改前的信息，提供回滚和MVCC</p>
+<ul>
+<li>delete数据的时候，undo log中会记录一条对应的insert记录</li>
+<li>update一条数据时，会记录一条对应相反的update记录</li>
+</ul>
+<p>保证了事务的原子性和一致性</p>
+<h5 id="MVCC-多版本并发控制"><a href="#MVCC-多版本并发控制" class="headerlink" title="MVCC 多版本并发控制"></a>MVCC 多版本并发控制</h5><p>隐藏字段</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DB_TRX_ID</td>
+<td>最近修改事务id，记录最后操作这条记录的事务id</td>
+</tr>
+<tr>
+<td>DB_ROLL_PTR</td>
+<td>执行这条记录的上一个版本</td>
+</tr>
+<tr>
+<td>DB_ROW_ID</td>
+<td>隐藏主键，如果表结构没有指定主键，将会生成该隐藏字段</td>
+</tr>
+</tbody></table>
+<ul>
+<li>undo log版本链</li>
+</ul>
+<p><strong>readview</strong> </p>
+<ul>
+<li><p>readview 读视图是快照读sql执行时mvcc提取数据的依据，记录并维护系统当前活跃的事务（未提交的）id</p>
+</li>
+<li><p>当前读：读取的是记录的最新版本，读取时还要保证其他事务不能修改当前记录，会对读取的记录加锁，比如select … lock in share mode(共享锁)、select … for update、insert、update、delete(排他锁)都是一种当前读</p>
+</li>
+<li><p>快照读：简单的select，不加锁，读取的是可见版本，有可能是历史数据，非阻塞读</p>
+<ul>
+<li>读已提交：每次select 都生成一个快照读</li>
+<li>可重复读：开启事务后第一个select语句才是快照读的的地方</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>m_ids</td>
+<td>当前活跃的事务id集合</td>
+</tr>
+<tr>
+<td>min_trx_id</td>
+<td>最小活跃事务id</td>
+</tr>
+<tr>
+<td>max_trx_id</td>
+<td>预分配事务id，当前最大事务id+1</td>
+</tr>
+<tr>
+<td>creator_trx_id</td>
+<td>readview 创建者的事务id</td>
+</tr>
+</tbody></table>
+<h5 id="主从同步原理"><a href="#主从同步原理" class="headerlink" title="主从同步原理"></a>主从同步原理</h5><pre><code class="hljs">	核心是binlog文件，记录了所有的ddl（数据定义语言）和dml（数据操纵语言），但不包括select和show语句
+</code></pre>
+<ul>
+<li>主库事务提交，记录变更到binlog</li>
+<li>从库读取主库binlog，写入到从库的中继日志relay log</li>
+<li>从库重做中继日志中的事件</li>
+</ul>
+<h5 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h5><p>垂直分库：以表为依据，根据业务将不同表拆分到不同库中</p>
+<p>垂直分表：以字段为依据，根据字段属性将不同字段拆分到不同表中，冷热数据分离，减少io</p>
+<ul>
+<li><p>把不常用的字段单独放在一张表</p>
+</li>
+<li><p>把text、blob等大字段拆分出来放在附表中</p>
+</li>
+</ul>
+<p>水平分库：将一个库的数据拆分到多个库，解决了单库大数据量，高并发的性能瓶颈问题，提高了系统的稳定性和可用性</p>
+<p>路由规则</p>
+<ul>
+<li>根据id节点取模</li>
+<li>按id也就是范围路由</li>
+</ul>
+<p>水平分表：将一个表的数据拆分到多个表中，优化单表数据量过大而产生的性能问题，避免io争抢而减少锁表的几率。</p>
+<p>分库之后的问题：</p>
+<ul>
+<li>分布式事务一致性问题</li>
+<li>跨节点关联查询</li>
+<li>跨节点分页、排序函数</li>
+<li>主键避重</li>
+</ul>
+<p>中间件：sharding-sphere mycat</p>
+
                 
               </div>
             

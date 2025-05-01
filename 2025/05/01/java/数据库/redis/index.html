@@ -27,7 +27,7 @@
 <meta property="og:description" content="知识点使用场景 缓存 分布式锁 消息队列、延时队列 …  ps：结合项目业务回答 前言redis单线程为什么还执行那么快？  纯内存操作，执行速度快  采用单线程，避免不必要的上下文切换可竞争条件，无需考虑线程安全问题，大key慢，scan等问题…  使用I&#x2F;O多路复用模型，非阻塞io 其瓶颈主要是网络延迟而不是执行速度   内核空间和用户空间 用户空间：只能执行受限的命令(Ring3)">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-01T00:22:22.000Z">
-<meta property="article:modified_time" content="2025-05-01T03:20:21.303Z">
+<meta property="article:modified_time" content="2025-05-01T14:29:02.275Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="redis">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.1k 字
+          3.2k 字
         
       </span>
     
@@ -424,7 +424,7 @@
 <li>slow模式：定时任务，频率为10hz（每秒执行10次，即执行周期是100ms），每次不超过25ms，通过修改配置文件redis.conf的hz选项来调整</li>
 <li>fast模式，执行频率不固定，但两次间隔不低于2ms，每次执行耗时不超过1ms</li>
 <li>优点：有效释放了过期数据占用的内存，同时，其可以以限制执行时长和频率来减少删除操作对cpu的影响</li>
-<li>缺点：执行时长和频率不好缺点</li>
+<li>缺点：执行时长和频率不好确定</li>
 </ul>
 </li>
 </ul>
@@ -456,7 +456,7 @@
 <h5 id="8-redis分布式锁"><a href="#8-redis分布式锁" class="headerlink" title="8.redis分布式锁"></a>8.redis分布式锁</h5><p>​	setnx，有效时长，lua脚本</p>
 <p>​	redlock红锁：不能只在一个reids实例上创建锁，应该是在多个redis实例上创建锁(n&#x2F;2 +1)，实现复杂，性能差，运维繁琐。</p>
 <p>​	redis是ap思想，高可用</p>
-<p>​	如果要保证强一直性可以使用zookeeper，cp思想</p>
+<p>​	如果要保证强一致性可以使用zookeeper，cp思想</p>
 <h5 id="9-集群"><a href="#9-集群" class="headerlink" title="9.集群"></a>9.集群</h5><ul>
 <li><p>主从：读写分离，主写，从读，解决高并发</p>
 <ul>
@@ -537,7 +537,7 @@
 <figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-built_in">min</span>-replicas-<span class="hljs-built_in">to</span>-<span class="hljs-built_in">write</span> <span class="hljs-number">1</span> <span class="hljs-comment"># 表示主节点最少的salve节点为1个，否则拒绝请求</span><br><span class="hljs-built_in">min</span>-replicas-<span class="hljs-built_in">max</span>-lag <span class="hljs-number">5</span> <span class="hljs-comment"># 表示数据复制和同步的延迟不超过5s，否则拒绝客户端连接</span><br></code></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li><p>分片集群，解决海量数据存储以及高并发读的问题</p>
+<li><p>分片集群，解决海量数据存储以及高并发写的问题</p>
 <ul>
 <li>集群中有多个master，每个master保存不同内存</li>
 <li>每个master都可以有多个slave节点</li>
@@ -546,6 +546,12 @@
 </ul>
 <p>hash槽，redis集群中有16384个hash槽，每个key通过CRC16校验后对16384取模来决定防止哪个槽，集群的每个节点负责一部分hash槽。</p>
 <p>可以使用set[aaa] name value 指定取模来源，redis会根据aaa来进行取模，而不是name了。</p>
+</li>
+</ul>
+<h5 id="redis集群如何扛住百万级别的热点key的访问"><a href="#redis集群如何扛住百万级别的热点key的访问" class="headerlink" title="redis集群如何扛住百万级别的热点key的访问"></a>redis集群如何扛住百万级别的热点key的访问</h5><p>redis单片的写入瓶颈在2万左右，读瓶颈在10w左右</p>
+<ul>
+<li><p>对热点key进行拆分成几个小key</p>
+<p>如何保证各个key在不同节点上，CRC16插槽</p>
 </li>
 </ul>
 
