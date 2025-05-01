@@ -4,6 +4,166 @@
   
   
   <entry>
+    <title>redis篇</title>
+    <link href="/2025/05/01/java/%E6%95%B0%E6%8D%AE%E5%BA%93/redis/"/>
+    <url>/2025/05/01/java/%E6%95%B0%E6%8D%AE%E5%BA%93/redis/</url>
+    
+    <content type="html"><![CDATA[<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><h5 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h5><ul><li>缓存</li><li>分布式锁</li><li>消息队列、延时队列</li><li>…</li></ul><p>ps：结合项目业务回答</p><h5 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h5><p>redis单线程为什么还执行那么快？</p><ul><li><p>纯内存操作，执行速度快</p></li><li><p>采用单线程，避免不必要的上下文切换可竞争条件，无需考虑线程安全问题，大key慢，scan等问题…</p></li><li><p>使用I&#x2F;O多路复用模型，非阻塞io</p><p>其瓶颈主要是网络延迟而不是执行速度</p></li></ul><h5 id="内核空间和用户空间"><a href="#内核空间和用户空间" class="headerlink" title="内核空间和用户空间"></a>内核空间和用户空间</h5><ul><li><p>用户空间：只能执行受限的命令(Ring3)，而不能直接调用系统资源，必须提供内核提供的接口来访问</p></li><li><p>内核空间：可以执行特权命令(Ring0)，调用系统资源</p><p>linux为了提高IO效率，会在二者都加入缓冲区</p><ul><li>写数据时，要把用户数据从用户缓冲区拷贝到内核缓冲区，然后写入设备</li><li>读数据时，要从设备读取数据到内核缓冲区，然后拷贝到用户缓冲区</li></ul><p>想办法减少无效等待和频繁拷贝，recvfrom：从内核获取数据</p><ul><li>非阻塞io，recvfrom会立即返回结果而不是阻塞用户进程，但是会频繁访问，忙等，耗费cpu，直到数据就绪，但是数据就绪后，拷贝数据到用户空间的过程还是阻塞的。</li><li>io多路复用：单个线程同时兼容多个socket，使用select函数，监听多个socker，当内核数据就绪时，触发回调，客户端处理数据。</li><li>select、poll、epoll：前面二者只会通知用户进程有socker就绪，但不确定具体是哪个socker，需要用户进程逐个遍历，epoll会在 通知用户进程socker就绪的同时，把已就绪的socker写入用户空间</li></ul></li></ul><h5 id="1-缓存穿透"><a href="#1-缓存穿透" class="headerlink" title="1.缓存穿透"></a>1.缓存穿透</h5><p>​查询<strong>不存在的数据</strong>，每次请求都会落到数据库，每次都查不到结果，redis不会缓存。</p><ul><li><p>缓存空数据，查不到结果，仍把空数据进行缓存</p><p>简单，但消耗内存，有可能会存在数据库不一致的问题。</p></li><li><p>布隆过滤器</p><ul><li>在查询redis缓存前，在<strong>前面加了一层</strong>布隆过滤器，如果布隆过滤器中，不存在，直接返回，存在在继续往下走</li><li>缓存预热时，预热布隆过滤器</li><li>基于bitmap实现<ul><li>存数据时，对key进行<strong>多次hash</strong>计算获取hash值，根据这一个个值，将数组对应位置改为1</li><li>查数据时，使用<strong>相同hash</strong>函数获取hash值，判断对应位置是否为1，都是1表示存在</li><li>有可能会存在误判，某个key hash后的值与存在的多个key的hash后的值重合，数组越小误判率越大，越大误判率越小。 </li><li>redisson和guava都实现了布隆过滤器，其可以设置误判率</li></ul></li></ul></li></ul><h5 id="2-缓存击穿"><a href="#2-缓存击穿" class="headerlink" title="2.缓存击穿"></a>2.缓存击穿</h5><p>​某个时间点某个key突然有大量的并发过来，而且此时在redis中这个数据没有缓存(也许是到期了)，在第一次将数据库返回写入缓存这个过程中，其余大量请求直接到数据库可能会把数据库压垮。</p><ul><li>添加互斥锁（强一致性、性能差）<ul><li>第一次查询缓存未命中，在查询数据库之前，先要获取锁</li></ul></li><li>逻辑过期（高可用）<ul><li>不设置过期时间</li><li>查询缓存未命中，获取锁，新开了一个线程更新缓存，然后返回过期数据</li></ul></li></ul><h5 id="3-缓存雪崩"><a href="#3-缓存雪崩" class="headerlink" title="3.缓存雪崩"></a>3.缓存雪崩</h5><p>​同一时段内，大量的缓存key同事失效或者redis服务宕机，大量请求到达数据库</p><ul><li><p>给不同的key设置不同的过期时间</p></li><li><p>利用redis集群提高服务的可用性</p></li><li><p>给缓存业务添加降级限流策略 nginx 网关限制</p></li><li><p>添加多级缓存 Guava或者Caffeine</p></li></ul><h5 id="4-mysql和redis数据同步，双写一致性"><a href="#4-mysql和redis数据同步，双写一致性" class="headerlink" title="4.mysql和redis数据同步，双写一致性"></a>4.mysql和redis数据同步，双写一致性</h5><p>​修改了数据库的数据，也要同时更新缓存的数据，缓存和数据库的数据要保持一致。</p><ul><li><p>读操作：缓存命中，直接返回；缓存未命中查询数据库，写入缓存</p></li><li><p>写操作：延迟双删</p><p>删除缓存——&gt;修改数据库——&gt;延时删除缓存</p><p>传统方案：</p><ul><li>先删除缓存，在修改数据库：在删除缓存和更新数据库之间，又来了一个线程，查询缓存查询数据库，写入旧的数据到了缓存。</li><li>先操作数据库，再删除缓存：在更新数据库之前，先前有一个线程，查询缓存查不到，查数据库、更新缓存，这个线程更新缓存的操作在当前线程删除缓存之后。</li></ul><p>为什么要延时？</p><p>mysql一般都是主从的，主节点同步到从节点也需要时间。</p></li><li><p>一般放入缓存中的数据都是读多写少，可以使用读写锁</p></li><li><p>异步通知保证数据的最终一致性，写入到数据库后，发布消息到mq去更新缓存</p></li><li><p>使用canal，写入到数据库后，canal会监听mysql的binlog，变更时通知缓存服务更新缓存</p></li></ul><h5 id="5-redis的持久化"><a href="#5-redis的持久化" class="headerlink" title="5.redis的持久化"></a>5.redis的持久化</h5><ul><li><p>RDB</p><p>把内存中的所有数据都记录到磁盘中，当redis实例故障重启后，从磁盘读取快照文件，恢复数据</p><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gauss"><span class="hljs-keyword">save</span> <span class="hljs-meta">#redis主进程执行rdb，会阻塞所有命令</span><br>bgsave <span class="hljs-meta">#开启子进程执行rdb，避免主进程受到影响</span><br></code></pre></td></tr></table></figure><p>redis内部有触发RDB的机制，可以在redis.conf中找到，格式为</p><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-comment"># 900s内，如果至少有一个key被修改，则执行bgsave</span><br><span class="hljs-attribute">save</span> <span class="hljs-number">900</span> <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure><p>bgsave开始时会fork主进程得到子进程，复制页表到子线程，对实际指向内存中的物理地址写入到rdb文件中放到磁盘。</p><p>假如这期间，主进程在修改数据，fork采用的是copy-on-write技术，当主进程在写的时候，会拷贝一份数据，执行写操作。</p><p>页表：记录虚拟地址和物理地址的映射关系</p></li><li><p>AOF（append only file）</p><p>redis处理的每一个写命令都会记录在aof文件中，可以看作是命令日志文件</p><ul><li><p>aof默认是关闭的，需要修改redis.conf配置文件来开启aof</p><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-comment"># 是否开启aof 默认是no</span><br><span class="hljs-attribute">appendonly</span> <span class="hljs-literal">yes</span><br><span class="hljs-comment"># aof文件的名称</span><br>appendfilename <span class="hljs-string">&quot;appendonly.aof&quot;</span><br></code></pre></td></tr></table></figure></li><li><p>频率，刷盘策略</p><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">appendfsync</span> always <span class="hljs-comment"># 立即记录到aof文件，性能影响大</span><br>appendfsync everysec <span class="hljs-comment"># 写完后放入aof缓冲区，每隔1秒将缓冲区数据写到aof，默认方案，最多丢失1s数据</span><br>appendfsync <span class="hljs-literal">no</span> <span class="hljs-comment">#写入aof缓冲区，由操作系统决定何时写回磁盘</span><br></code></pre></td></tr></table></figure></li><li><p>存在问题：</p><ul><li><p>记录命令，文件大</p></li><li><p>记录多次写操作，只有最后一次写才有意义，可以使用bgrewriteaof执行重写，用最少的命令达到相同的效果</p></li><li><p>配置</p><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">auto</span>-aof-rewrite-percentage <span class="hljs-number">100</span> <span class="hljs-meta"># aof比上次文件增长超过多少百分比触发重写</span><br><span class="hljs-keyword">auto</span>-aof-rewrite-min-size <span class="hljs-number">64</span>mb <span class="hljs-meta"># aof文件体积最小多少大以上触发重写</span><br></code></pre></td></tr></table></figure></li></ul></li></ul></li><li><p>对比</p><p>aof相对完整，取决于刷盘策略</p><p>aof数据恢复优先级高，因为其数据完整性更高</p></li></ul><p>​恢复速度rdb更快</p><p>​rdb耗费性能高，大量cpu和内存消耗</p><p>​aof追加命令，主要占用的是磁盘io资源，但aof重写的时候会占用大量的cpu和内存资源。</p><h5 id="6-数据过期策略"><a href="#6-数据过期策略" class="headerlink" title="6.数据过期策略"></a>6.数据过期策略</h5><ul><li>惰性删除：设置过期时间后，过期不会主动删除，当需要该key的时候，检查是否过期，过期就删掉，反之返回。<ul><li>对cpu友好，不用进行过期检查</li><li>内存中不会释放，占用内存</li></ul></li><li>定期删除：每隔一段时间，对key进行检查，删除过期的key（检查：从一定数量的数据库中取出一定数量的随机key进行检查）<ul><li>slow模式：定时任务，频率为10hz（每秒执行10次，即执行周期是100ms），每次不超过25ms，通过修改配置文件redis.conf的hz选项来调整</li><li>fast模式，执行频率不固定，但两次间隔不低于2ms，每次执行耗时不超过1ms</li><li>优点：有效释放了过期数据占用的内存，同时，其可以以限制执行时长和频率来减少删除操作对cpu的影响</li><li>缺点：执行时长和频率不好缺点</li></ul></li></ul><p>​redis过期策略是两者结合使用</p><h5 id="7-数据淘汰策略"><a href="#7-数据淘汰策略" class="headerlink" title="7.数据淘汰策略"></a>7.数据淘汰策略</h5><p>​内存被占用满了怎么办？</p><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">maxmemory-<span class="hljs-keyword">policy</span> noeviction<br></code></pre></td></tr></table></figure><ul><li><p>noeviction：不会淘汰任何key，内存满了不允许写入新数据，默认</p></li><li><p>volatile-ttl：对设置了ttl的key，比较剩余ttl，ttl越小先被淘汰</p></li><li><p>allkeys-random：对全体key，随机进行淘汰</p></li><li><p>volatile-random：对设置了ttl的key，随机进行淘汰</p></li><li><p>allkeys-lru：对全体key，使用lru，最近最少使用</p></li><li><p>volatile-lru：对设置了ttl的key，使用lru，最近最少使用</p></li><li><p>allkeys-lfu：对全体key，使用lru，最近最少频率使用</p></li><li><p>volatile-lfu：对设置了ttl的key，使用lfu，最近最少使用</p></li></ul><p>优先使用lru，实际使用中，lfu不一定比lru实用，某一个key，一段时间内访问频率高，另外一段时间内访问频率不一定高</p><p>有置顶的需求，可以使用volatile-lru，同时置顶数据不设置过期时间</p><p>有短时高频访问的数据，使用lfu</p><h5 id="8-redis分布式锁"><a href="#8-redis分布式锁" class="headerlink" title="8.redis分布式锁"></a>8.redis分布式锁</h5><p>​setnx，有效时长，lua脚本</p><p>​redlock红锁：不能只在一个reids实例上创建锁，应该是在多个redis实例上创建锁(n&#x2F;2 +1)，实现复杂，性能差，运维繁琐。</p><p>​redis是ap思想，高可用</p><p>​如果要保证强一直性可以使用zookeeper，cp思想</p><h5 id="9-集群"><a href="#9-集群" class="headerlink" title="9.集群"></a>9.集群</h5><ul><li><p>主从：读写分离，主写，从读，解决高并发</p><ul><li><p>全量同步</p><table><thead><tr><th>主</th><th>从</th></tr></thead><tbody><tr><td></td><td>执行replicaof命令</td></tr><tr><td></td><td>请求数据同步，将自己的replid、offset发送</td></tr><tr><td>拿replid和自己判断，判断是否第一次同步</td><td></td></tr><tr><td>是第一次，返回master数据版本信息repliid、offset，第二次，就会直接发送repl_baklog给从</td><td></td></tr><tr><td></td><td>保存版本信息</td></tr><tr><td>执行bgsave，生成rdb，发送rdb到从</td><td></td></tr><tr><td></td><td>清空本地文件，加载rdb文件</td></tr><tr><td>记录rdb期间的所有命令到repl_baklog中,发送给从</td><td></td></tr><tr><td></td><td>执行repl_baklog</td></tr></tbody></table></li><li><p>增量同步，slave重启或后期数据变化</p><p>即上面的表格中第二次部分，从repl_baklog发送offset后的命令到从</p></li></ul></li><li><p>哨兵（sentinel）：实现主从集群的自动故障恢复，解决高可用</p><ul><li>sentinel会不断检查主从是否按照预期工作</li><li>自动故障恢复：master故障后，sentinel会将一个slave提升为master，故障实例恢复后也以新的master为主</li><li>通知：sentinel充当redis客户端的服务发现来源，集群发生故障转移时，会将最新的信息推送给redis客户端</li></ul><p>其基于心跳机制检测服务状态，每隔1s向集群的每个实例发送ping命令：</p><ul><li>主观下线：如果某个实例未在规定时间内响应，主观下线</li><li>客观下线，超过指定数量的sentinel都认为该实例主观下线，则该实例客观下线，指定数量quorum值最好超过sentinel的一半。</li></ul><p>选主规则</p><ul><li>判断主节点和从节点断开时间长短，断开时间太长了就代表数据旧</li><li>判断从节点的slave-priority值，越小优先级越高</li><li>如果slave-priority一样，则判断slave的offset值，越大优先级越高</li><li>判断slave节点的运行id大小，越小优先级越高</li></ul><p>脑裂</p><ul><li><p>主节点网络和sentinel分区了，sentinel选出了新的主，同时客户端也在往旧的主节点写数据，当主节点网络和sentinel恢复到一个分区后，会把旧的主节点当成从节点，此时数据丢失</p></li><li><p>解决</p><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver"><span class="hljs-built_in">min</span>-replicas-<span class="hljs-built_in">to</span>-<span class="hljs-built_in">write</span> <span class="hljs-number">1</span> <span class="hljs-comment"># 表示主节点最少的salve节点为1个，否则拒绝请求</span><br><span class="hljs-built_in">min</span>-replicas-<span class="hljs-built_in">max</span>-lag <span class="hljs-number">5</span> <span class="hljs-comment"># 表示数据复制和同步的延迟不超过5s，否则拒绝客户端连接</span><br></code></pre></td></tr></table></figure></li></ul></li><li><p>分片集群，解决海量数据存储以及高并发读的问题</p><ul><li>集群中有多个master，每个master保存不同内存</li><li>每个master都可以有多个slave节点</li><li>master之间通过ping检测彼此健康状态，这样就不要哨兵了</li><li>客户端可以访问集群任意节点，最终都会被转发到正确节点</li></ul><p>hash槽，redis集群中有16384个hash槽，每个key通过CRC16校验后对16384取模来决定防止哪个槽，集群的每个节点负责一部分hash槽。</p><p>可以使用set[aaa] name value 指定取模来源，redis会根据aaa来进行取模，而不是name了。</p></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java</category>
+      
+      <category>数据库</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>redis</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>mysql篇</title>
+    <link href="/2025/05/01/java/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql/"/>
+    <url>/2025/05/01/java/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql/</url>
+    
+    <content type="html"><![CDATA[<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java</category>
+      
+      <category>数据库</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>mysql</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>虚拟机备份</title>
+    <link href="/2025/04/27/%E8%99%9A%E6%8B%9F%E6%9C%BA/vmware/%E5%A4%87%E4%BB%BD/"/>
+    <url>/2025/04/27/%E8%99%9A%E6%8B%9F%E6%9C%BA/vmware/%E5%A4%87%E4%BB%BD/</url>
+    
+    <content type="html"><![CDATA[<h3 id="一、直接复制文件夹"><a href="#一、直接复制文件夹" class="headerlink" title="一、直接复制文件夹"></a>一、直接复制文件夹</h3><ul><li><p>右键虚拟机，打开所在目录，备份此目录内容</p></li><li><p>在新环境下的vmware文件，选择打开虚拟机，选择刚刚目录下的vmx文件即可</p></li></ul><h3 id="二、通过虚拟机导入导出"><a href="#二、通过虚拟机导入导出" class="headerlink" title="二、通过虚拟机导入导出"></a>二、通过虚拟机导入导出</h3><ul><li><p>文件-&gt;导出为OVF文件</p></li><li><p>打开-&gt;选择OVF文件</p></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>虚拟机</category>
+      
+      <category>vmware</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>备份</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>windows命令行操作</title>
+    <link href="/2025/04/24/windows/cmd/"/>
+    <url>/2025/04/24/windows/cmd/</url>
+    
+    <content type="html"><![CDATA[<h5 id="找出某个端口正在使用的进程"><a href="#找出某个端口正在使用的进程" class="headerlink" title="找出某个端口正在使用的进程"></a>找出某个端口正在使用的进程</h5><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">netstat <span class="hljs-punctuation">-</span>ano <span class="hljs-string">| findstr :8080</span><br></code></pre></td></tr></table></figure><p><strong>根据 PID 查找对应的进程</strong></p><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">tasklist <span class="hljs-string">| findstr 10156</span><br></code></pre></td></tr></table></figure><h5 id="结束指定-PID-的进程"><a href="#结束指定-PID-的进程" class="headerlink" title="结束指定 PID 的进程"></a><strong>结束指定 PID 的进程</strong></h5><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">taskkill <span class="hljs-string">/F</span> <span class="hljs-string">/PID</span> 1234<br></code></pre></td></tr></table></figure><ul><li><code>/F</code>：表示强制终止进程。</li><li><code>/PID</code>：用于指定要终止的进程的 ID。</li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>windows</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cmd</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>jdbc</title>
+    <link href="/2025/04/24/java/spring/jdbc/"/>
+    <url>/2025/04/24/java/spring/jdbc/</url>
+    
+    <content type="html"><![CDATA[<p>todo</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java</category>
+      
+      <category>spring</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>数据库</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>spring基础知识</title>
+    <link href="/2025/04/24/java/spring/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    <url>/2025/04/24/java/spring/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
+    
+    <content type="html"><![CDATA[<p>ApplicationContext 、BeanFactory二者都可以获取bean，但是ApplicationContext 更全面，解析配置类，注册beanDefinition。</p><ul><li>实例化bean，早期bean</li><li>属性注入，@Autowried</li><li>初始化前 BeanPostProcessor（postProcessBeforeInitialization）、Aware</li><li>初始化  @PostConstruct 、InitializingBean（afterPropertiesSet）</li><li>初始化后  BeanPostProcessor（postProcessAfterInitialization）</li></ul><p>spring使用class.newInstance()创建对象</p><ul><li><p>默认情况下调用无参构造函数进行构造</p></li><li><p>假如有两个构造函数，也是有无参构造函数优先。</p></li><li><p>没有无参构造函数，有多个有参构造函数，会报错</p></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>Java</category>
+      
+      <category>spring</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>spring</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>常用命令</title>
     <link href="/2025/04/23/linux/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
     <url>/2025/04/23/linux/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
@@ -195,7 +355,7 @@
     <link href="/2025/04/20/hexo/use/"/>
     <url>/2025/04/20/hexo/use/</url>
     
-    <content type="html"><![CDATA[<p>hexo使用文档</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">https://hexo.io/zh-cn/docs/commands<br></code></pre></td></tr></table></figure><p>新建md文件</p><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">npx hexo <span class="hljs-built_in">new</span> <span class="hljs-built_in">post</span> <span class="hljs-comment">--path hexo/use &quot;使用hexo&quot;</span><br>npx hexo <span class="hljs-built_in">new</span> <span class="hljs-built_in">post</span> <span class="hljs-comment">--path hexo/主题替换 &quot;主题替换&quot;</span><br></code></pre></td></tr></table></figure><p>生成静态文件</p><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">npx hexo <span class="hljs-keyword">generate</span><br></code></pre></td></tr></table></figure><p>启动服务</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">npx hexo s</span><br></code></pre></td></tr></table></figure><p>常用的格式</p><figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs subunit">categories:<br>  - [Java, spring]<br>  - [Java, 项目, 黑马微服务]<br><span class="hljs-keyword">tags:</span><br>  - 注解<br>  - 报错<br></code></pre></td></tr></table></figure><p>ps</p><ul><li>区分source下的post、自定义、draft模式</li><li>自定义主题<a href="https://github.com/fluid-dev/hexo-theme-fluid">fluid-dev&#x2F;hexo-theme-fluid: :ocean: 一款 Material Design 风格的 Hexo 主题 &#x2F; An elegant Material-Design theme for Hexo</a></li></ul>]]></content>
+    <content type="html"><![CDATA[<p>hexo使用文档</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">https://hexo.io/zh-cn/docs/commands<br></code></pre></td></tr></table></figure><p>新建md文件</p><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">npx hexo <span class="hljs-built_in">new</span> <span class="hljs-built_in">post</span> <span class="hljs-comment">--path hexo/use &quot;使用hexo&quot;</span><br>npx hexo <span class="hljs-built_in">new</span> <span class="hljs-built_in">post</span> <span class="hljs-comment">--path hexo/主题替换 &quot;主题替换&quot;</span><br>npx hexo <span class="hljs-built_in">new</span> <span class="hljs-built_in">post</span> <span class="hljs-comment">--path java/spring/基础知识 &quot;spring基础知识&quot;</span><br></code></pre></td></tr></table></figure><p>生成静态文件</p><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">npx hexo <span class="hljs-keyword">generate</span><br></code></pre></td></tr></table></figure><p>启动服务</p><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">npx hexo s</span><br></code></pre></td></tr></table></figure><p>常用的格式</p><figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs subunit">categories:<br>  - [Java, spring]<br>  - [Java, 项目]<br><span class="hljs-keyword">tags:</span><br>  - 注解<br>  - 报错<br></code></pre></td></tr></table></figure><p>ps</p><ul><li>区分source下的post、自定义、draft模式</li><li>自定义主题<a href="https://github.com/fluid-dev/hexo-theme-fluid">fluid-dev&#x2F;hexo-theme-fluid: :ocean: 一款 Material Design 风格的 Hexo 主题 &#x2F; An elegant Material-Design theme for Hexo</a></li></ul>]]></content>
     
     
     <categories>
@@ -220,7 +380,7 @@
     <link href="/2025/04/20/hello-world/"/>
     <url>/2025/04/20/hello-world/</url>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p><p>jetcache</p><p><a href="https://github.com/alibaba/jetcache/blob/master/docs/CN/Readme.md">jetcache&#x2F;docs&#x2F;CN&#x2F;Readme.md at master · alibaba&#x2F;jetcache</a></p><p>你在项目中遇到最大的困难是什么，如何解决的？</p><p>1.刚开始实习的时候， 需求，超时触发消息提醒的效果，</p><ul><li>一下子接触了很多新知识，spring事件框架、异步、feign调用、ThealLocal线程变量， 如何快速上手？ 首先是去看系统有没有实现过类似功能，超时相关的， 消息提醒相关的，一点一点整合起来，遇到不懂的问题就去问同事或者百度。</li><li>集成的业务功能比较多，如何自测，保证我的功能正常<br>钉钉、企业微信、飞书、邮箱、系统消息提醒、</li></ul><p>2.外派项目的时候，我是处于一个技术对接的身份，客户有一个需求，前端首次加载内容时间太长，5~8s，4g，位置比较偏，网络不好</p><p>定位问题？</p><p>手机开始调试者模式，edge打开界面，电脑端分析页面加载流程</p><p>js  8Mb左右 </p><p>gzip 开启了</p><p>如何解决？</p><p>第一步：</p><p>调整nginx gzip的大小，慢慢实验</p><p>前端同事优化js文件</p><p>开启http2、CDN</p><p>第二步：</p><p>为什么我们一定要把这些js文件加载完才显示页面呢？</p><p>修改了加载逻辑。</p>]]></content>
     
     
     
