@@ -27,7 +27,7 @@
 <meta property="og:description" content="如何定位慢查询 mysql慢日志 压力测试的时候可以看接口耗时，运维工具  索引MySQL的默认存储引擎InnoDB使用的是B+树作为索引的存储结构。 选择B+树的原因包括：  节点可以有更多子节点，路径更短；  磁盘读写代价更低，非叶子节点只存储键值和指针，叶子节点存储数据；  B+树适合范围查询和扫描，因为叶子节点形成了一个双向链表。   聚簇索引：聚簇索引是指数据与索引放在一起，B+树的叶子">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-01T00:21:28.000Z">
-<meta property="article:modified_time" content="2025-05-01T15:47:27.787Z">
+<meta property="article:modified_time" content="2025-05-02T08:54:56.801Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.8k 字
+          2.1k 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          16 分钟
+          18 分钟
         
       </span>
     
@@ -445,6 +445,39 @@
 <li>主键避重</li>
 </ul>
 <p>中间件：sharding-sphere mycat</p>
+<h5 id="隐式事务"><a href="#隐式事务" class="headerlink" title="隐式事务"></a>隐式事务</h5><p>InnoDB 默认工作在自动提交模式（autocommit&#x3D;1），此时每条独立的 SQL 语句（如 INSERT&#x2F;UPDATE&#x2F;DELETE）会被自动包裹在一个隐式事务中。</p>
+<h5 id="死锁排查"><a href="#死锁排查" class="headerlink" title="死锁排查"></a>死锁排查</h5><p>​	开启两个事务，对应sql为</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">START</span> <span class="hljs-keyword">TRANSACTION</span>;<br><span class="hljs-keyword">UPDATE</span> emp <span class="hljs-keyword">set</span> <span class="hljs-type">name</span> = &quot;灿2&quot; <span class="hljs-keyword">where</span> id = <span class="hljs-number">20</span>;<br><span class="hljs-keyword">UPDATE</span> `<span class="hljs-keyword">user</span>` <span class="hljs-keyword">set</span> <span class="hljs-type">name</span> = &quot;uzii&quot; <span class="hljs-keyword">where</span> id = <span class="hljs-number">9</span>;<br><span class="hljs-keyword">COMMIT</span>;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">START</span> <span class="hljs-keyword">TRANSACTION</span>;<br><span class="hljs-keyword">UPDATE</span> `<span class="hljs-keyword">user</span>` <span class="hljs-keyword">set</span> <span class="hljs-type">name</span> = &quot;uzii&quot; <span class="hljs-keyword">where</span> id = <span class="hljs-number">9</span>;<br><span class="hljs-keyword">UPDATE</span> emp <span class="hljs-keyword">set</span> <span class="hljs-type">name</span> = &quot;灿2&quot; <span class="hljs-keyword">where</span> id = <span class="hljs-number">20</span>;<br><span class="hljs-keyword">COMMIT</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>查看&#x2F;开启记录</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gams">SHOW <span class="hljs-keyword">VARIABLES</span> LIKE <span class="hljs-comment">&#x27;innodb_print_all_deadlocks&#x27;</span>;<br><span class="hljs-keyword">SET</span> GLOBAL <span class="hljs-comment">innodb_print_all_deadlocks = 1</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>查看死锁日志</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">SHOW ENGINE INNODB STATUS<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-comment">*** (1) WAITING FOR THIS LOCK TO BE GRANTED:</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-comment">*** (2) HOLDS THE LOCK(S):</span><br><span class="hljs-comment">*** (2) WAITING FOR THIS LOCK TO BE GRANTED:</span><br></code></pre></td></tr></table></figure>
+
+<p>事务1、2都执行了前两行sql，此时继续往下执行，事务1等待事务2释放user的锁，事务2持有user的锁，同时，等待事务1释放emp表的锁。</p>
+</li>
+</ul>
+<p>​	</p>
+<ul>
+<li><p>其他查看日志的方式</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gams">SHOW <span class="hljs-keyword">VARIABLES</span> LIKE <span class="hljs-comment">&#x27;log_error&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<p>结果为：log_error    stderr</p>
+<p>MySQL 服务器会将错误日志输出到标准错误输出（stderr）</p>
+<p>若想修改，修改配置文件</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs applescript"><span class="hljs-comment"># 修改my.cnf文件</span><br>log_error = /var/<span class="hljs-built_in">log</span>/mysql/<span class="hljs-keyword">error</span>.<span class="hljs-built_in">log</span><br><br><span class="hljs-comment"># 重启mysql服务</span><br>sudo systemctl restart mysql<br></code></pre></td></tr></table></figure>
+
+<p>扩展，查找my.cnf位置</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">find</span> -name my.<span class="hljs-keyword">cnf</span><br>./etc/my.<span class="hljs-keyword">cnf</span><br></code></pre></td></tr></table></figure></li>
+</ul>
 
                 
               </div>

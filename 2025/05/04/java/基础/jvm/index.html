@@ -19,22 +19,22 @@
   <meta name="author" content="lzc">
   <meta name="keywords" content="后端开发">
   
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="持续更新中  jit 即时编译堆和栈 栈因为是运行单位，因此里面存储的信息都是跟当前线程（或程序）相关信息的。包括局部变量、程序运行状态、方法返回值等等。 而堆只负责存储对象信息。   栈解决程序的运行问题，即程序如何执行，或者说如何处理数据  堆解决的是数据存储的问题，即数据怎么放、放在哪儿   为什么要把堆和栈区分？  从设计的角度来看，栈代表了处理逻辑，而堆代表了数据，这样分开，处理逻辑更">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2025/04/20/hello-world/index.html">
+<meta property="og:title" content="jvm">
+<meta property="og:url" content="http://example.com/2025/05/04/java/%E5%9F%BA%E7%A1%80/jvm/index.html">
 <meta property="og:site_name" content="Lzc">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="持续更新中  jit 即时编译堆和栈 栈因为是运行单位，因此里面存储的信息都是跟当前线程（或程序）相关信息的。包括局部变量、程序运行状态、方法返回值等等。 而堆只负责存储对象信息。   栈解决程序的运行问题，即程序如何执行，或者说如何处理数据  堆解决的是数据存储的问题，即数据怎么放、放在哪儿   为什么要把堆和栈区分？  从设计的角度来看，栈代表了处理逻辑，而堆代表了数据，这样分开，处理逻辑更">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-04-20T14:48:16.105Z">
-<meta property="article:modified_time" content="2025-05-05T14:49:33.272Z">
+<meta property="article:published_time" content="2025-05-04T08:21:50.000Z">
+<meta property="article:modified_time" content="2025-05-04T09:40:32.224Z">
 <meta property="article:author" content="lzc">
-<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="jvm">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Hello World - Lzc</title>
+  <title>jvm - Lzc</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +200,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Hello World"></span>
+            <span id="subtitle" data-typed-text="jvm"></span>
           
         </div>
 
@@ -211,8 +211,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-04-20 22:48" pubdate>
-          2025年4月20日 晚上
+        <time datetime="2025-05-04 16:21" pubdate>
+          2025年5月4日 下午
         </time>
       </span>
     
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          41 字
+          2.8k 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          1 分钟
+          24 分钟
         
       </span>
     
@@ -271,31 +271,94 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Hello World</h1>
+            <h1 id="seo-header">jvm</h1>
             
             
               <div class="markdown-body">
                 
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<p>jetcache</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/alibaba/jetcache/blob/master/docs/CN/Readme.md">jetcache&#x2F;docs&#x2F;CN&#x2F;Readme.md at master · alibaba&#x2F;jetcache</a></p>
-<p>快捷键</p>
-<p>crtl + [  Typora换行后消除格式</p>
-<blockquote>
-<p>加油！！！！！！！</p>
+                <blockquote>
+<p>持续更新中</p>
 </blockquote>
+<h5 id="jit-即时编译"><a href="#jit-即时编译" class="headerlink" title="jit 即时编译"></a>jit 即时编译</h5><h5 id="堆和栈"><a href="#堆和栈" class="headerlink" title="堆和栈"></a>堆和栈</h5><blockquote>
+<p>栈因为是运行单位，因此里面存储的信息都是跟当前线程（或程序）相关信息的。包括局部变量、程序运行状态、方法返回值等等。</p>
+<p>而堆只负责存储对象信息。</p>
+</blockquote>
+<ul>
+<li><p>栈解决程序的运行问题，即程序如何执行，或者说如何处理数据</p>
+</li>
+<li><p>堆解决的是数据存储的问题，即数据怎么放、放在哪儿</p>
+</li>
+</ul>
+<p>为什么要把堆和栈区分？</p>
+<ul>
+<li>从设计的角度来看，栈代表了处理逻辑，而堆代表了数据，这样分开，处理逻辑更为清晰，分而治之的思想，这种隔离、模块化的思想在软件设计的方方面面都有体现。</li>
+<li>堆和栈的分离，使得堆中的内容可以被多个栈共享（也可以理解为多个线程访问同一个对象），这种共享的收益是很多的。一方面这种共享提供了一种有效的数据交互方式（如共享内存），另一方面，堆中的共享常量和缓存可以被所有栈访问，节省了空间。</li>
+<li>栈因为运行时的需要，比如保存系统运行的上下文，需要对地址段划分，由于栈只能<strong>向上增长</strong>，因此就会<strong>限制</strong>住栈存储内容的能力。而堆不同，堆中的对象是可以根据需要动态增长的，因此栈和堆的拆分，使得动态增长成为可能，相应栈中只需记录堆中的一个地址即可。</li>
+<li>面向对象就是对合栈的完美结合。面向对象方式的程序与以前结构化的程序在执行上没有任何区别。但是面向对象的引入，使得对待问题的思考方式发生了改变，而更接近于自然方式的思考。当我们把对象拆开，你会发现，对象的属性其实就是数据，存放在堆中；而对象的行为，就是运行逻辑，放在栈中。我们在编写对象的时候，其实即编写了数据结构，也编写了处理数据的逻辑。</li>
+</ul>
+<p>堆中存的是对象，栈中存的是基本数据类型和堆中对象的引用，大小为4byte。</p>
+<p>为什么不把基本类型放在堆中？</p>
+<p>​		其占用的内存一般是1~8个字节，需要空间比较少，而且因为是基本类型，所以不会出现动态增长的清空，因此栈中存储就够了，如果把他存在堆中没有什么意义。可以这么说，基本类型和对象的引用都是存放在栈中，而且都是几个字节的一个数，因此在程序运行时，他们的处理方式是统一的。但是基本类型、对象引用和对象本身就有所区别了，因为一个是栈中的数据，一个是堆中的数据。最常见的一个问题就是，java中参数传递的问题。</p>
+<h5 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h5><p>按回收策略分类</p>
+<ul>
+<li><p>引用计数</p>
+<ul>
+<li>原理是此对象有一个引用，即增加一个计数，删除一个引用则减少一个计数。垃圾回收<br>时，只用收集计数为0的对象。此算法最致命的是无法处理循环引用的问题。</li>
+</ul>
+</li>
+<li><p>标记 清除</p>
+<ul>
+<li>此算法执行分两阶段。第一阶段从引用根节点开始标记所有被引用的对象，第二阶段遍历整个堆，把未标记的<br>对象清除。此算法需要暂停整个应用，同时，会产生内存碎片。</li>
+</ul>
+</li>
+<li><p>复制</p>
+<ul>
+<li>此算法把内存空间划为两个相等的区域，每次只使用其中一个区域。垃圾回收时，遍历当前使用区域，把正在<br>使用中的对象复制到另外一个区域中。次算法每次只处理正在使用中的对象，因此复制成本比较小，同时复制<br>过去以后还能进行相应的内存整理，不会出现“碎片”问题。当然，此算法的缺点也是很明显的，就是需要两<br>倍内存空间。</li>
+</ul>
+</li>
+<li><p>标记-整理</p>
+<ul>
+<li>此算法结合了“标记-清除”和“复制”两个算法的优点。也是分两阶段，第一阶段从根节点开始标记所有被引<br>用对象，第二阶段遍历整个堆，把清除未标记对象并且把存活对象“压缩”到堆的其中一块，按顺序排放。此<br>算法避免了“标记-清除”的碎片问题，同时也避免了“复制”算法的空间问题</li>
+</ul>
+</li>
+</ul>
+<p>按照分区对待的方式分</p>
+<ul>
+<li>增量搜集：实时垃圾回收算法，即：在应用进行的同时进行垃圾回收。不知道什么<br>原因JDK5.0中的收集器没有使用这种算法的。</li>
+<li>分代收集：基于对对象生命周期分析后得出的垃圾回收算法。把对象分为年青<br>代、年老代、持久代，对不同生命周期的对象使用不同的算法（上述方式中的一个）进行回收。现在的垃圾回收器（从J2SE1.2开始）都是使用此算法的。</li>
+</ul>
+<p>按照系统线程分</p>
+<ul>
+<li>串行收集:串行收集使用单线程处理所有垃圾回收工作，因为无需多线程交互，实现容易，而且效率比较高。但是，其局限性也比较明显，即无法使用多处理器的优势，所以此收集适合单处理器机器。当然，此收集器也可以用在小数据量（100M左右）情况下的多处理器机器上。</li>
+<li>并行收集:并行收集使用多线程处理垃圾回收工作，因而速度快，效率高。而且理论上CPU数目越多，越能体现出并行收集器的优势。</li>
+<li>并发收集:相对于串行收集和并行收集而言，前面两个在进行垃圾回收工作时，需要暂停整个运行环境，而只有垃圾回收程序在运行，因此，系统在垃圾回收时会有明显的暂停，而且暂停时间会因为堆越大而越长。</li>
+</ul>
+<h5 id="为什么要分代"><a href="#为什么要分代" class="headerlink" title="为什么要分代"></a>为什么要分代</h5><p>分代的垃圾回收策略，是基于这样一个事实：<strong>不同的对象的生命周期是不一样的</strong>。因此，不同生命周期的对象可以采取不同的收集方式，以便提高回收效率。</p>
+<p>在Java程序运行的过程中，会产生大量的对象，其中有些对象是与业务信息相关，比如Http请求中的Session对象、线程、Socket连接，这类对象跟业务直接挂钩，因此生命周期比较长。但是还有一些对象，主要是程序运行过程中生成的临时变量，这些对象生命周期会比较短，比如：String对象，由于其不变类的特性，系统会产生大量的这些对象，有些对象甚至只用一次即可回收。</p>
+<p>试想，在不进行对象存活时间区分的情况下，每次垃圾回收都是对整个堆空间进行回收，花费时间相对会长，同时，因为每次回收都需要遍历所有存活对象，但实际上，对于生命周期长的对象而言，这种遍历是没有效果的，因为可能进行了很多次遍历，但是他们依旧存在。因此，分代垃圾回收采用分治的思想，进行代的划分，把不同生命周期的对象放在不同代上，不同代上采用最适合它的垃圾回收方式进行回收。</p>
+<h5 id="如何分段"><a href="#如何分段" class="headerlink" title="如何分段"></a>如何分段</h5><p>年轻代、年老代和持久代，其中持久代主要存放的是Java类的类信息，与垃圾收集要收集的Java对象关系不大。年轻代和年老代的划分是对垃圾收集影响比较大的。</p>
+<ul>
+<li><p>年轻代</p>
+<p>所有新生成的对象首先都是放在年轻代的。年轻代的目标就是尽可能快速的收集掉那些生命周期短的对象。年轻代分三个区。一个Eden区，两个Survivor区(一般而言)。大部分对象在Eden区中生成。当Eden区满时，还存活的对象将被复制到Survivor区（两个中的一个），当这个Survivor区满时，此区的存活对象将被复制到另外一个Survivor区，当这个Survivor去也满了的时候，从第一个Survivor区复制过来的并且此时还存活的对象，将被复制“年老区(Tenured)”。需要注意，Survivor的两个区是对称的，没先后关系，所以同一个区中可能同时存在从Eden复制过来 对象，和从前一个Survivor复制过来的对象，而复制到年老区的只有从第一个Survivor去过来的对象。而且，Survivor区总有一个是空的。同时，根据程序需要，Survivor区是可以配置为多个的（多于两个），这样可以增加对象在年轻代中的存在时间，减少被放到年老代的可能。</p>
+</li>
+<li><p>年老代</p>
+<p>在年轻代中经历了N次垃圾回收后仍然存活的对象，就会被放到年老代中。因此，可以认为年老代中存放的都是一些生命周期较长的对象</p>
+</li>
+<li><p>持久代</p>
+<p>用于存放静态文件，如今Java类、方法等。持久代对垃圾回收没有显著影响，但是有些应用可能动态生成或者调用一些class，例如Hibernate等，在这种时候需要设置一个比较大的持久代空间来存放这些运行过程中新增的类。持久代大小通过-XX:MaxPermSize&#x3D;<N>进行设置。</p>
+</li>
+</ul>
+<h5 id="什么时候触发垃圾回收"><a href="#什么时候触发垃圾回收" class="headerlink" title="什么时候触发垃圾回收"></a>什么时候触发垃圾回收</h5><ul>
+<li><p>Scavenge GC<br>一般情况下，当新对象生成，并且在Eden申请空间失败时，就会触发Scavenge GC，对Eden区域进行GC，清除非存活对象，并且把尚且存活的对象移动到Survivor区。然后整理Survivor的两个区。这种方式的GC是对年轻代的Eden区进行，不会影响到年老代。因为大部分对象都是从Eden区开始的，同时Eden区不会分配的很大，所以Eden区的GC会频繁进行。因而，一般在这里需要使用速度快、效率高的算法，使Eden去能尽快空闲出来。</p>
+</li>
+<li><p>Full GC</p>
+<p>对整个堆进行整理，包括Young、Tenured和Perm。Full GC因为需要对整个对进行回收，所以比ScavengeGC要慢，因此应该尽可能减少Full GC的次数。在对JVM调优的过程中，很大一部分工作就是对于FullGC的调节。有如下原因可能导致Full GC：</p>
+<p>· 年老代（Tenured）被写满</p>
+<p>· 持久代（Perm）被写满</p>
+<p>· System.gc()被显示调用</p>
+<p>·上一次GC之后Heap的各域分配策略动态变化</p>
+</li>
+</ul>
 
                 
               </div>
@@ -304,6 +367,41 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/jvm/" class="category-chain-item">jvm</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/jvm/" class="print-no-link">#jvm</a>
+      
+    </div>
   
 </div>
 
@@ -313,8 +411,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Hello World</div>
-      <div>http://example.com/2025/04/20/hello-world/</div>
+      <div>jvm</div>
+      <div>http://example.com/2025/05/04/java/基础/jvm/</div>
     </div>
     <div class="license-meta">
       
@@ -326,7 +424,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年4月20日</div>
+          <div>2025年5月4日</div>
         </div>
       
       
@@ -358,15 +456,21 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/04/20/hexo/use/" title="使用hexo">
+                      <a href="/2025/05/05/java/%E5%9F%BA%E7%A1%80/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" title="jvm">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">使用hexo</span>
+                        <span class="hidden-mobile">jvm</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2025/05/03/java/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0/" title="每日一记">
+                        <span class="hidden-mobile">每日一记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>

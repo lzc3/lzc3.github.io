@@ -19,22 +19,22 @@
   <meta name="author" content="lzc">
   <meta name="keywords" content="后端开发">
   
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="实现动态代理一般有两种形式，一种方式是通过jdk自带的动态代理实现，通过反射实现，只能对实现接口的类进行代理；另一种方式是通过CGLIB实现，其针对类进实现代理，对指定的类生成一个子类，覆盖其中的方法，不能代理final修饰的类。  jdk自带的动态代理先看一个例子  首先，我们有一个接口 123interface DoSomething &#123;    void doSomething()">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2025/04/20/hello-world/index.html">
+<meta property="og:title" content="jvm">
+<meta property="og:url" content="http://example.com/2025/05/05/java/%E5%9F%BA%E7%A1%80/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/index.html">
 <meta property="og:site_name" content="Lzc">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="实现动态代理一般有两种形式，一种方式是通过jdk自带的动态代理实现，通过反射实现，只能对实现接口的类进行代理；另一种方式是通过CGLIB实现，其针对类进实现代理，对指定的类生成一个子类，覆盖其中的方法，不能代理final修饰的类。  jdk自带的动态代理先看一个例子  首先，我们有一个接口 123interface DoSomething &#123;    void doSomething()">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-04-20T14:48:16.105Z">
-<meta property="article:modified_time" content="2025-05-05T14:49:33.272Z">
+<meta property="article:published_time" content="2025-05-05T03:36:50.000Z">
+<meta property="article:modified_time" content="2025-05-05T03:46:21.297Z">
 <meta property="article:author" content="lzc">
-<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="动态代理">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Hello World - Lzc</title>
+  <title>jvm - Lzc</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +200,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Hello World"></span>
+            <span id="subtitle" data-typed-text="jvm"></span>
           
         </div>
 
@@ -211,8 +211,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-04-20 22:48" pubdate>
-          2025年4月20日 晚上
+        <time datetime="2025-05-05 11:36" pubdate>
+          2025年5月5日 中午
         </time>
       </span>
     
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          41 字
+          242 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          1 分钟
+          3 分钟
         
       </span>
     
@@ -271,31 +271,25 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Hello World</h1>
+            <h1 id="seo-header">jvm</h1>
             
             
               <div class="markdown-body">
                 
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<p>jetcache</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/alibaba/jetcache/blob/master/docs/CN/Readme.md">jetcache&#x2F;docs&#x2F;CN&#x2F;Readme.md at master · alibaba&#x2F;jetcache</a></p>
-<p>快捷键</p>
-<p>crtl + [  Typora换行后消除格式</p>
-<blockquote>
-<p>加油！！！！！！！</p>
+                <blockquote>
+<p>实现动态代理一般有两种形式，一种方式是通过jdk自带的动态代理实现，通过反射实现，只能对实现接口的类进行代理；另一种方式是通过CGLIB实现，其针对类进实现代理，对指定的类生成一个子类，覆盖其中的方法，不能代理final修饰的类。</p>
 </blockquote>
+<h3 id="jdk自带的动态代理"><a href="#jdk自带的动态代理" class="headerlink" title="jdk自带的动态代理"></a>jdk自带的动态代理</h3><p>先看一个例子</p>
+<ul>
+<li><p>首先，我们有一个接口</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">interface</span> <span class="hljs-title">DoSomething</span> &#123;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">doSomething</span>()</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>有一个类实现了该接口</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Car</span> <span class="hljs-title">implements</span> <span class="hljs-title">DoSomething</span> </span>&#123;<br><br>        <span class="hljs-variable">@Override</span><br>        public void doSomething() &#123;<br>            System.out.println(<span class="hljs-string">&quot;drive drive&quot;</span>);<br>        &#125;<br>    &#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>在代码逻辑中，我们new了一个car对象，通过Proxy.newProxyInstance进行代理</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">Proxy.newProxyInstance(car.getClass().getClassLoader(), car.getClass().getInterfaces(), <span class="hljs-built_in">new</span> InvocationHandler() &#123;<br>    @Override<br>    <span class="hljs-built_in">public</span> <span class="hljs-keyword">Object</span> invoke(<span class="hljs-keyword">Object</span> proxy, <span class="hljs-keyword">Method</span> <span class="hljs-keyword">method</span>, <span class="hljs-keyword">Object</span>[] args) throws Throwable &#123;<br>        // 在调用方法前可以添加额外的逻辑<br>        <span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(&quot;Before method call.&quot;);<br><br>        // 调用实际对象的方法<br>        <span class="hljs-keyword">Object</span> result = <span class="hljs-keyword">method</span>.invoke(car, args);<br><br>        // 在调用方法后可以添加额外的逻辑<br>        <span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(&quot;After method call.&quot;);<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br>&#125;);<br></code></pre></td></tr></table></figure></li>
+</ul>
 
                 
               </div>
@@ -304,6 +298,41 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" class="category-chain-item">动态代理</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" class="print-no-link">#动态代理</a>
+      
+    </div>
   
 </div>
 
@@ -313,8 +342,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Hello World</div>
-      <div>http://example.com/2025/04/20/hello-world/</div>
+      <div>jvm</div>
+      <div>http://example.com/2025/05/05/java/基础/动态代理/</div>
     </div>
     <div class="license-meta">
       
@@ -326,7 +355,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年4月20日</div>
+          <div>2025年5月5日</div>
         </div>
       
       
@@ -358,15 +387,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/04/20/hexo/use/" title="使用hexo">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">使用hexo</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2025/05/04/java/%E5%9F%BA%E7%A1%80/jvm/" title="jvm">
+                        <span class="hidden-mobile">jvm</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>

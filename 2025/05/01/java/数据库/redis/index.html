@@ -27,7 +27,7 @@
 <meta property="og:description" content="知识点使用场景 缓存 分布式锁 消息队列、延时队列 …  ps：结合项目业务回答 前言redis单线程为什么还执行那么快？  纯内存操作，执行速度快  采用单线程，避免不必要的上下文切换可竞争条件，无需考虑线程安全问题，大key慢，scan等问题…  使用I&#x2F;O多路复用模型，非阻塞io 其瓶颈主要是网络延迟而不是执行速度   内核空间和用户空间 用户空间：只能执行受限的命令(Ring3)">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-01T00:22:22.000Z">
-<meta property="article:modified_time" content="2025-05-01T14:29:02.275Z">
+<meta property="article:modified_time" content="2025-05-03T07:52:41.621Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="redis">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.2k 字
+          3.8k 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          27 分钟
+          32 分钟
         
       </span>
     
@@ -341,7 +341,7 @@
 </ul>
 </li>
 </ul>
-<h5 id="3-缓存雪崩"><a href="#3-缓存雪崩" class="headerlink" title="3.缓存雪崩"></a>3.缓存雪崩</h5><p>​	同一时段内，大量的缓存key同事失效或者redis服务宕机，大量请求到达数据库</p>
+<h5 id="3-缓存雪崩"><a href="#3-缓存雪崩" class="headerlink" title="3.缓存雪崩"></a>3.缓存雪崩</h5><p>​	同一时段内，大量的缓存key同时失效或者redis服务宕机，大量请求到达数据库</p>
 <ul>
 <li><p>给不同的key设置不同的过期时间</p>
 </li>
@@ -554,6 +554,38 @@
 <p>如何保证各个key在不同节点上，CRC16插槽</p>
 </li>
 </ul>
+<h5 id="基于list结构模拟消息队列"><a href="#基于list结构模拟消息队列" class="headerlink" title="基于list结构模拟消息队列"></a>基于list结构模拟消息队列</h5><ul>
+<li>生产者使用LPUSH向redis队列中存入一条数据</li>
+<li>消费者使用RPOP后进先出、LPOP先进先出、BRPOP、BLPOP</li>
+</ul>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"># 向列表 mylist 中依次添加元素 a、b、c<br><span class="hljs-number">127.0.0.1:6379</span>&gt; RPUSH mylist a b c<br>(integer) <span class="hljs-number">3</span><br><br># 使用 RPOP 从列表右侧（尾部）移除并返回元素<br><span class="hljs-number">127.0.0.1:6379</span>&gt; RPOP mylist<br><span class="hljs-string">&quot;c&quot;</span><br><br># 此时列表中剩余元素为 a、b<br><span class="hljs-number">127.0.0.1:6379</span>&gt; LRANGE mylist <span class="hljs-number">0</span> -<span class="hljs-number">1</span><br><span class="hljs-number">1</span>) <span class="hljs-string">&quot;a&quot;</span><br><span class="hljs-number">2</span>) <span class="hljs-string">&quot;b&quot;</span><br><br># 使用 LPOP 从列表左侧（头部）移除并返回元素<br><span class="hljs-number">127.0.0.1:6379</span>&gt; LPOP mylist<br><span class="hljs-string">&quot;a&quot;</span><br><br># 此时列表中剩余元素为 b<br><span class="hljs-number">127.0.0.1:6379</span>&gt; LRANGE mylist <span class="hljs-number">0</span> -<span class="hljs-number">1</span><br><span class="hljs-number">1</span>) <span class="hljs-string">&quot;b&quot;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="基于Pubsub的消息队列"><a href="#基于Pubsub的消息队列" class="headerlink" title="基于Pubsub的消息队列"></a>基于Pubsub的消息队列</h5><p>​	消费者可以订阅一个或多个channel，生产者向对应的channel发送消息后，所有的订阅者都能收到相关消息。</p>
+<ul>
+<li>SUBSCRIBE xxx.q1</li>
+<li>PUBLISH xxx.q1</li>
+</ul>
+<h5 id="Stream的消息队列"><a href="#Stream的消息队列" class="headerlink" title="Stream的消息队列"></a>Stream的消息队列</h5><p>​	redis5.0后引入的新的数据类型，可以实现功能完善的消息队列。</p>
+<h5 id="feed流"><a href="#feed流" class="headerlink" title="feed流"></a>feed流</h5><ul>
+<li>拉模式：读扩散，数据存储在来源方，每次都查询</li>
+<li>推模式：写扩散，数据推送到接收方，假如有多个接收方，就会存储多份，延迟低，但是内存占用高</li>
+<li>推拉结合模式：读写混合，假如接收方比较少，就写扩散，或者有几个活跃的接收方，就使用这种模式，而那些僵尸粉，就使用拉模式。</li>
+</ul>
+<h5 id="GEO数据结构"><a href="#GEO数据结构" class="headerlink" title="GEO数据结构"></a>GEO数据结构</h5><p>3.2版本后，加入了对GEO的支持，允许存储地理坐标信息，经度、纬度、值。</p>
+<h5 id="Bitmap"><a href="#Bitmap" class="headerlink" title="Bitmap"></a>Bitmap</h5><p>​	redis是利用string数据类型实现的bitmap，最大上限是512M</p>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs vbnet"># 给<span class="hljs-keyword">key</span>上dayOfMonth - <span class="hljs-number">1</span>索引的值置为<span class="hljs-literal">true</span><br>stringRedisTemplate.opsForValue().setBit(<span class="hljs-keyword">key</span>, dayOfMonth - <span class="hljs-number">1</span>, <span class="hljs-literal">true</span>);<br><br># 查询从第<span class="hljs-number">0</span>个索引到dayOfMonth索引的值<br>List&lt;<span class="hljs-type">Long</span>&gt; longs = stringRedisTemplate.opsForValue().bitField(<br>                <span class="hljs-keyword">key</span>,<br>              BitFieldSubCommands.create().<span class="hljs-keyword">get</span>(BitFieldSubCommands.BitFieldType.unsigned(dayOfMonth)).valueAt(<span class="hljs-number">0</span>)<br>        );<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="HyperLogLog"><a href="#HyperLogLog" class="headerlink" title="HyperLogLog"></a>HyperLogLog</h5><ul>
+<li>UV：unique visitor 独立访客量，一天内同一个用户多次访问，只记录一次</li>
+<li>PV：page view，页面访问量或点击量，用户访问网站的一个页面，记录一次PV，用户多次打开页面，则记录多次PV。</li>
+</ul>
+<p>底层也是基于基于string实现的，单个HLL的内存永远小于16kb，其测量结果是概率性的，有小于0.81%的误差，对于UV来说，完全可以忽略。</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">info</span> memory <span class="hljs-comment"># 查看redis内存值</span><br></code></pre></td></tr></table></figure>
+
 
                 
               </div>
@@ -650,6 +682,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/05/02/java/%E5%9F%BA%E7%A1%80/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/" title="阻塞队列">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">阻塞队列</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

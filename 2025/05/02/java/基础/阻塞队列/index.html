@@ -19,22 +19,22 @@
   <meta name="author" content="lzc">
   <meta name="keywords" content="后端开发">
   
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="持续更新中  BlockingQueue​	BlockingQueue是一个接口，它属于 Java 并发包java.util.concurrent，其用途是在多线程环境下实现线程安全的队列操作。  线程安全：BlockingQueue自身实现了线程安全，多个线程能够同时对队列进行读写操作，无需额外的同步机制。 阻塞操作：定义了若干阻塞方法，当队列满时进行入队操作，或者队列空时进行出队操作，这些方">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2025/04/20/hello-world/index.html">
+<meta property="og:title" content="阻塞队列">
+<meta property="og:url" content="http://example.com/2025/05/02/java/%E5%9F%BA%E7%A1%80/%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97/index.html">
 <meta property="og:site_name" content="Lzc">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="持续更新中  BlockingQueue​	BlockingQueue是一个接口，它属于 Java 并发包java.util.concurrent，其用途是在多线程环境下实现线程安全的队列操作。  线程安全：BlockingQueue自身实现了线程安全，多个线程能够同时对队列进行读写操作，无需额外的同步机制。 阻塞操作：定义了若干阻塞方法，当队列满时进行入队操作，或者队列空时进行出队操作，这些方">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-04-20T14:48:16.105Z">
-<meta property="article:modified_time" content="2025-05-05T14:49:33.272Z">
+<meta property="article:published_time" content="2025-05-02T15:54:38.000Z">
+<meta property="article:modified_time" content="2025-05-02T16:04:17.269Z">
 <meta property="article:author" content="lzc">
-<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="队列">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Hello World - Lzc</title>
+  <title>阻塞队列 - Lzc</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +200,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Hello World"></span>
+            <span id="subtitle" data-typed-text="阻塞队列"></span>
           
         </div>
 
@@ -211,8 +211,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-04-20 22:48" pubdate>
-          2025年4月20日 晚上
+        <time datetime="2025-05-02 23:54" pubdate>
+          2025年5月2日 晚上
         </time>
       </span>
     
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          41 字
+          796 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          1 分钟
+          7 分钟
         
       </span>
     
@@ -271,31 +271,46 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Hello World</h1>
+            <h1 id="seo-header">阻塞队列</h1>
             
             
               <div class="markdown-body">
                 
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<p>jetcache</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/alibaba/jetcache/blob/master/docs/CN/Readme.md">jetcache&#x2F;docs&#x2F;CN&#x2F;Readme.md at master · alibaba&#x2F;jetcache</a></p>
-<p>快捷键</p>
-<p>crtl + [  Typora换行后消除格式</p>
-<blockquote>
-<p>加油！！！！！！！</p>
+                <blockquote>
+<p>持续更新中</p>
 </blockquote>
+<h3 id="BlockingQueue"><a href="#BlockingQueue" class="headerlink" title="BlockingQueue"></a>BlockingQueue</h3><p>​	BlockingQueue是一个接口，它属于 Java 并发包java.util.concurrent，其用途是在多线程环境下实现线程安全的队列操作。</p>
+<ul>
+<li>线程安全：BlockingQueue自身实现了线程安全，多个线程能够同时对队列进行读写操作，无需额外的同步机制。</li>
+<li>阻塞操作：定义了若干阻塞方法，当队列满时进行入队操作，或者队列空时进行出队操作，这些方法会让线程进入阻塞状态，直至满足操作条件。</li>
+<li>容量限制：部分BlockingQueue的实现类具备容量限制，当队列达到最大容量时，再进行入队操作会被阻塞。</li>
+</ul>
+<h5 id="插入元素"><a href="#插入元素" class="headerlink" title="插入元素"></a>插入元素</h5><ul>
+<li>add(E e)：若队列未满，将元素插入队列尾部，成功则返回true；若队列已满，会抛出IllegalStateException异常。</li>
+<li>offer(E e)：若队列未满，将元素插入队列尾部，成功则返回true；若队列已满，返回false。</li>
+<li>offer(E e, long timeout, TimeUnit unit)：在指定时间内尝试将元素插入队列尾部，若成功则返回true；若超时仍未成功，返回false。</li>
+<li>put(E e)：若队列未满，将元素插入队列尾部；若队列已满，线程会阻塞直至队列有空间。</li>
+</ul>
+<h5 id="移除元素"><a href="#移除元素" class="headerlink" title="移除元素"></a>移除元素</h5><ul>
+<li>remove()：若队列不为空，移除并返回队列头部元素；若队列为空，抛出NoSuchElementException异常。</li>
+<li>poll()：若队列不为空，移除并返回队列头部元素；若队列为空，返回null。</li>
+<li>poll(long timeout, TimeUnit unit)：在指定时间内尝试移除并返回队列头部元素，若成功则返回元素；若超时仍未成功，返回null。</li>
+<li>take()：若队列不为空，移除并返回队列头部元素；若队列为空，线程会阻塞直至队列中有元素。</li>
+</ul>
+<h5 id="检查元素"><a href="#检查元素" class="headerlink" title="检查元素"></a>检查元素</h5><ul>
+<li>element()：若队列不为空，返回队列头部元素，但不移除；若队列为空，抛出NoSuchElementException异常。</li>
+<li>peek()：若队列不为空，返回队列头部元素，但不移除；若队列为空，返回null。</li>
+</ul>
+<h5 id="常见实现类"><a href="#常见实现类" class="headerlink" title="常见实现类"></a>常见实现类</h5><ul>
+<li>ArrayBlockingQueue：基于数组实现的有界阻塞队列，在创建时需指定容量，且可选择是否使用公平锁。</li>
+<li>LinkedBlockingQueue：基于链表实现的阻塞队列，可指定容量，若不指定则默认为Integer.MAX_VALUE，被视为无界队列。</li>
+<li>PriorityBlockingQueue：基于优先级堆实现的无界阻塞队列，队列中的元素会按照自然顺序或者指定的比较器进行排序。</li>
+<li>SynchronousQueue：一种特殊的阻塞队列，它不存储元素，每个插入操作必须等待另一个线程的移除操作，反之亦然。</li>
+</ul>
+<h5 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.util.concurrent.ArrayBlockingQueue;<br><span class="hljs-keyword">import</span> java.util.concurrent.BlockingQueue;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BlockingQueueExample</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        BlockingQueue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayBlockingQueue</span>&lt;&gt;(<span class="hljs-number">10</span>);<br><br>        <span class="hljs-comment">// 生产者线程</span><br>        <span class="hljs-type">Thread</span> <span class="hljs-variable">producer</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(() -&gt; &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) &#123;<br>                    queue.put(i);<br>                    System.out.println(<span class="hljs-string">&quot;Produced: &quot;</span> + i);<br>                    Thread.sleep(<span class="hljs-number">100</span>);<br>                &#125;<br>            &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>                Thread.currentThread().interrupt();<br>            &#125;<br>        &#125;);<br><br>        <span class="hljs-comment">// 消费者线程</span><br>        <span class="hljs-type">Thread</span> <span class="hljs-variable">consumer</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(() -&gt; &#123;<br>            <span class="hljs-keyword">try</span> &#123;<br>                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) &#123;<br>                    <span class="hljs-type">Integer</span> <span class="hljs-variable">item</span> <span class="hljs-operator">=</span> queue.take();<br>                    System.out.println(<span class="hljs-string">&quot;Consumed: &quot;</span> + item);<br>                    Thread.sleep(<span class="hljs-number">200</span>);<br>                &#125;<br>            &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>                Thread.currentThread().interrupt();<br>            &#125;<br>        &#125;);<br><br>        producer.start();<br>        consumer.start();<br><br>        <span class="hljs-keyword">try</span> &#123;<br>            producer.join();<br>            consumer.join();<br>        &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>            Thread.currentThread().interrupt();<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
 
                 
               </div>
@@ -304,6 +319,41 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E9%98%9F%E5%88%97/" class="print-no-link">#队列</a>
+      
+    </div>
   
 </div>
 
@@ -313,8 +363,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Hello World</div>
-      <div>http://example.com/2025/04/20/hello-world/</div>
+      <div>阻塞队列</div>
+      <div>http://example.com/2025/05/02/java/基础/阻塞队列/</div>
     </div>
     <div class="license-meta">
       
@@ -326,7 +376,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年4月20日</div>
+          <div>2025年5月2日</div>
         </div>
       
       
@@ -358,15 +408,21 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/04/20/hexo/use/" title="使用hexo">
+                      <a href="/2025/05/02/java/%E5%9F%BA%E7%A1%80/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" title="排序算法">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">使用hexo</span>
+                        <span class="hidden-mobile">排序算法</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2025/05/01/java/%E6%95%B0%E6%8D%AE%E5%BA%93/redis/" title="redis篇">
+                        <span class="hidden-mobile">redis篇</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
