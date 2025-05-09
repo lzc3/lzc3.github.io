@@ -19,15 +19,15 @@
   <meta name="author" content="lzc">
   <meta name="keywords" content="后端开发">
   
-    <meta name="description" content="代码方面见git，下面只记录一些知识点  2025&#x2F;5&#x2F;4 互联网项目一般建议单表查询  单表查询结果更易缓存   left join 和 right join有什么区别  加了一个联合索引name_phone，分析下这几个sql会走索引吗？  select * from user where phone &#x3D; “%130” and name &#x3D; “w” s">
+    <meta name="description" content="代码方面见git，下面只记录一些知识点  2025&#x2F;5&#x2F;4 互联网项目一般建议单表查询  单表查询结果更易缓存，多表连接查询的话，每个表的记录都要引起缓存的变动 后续有变动的时候，我只需要关注一小部分，而不用关注整个查询 代码复用性高 占内存，资源的瓶颈在数据库上   left join 和 right join有什么区别  加了一个联合索引name_phone，分析下这几个">
 <meta property="og:type" content="article">
 <meta property="og:title" content="每日一记">
 <meta property="og:url" content="http://example.com/2025/05/03/java/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Lzc">
-<meta property="og:description" content="代码方面见git，下面只记录一些知识点  2025&#x2F;5&#x2F;4 互联网项目一般建议单表查询  单表查询结果更易缓存   left join 和 right join有什么区别  加了一个联合索引name_phone，分析下这几个sql会走索引吗？  select * from user where phone &#x3D; “%130” and name &#x3D; “w” s">
+<meta property="og:description" content="代码方面见git，下面只记录一些知识点  2025&#x2F;5&#x2F;4 互联网项目一般建议单表查询  单表查询结果更易缓存，多表连接查询的话，每个表的记录都要引起缓存的变动 后续有变动的时候，我只需要关注一小部分，而不用关注整个查询 代码复用性高 占内存，资源的瓶颈在数据库上   left join 和 right join有什么区别  加了一个联合索引name_phone，分析下这几个">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-03T14:19:22.000Z">
-<meta property="article:modified_time" content="2025-05-05T14:51:34.098Z">
+<meta property="article:modified_time" content="2025-05-08T14:43:02.003Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="学习">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.5k 字
+          1.8k 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          13 分钟
+          16 分钟
         
       </span>
     
@@ -282,7 +282,10 @@
 <h5 id="2025-5-4"><a href="#2025-5-4" class="headerlink" title="2025&#x2F;5&#x2F;4"></a>2025&#x2F;5&#x2F;4</h5><ul>
 <li><p>互联网项目一般建议单表查询</p>
 <ul>
-<li>单表查询结果更易缓存</li>
+<li>单表查询结果更易缓存，多表连接查询的话，每个表的记录都要引起缓存的变动</li>
+<li>后续有变动的时候，我只需要关注一小部分，而不用关注整个查询</li>
+<li>代码复用性高</li>
+<li>占内存，资源的瓶颈在数据库上</li>
 </ul>
 </li>
 <li><p>left join 和 right join有什么区别</p>
@@ -304,7 +307,6 @@
 <li>拒绝策略<code>handler</code>：</li>
 <li>workQueue：用于存储待执行任务的阻塞队列。当提交的任务数超过 corePoolSize 时，新任务会被放入这个队列中等待处理。</li>
 <li>等待时间<code>keepAliveTime</code>：线程池中的线程数量超过 corePoolSize 时，多余的空闲线程在被销毁之前等待新任务的最长时间。</li>
-<li>时间单位</li>
 <li>线程池</li>
 </ul>
 </li>
@@ -369,6 +371,11 @@
 <li><p>设计抖音</p>
 </li>
 <li><p>为什么要设计出编译时异常、运行时异常，还有error</p>
+<ul>
+<li>强制开发者在编译阶段预见并处理可预期的、程序外部的异常情况（如 IO 操作失败、网络连接中断、用户输入错误等）。这类异常通常与程序外部环境相关（如文件不存在、数据库连接失败），而非程序本身的逻辑错误。</li>
+<li>运行时异常表示程序逻辑错误，这类错误应在开发阶段通过代码审查、测试等手段避免，而非强制在运行时处理。例如空指针引用、数组越界、类型转换错误等，本质上是开发者的错误，而非外部环境不可控的问题。</li>
+<li>表示系统级的严重错误，如 JVM 内存溢出、栈溢出、类文件损坏等。这类问题通常超出程序控制范围，即使捕获也无法恢复，强行处理可能导致更严重的后果（如数据不一致）。</li>
+</ul>
 </li>
 </ul>
 <h5 id="2025-5-5"><a href="#2025-5-5" class="headerlink" title="2025&#x2F;5&#x2F;5"></a>2025&#x2F;5&#x2F;5</h5><ul>
@@ -407,6 +414,27 @@
 <li><p>为什么int[3]必须要指定大小？</p>
 </li>
 </ul>
+<h5 id="2025-5-6"><a href="#2025-5-6" class="headerlink" title="2025&#x2F;5&#x2F;6"></a>2025&#x2F;5&#x2F;6</h5><ul>
+<li><p>https</p>
+<ul>
+<li>为什么https下不能使用http</li>
+<li>协商缓存、强制缓存</li>
+</ul>
+</li>
+<li><p>tcp</p>
+<ul>
+<li>粘包</li>
+</ul>
+</li>
+<li><p>Comparable 侵入式    整数、零或正整数，对应对象小于、等于或大于指定对象。</p>
+</li>
+<li><p>Comparator 非侵入性</p>
+</li>
+<li><p>二叉平衡树，前序、中序、后序遍历</p>
+</li>
+</ul>
+<h5 id="2025-5-8"><a href="#2025-5-8" class="headerlink" title="2025&#x2F;5&#x2F;8"></a>2025&#x2F;5&#x2F;8</h5><p>dubbo</p>
+<p>triple协议</p>
 <h5 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h5><ul>
 <li><p>feign中的configuration</p>
 </li>
@@ -425,6 +453,10 @@
 <li><p>innodb和myism区别</p>
 </li>
 <li><p>回表的理解</p>
+</li>
+<li><p>ScheduledTaskRegistrar</p>
+</li>
+<li><p>I18nInitListener implements ApplicationListener<ApplicationReadyEvent></p>
 </li>
 </ul>
 
