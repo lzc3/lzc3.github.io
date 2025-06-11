@@ -19,15 +19,15 @@
   <meta name="author" content="lzc">
   <meta name="keywords" content="后端开发">
   
-    <meta name="description" content="找出某个端口正在使用的进程1netstat -ano | findstr :8080    根据 PID 查找对应的进程 1tasklist | findstr 10156    结束指定 PID 的进程1taskkill &#x2F;F &#x2F;PID 1234   &#x2F;F：表示强制终止进程。 &#x2F;PID：用于指定要终止的进程的 ID。">
+    <meta name="description" content="测试网络是否联通12ping 39.98.49.95telnet 39.98.49.95 7700      查看架构  123echo %PROCESSOR_ARCHITECTURE%输出 ARM：ARM 架构。输出 AMD64：x86 架构（AMD 或 Intel 处理器）。    找出某个端口正在使用的进程1netstat -ano | findstr :8080    根据 PID 查找对">
 <meta property="og:type" content="article">
 <meta property="og:title" content="windows命令行操作">
 <meta property="og:url" content="http://example.com/2025/04/24/windows/cmd/index.html">
 <meta property="og:site_name" content="Lzc">
-<meta property="og:description" content="找出某个端口正在使用的进程1netstat -ano | findstr :8080    根据 PID 查找对应的进程 1tasklist | findstr 10156    结束指定 PID 的进程1taskkill &#x2F;F &#x2F;PID 1234   &#x2F;F：表示强制终止进程。 &#x2F;PID：用于指定要终止的进程的 ID。">
+<meta property="og:description" content="测试网络是否联通12ping 39.98.49.95telnet 39.98.49.95 7700      查看架构  123echo %PROCESSOR_ARCHITECTURE%输出 ARM：ARM 架构。输出 AMD64：x86 架构（AMD 或 Intel 处理器）。    找出某个端口正在使用的进程1netstat -ano | findstr :8080    根据 PID 查找对">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-24T10:50:48.000Z">
-<meta property="article:modified_time" content="2025-04-24T10:51:22.161Z">
+<meta property="article:modified_time" content="2025-05-27T11:06:14.098Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="cmd">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          58 字
+          95 字
         
       </span>
     
@@ -276,7 +276,18 @@
             
               <div class="markdown-body">
                 
-                <h5 id="找出某个端口正在使用的进程"><a href="#找出某个端口正在使用的进程" class="headerlink" title="找出某个端口正在使用的进程"></a>找出某个端口正在使用的进程</h5><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">netstat <span class="hljs-punctuation">-</span>ano <span class="hljs-string">| findstr :8080</span><br></code></pre></td></tr></table></figure>
+                <h5 id="测试网络是否联通"><a href="#测试网络是否联通" class="headerlink" title="测试网络是否联通"></a>测试网络是否联通</h5><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ping</span> <span class="hljs-number">39.98.49.95</span><br><span class="hljs-attribute">telnet</span> <span class="hljs-number">39.98.49.95</span> <span class="hljs-number">7700</span> <br></code></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>查看架构</li>
+</ul>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">echo</span> %PROCESSOR_ARCHITECTURE%<br>输出 <span class="hljs-meta">ARM</span>：<span class="hljs-meta">ARM</span> 架构。<br>输出 AMD64：x86 架构（AMD 或 Intel 处理器）。<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="找出某个端口正在使用的进程"><a href="#找出某个端口正在使用的进程" class="headerlink" title="找出某个端口正在使用的进程"></a>找出某个端口正在使用的进程</h5><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">netstat <span class="hljs-punctuation">-</span>ano <span class="hljs-string">| findstr :8080</span><br></code></pre></td></tr></table></figure>
 
 
 
@@ -391,8 +402,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/04/24/java/spring/jdbc/" title="jdbc">
-                        <span class="hidden-mobile">jdbc</span>
+                      <a href="/2025/04/24/java/spring/Spring%E4%BD%BF%E7%94%A8/" title="Spring使用">
+                        <span class="hidden-mobile">Spring使用</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

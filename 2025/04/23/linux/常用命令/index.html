@@ -19,15 +19,15 @@
   <meta name="author" content="lzc">
   <meta name="keywords" content="后端开发">
   
-    <meta name="description" content="查找是否存在对应文件123find [文件夹路径] --name &quot;文件名&quot;例如：在当前文件夹下面查找main.dic的文件find -name main.dic">
+    <meta name="description" content="查找是否存在对应文件123find [文件夹路径] --name &quot;文件名&quot;例如：在当前文件夹下面查找main.dic的文件find -name main.dic    查看文件中包含“xx”的行，上下30行的内容1grep -B 30 -A 30 &quot;xx&quot; filename    字体 查看  1fc-list :lang&#x3D;zh      下载  1234">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用命令">
 <meta property="og:url" content="http://example.com/2025/04/23/linux/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="Lzc">
-<meta property="og:description" content="查找是否存在对应文件123find [文件夹路径] --name &quot;文件名&quot;例如：在当前文件夹下面查找main.dic的文件find -name main.dic">
+<meta property="og:description" content="查找是否存在对应文件123find [文件夹路径] --name &quot;文件名&quot;例如：在当前文件夹下面查找main.dic的文件find -name main.dic    查看文件中包含“xx”的行，上下30行的内容1grep -B 30 -A 30 &quot;xx&quot; filename    字体 查看  1fc-list :lang&#x3D;zh      下载  1234">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-23T12:29:37.000Z">
-<meta property="article:modified_time" content="2025-04-23T14:46:55.931Z">
+<meta property="article:modified_time" content="2025-05-20T08:21:48.075Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          41 字
+          402 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          1 分钟
+          4 分钟
         
       </span>
     
@@ -278,6 +278,103 @@
                 
                 <h5 id="查找是否存在对应文件"><a href="#查找是否存在对应文件" class="headerlink" title="查找是否存在对应文件"></a>查找是否存在对应文件</h5><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">find</span> [文件夹路径] --name <span class="hljs-string">&quot;文件名&quot;</span><br>例如：在当前文件夹下面查找main.dic的文件<br><span class="hljs-built_in">find</span> -name main.dic<br></code></pre></td></tr></table></figure>
 
+
+
+<h5 id="查看文件中包含“xx”的行，上下30行的内容"><a href="#查看文件中包含“xx”的行，上下30行的内容" class="headerlink" title="查看文件中包含“xx”的行，上下30行的内容"></a>查看文件中包含“xx”的行，上下30行的内容</h5><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">grep</span> -B <span class="hljs-number">30</span> -A <span class="hljs-number">30</span> <span class="hljs-string">&quot;xx&quot;</span> filename<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h5><ul>
+<li>查看</li>
+</ul>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elixir">fc-list <span class="hljs-symbol">:lang=zh</span> <br></code></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>下载</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># 步骤1：下载并解压字体压缩包</span><br>wget http:<span class="hljs-regexp">//</span>kkfileview.keking.cn/fonts.zip<br>unzip fonts.zip<br>sudo apt-get install unzip  <span class="hljs-comment"># 应在解压前安装unzip</span><br>sudo apt-get update         <span class="hljs-comment"># 更新软件包列表</span><br><br><span class="hljs-comment"># 步骤2：下载并安装TTF字体</span><br>wget -O <span class="hljs-regexp">/usr/</span>share<span class="hljs-regexp">/fonts/</span>simsun.ttf https:<span class="hljs-regexp">//</span>pfh-file-store.oss-cn-hangzhou.aliyuncs.com/simsun.ttf \<br>&amp;&amp; wget -O <span class="hljs-regexp">/usr/</span>share<span class="hljs-regexp">/fonts/</span>simsun.ttf https:<span class="hljs-regexp">//</span>pfh-file-store.oss-cn-hangzhou.aliyuncs.com/simfang.ttf \<br>&amp;&amp; wget -O <span class="hljs-regexp">/usr/</span>share<span class="hljs-regexp">/fonts/</span>simsun.ttf https:<span class="hljs-regexp">//</span>pfh-file-store.oss-cn-hangzhou.aliyuncs.com/STFANGSO.TTF \<br>&amp;&amp; fc-cache -vf              <span class="hljs-comment"># 刷新字体缓存</span><br>&amp;&amp; fc-list                    <span class="hljs-comment"># 列出已安装字体</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="tar解压"><a href="#tar解压" class="headerlink" title="tar解压"></a>tar解压</h5><ul>
+<li>格式</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">tar <span class="hljs-selector-attr">[选项]</span> <span class="hljs-selector-attr">[归档文件]</span> <span class="hljs-selector-attr">[源文件/目录]</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>选项</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>选项组</th>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>操作模式</td>
+<td><code>-c</code></td>
+<td>创建新的归档文件（<strong>c</strong>reate）。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-x</code></td>
+<td>从归档文件中提取内容（<strong>e</strong>x<strong>t</strong>ract）。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-t</code></td>
+<td>列出归档文件的内容（<strong>t</strong>able of contents）。</td>
+</tr>
+<tr>
+<td>文件格式</td>
+<td><code>-z</code></td>
+<td>通过 gzip 压缩 &#x2F; 解压缩（对应 <code>.tar.gz</code> 或 <code>.tgz</code> 文件）。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-j</code></td>
+<td>通过 bzip2 压缩 &#x2F; 解压缩（对应 <code>.tar.bz2</code> 文件）。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-J</code></td>
+<td>通过 xz 压缩 &#x2F; 解压缩（对应 <code>.tar.xz</code> 文件）。</td>
+</tr>
+<tr>
+<td>文件操作</td>
+<td><code>-f</code></td>
+<td>指定归档文件的名称（<strong>f</strong>ile），必须紧跟文件名（如 <code>-f archive.tar</code>）。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-v</code></td>
+<td>显示详细的操作过程（<strong>v</strong>erbose）。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-C</code></td>
+<td>提取时指定目标目录（<strong>C</strong>hange directory）。</td>
+</tr>
+<tr>
+<td>高级选项</td>
+<td><code>-p</code></td>
+<td>保留文件的权限和属性（<strong>p</strong>reserve permissions）。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>--exclude</code></td>
+<td>排除特定文件或目录（如 <code>--exclude=logs</code>）。</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-P</code></td>
+<td>保留绝对路径（<strong>P</strong>reserve absolute path），可能导致安全风险。</td>
+</tr>
+</tbody></table>
 
                 
               </div>

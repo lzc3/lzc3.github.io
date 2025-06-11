@@ -19,18 +19,20 @@
   <meta name="author" content="lzc">
   <meta name="keywords" content="后端开发">
   
-    <meta name="description" content="ApplicationContext 、BeanFactory二者都可以获取bean，但是ApplicationContext 更全面，解析配置类，注册beanDefinition。  实例化bean，早期bean 属性注入，@Autowried 初始化前 BeanPostProcessor（postProcessBeforeInitialization）、Aware 初始化  @PostCons">
+    <meta name="description" content="知识点ApplicationContext 、BeanFactory二者都可以获取bean，但是ApplicationContext 更全面，解析配置类，注册beanDefinition。  实例化bean，早期bean 属性注入，@Autowried 初始化前 BeanPostProcessor（postProcessBeforeInitialization）、Aware 初始化  @PostC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spring基础知识">
 <meta property="og:url" content="http://example.com/2025/04/24/java/spring/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
 <meta property="og:site_name" content="Lzc">
-<meta property="og:description" content="ApplicationContext 、BeanFactory二者都可以获取bean，但是ApplicationContext 更全面，解析配置类，注册beanDefinition。  实例化bean，早期bean 属性注入，@Autowried 初始化前 BeanPostProcessor（postProcessBeforeInitialization）、Aware 初始化  @PostCons">
+<meta property="og:description" content="知识点ApplicationContext 、BeanFactory二者都可以获取bean，但是ApplicationContext 更全面，解析配置类，注册beanDefinition。  实例化bean，早期bean 属性注入，@Autowried 初始化前 BeanPostProcessor（postProcessBeforeInitialization）、Aware 初始化  @PostC">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/Spring_%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1_%E4%BA%8B%E4%BB%B6%E6%A1%86%E6%9E%B6_%E5%BC%82%E6%AD%A5_%E7%BA%BF%E7%A8%8B%E6%B1%A0.png">
 <meta property="article:published_time" content="2025-04-23T16:16:59.000Z">
-<meta property="article:modified_time" content="2025-05-03T09:15:37.807Z">
+<meta property="article:modified_time" content="2025-05-09T09:39:47.656Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="spring">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/Spring_%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1_%E4%BA%8B%E4%BB%B6%E6%A1%86%E6%9E%B6_%E5%BC%82%E6%AD%A5_%E7%BA%BF%E7%A8%8B%E6%B1%A0.png">
   
   
   
@@ -223,7 +225,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          965 字
+          1.7k 字
         
       </span>
     
@@ -234,7 +236,7 @@
         
         
         
-          9 分钟
+          15 分钟
         
       </span>
     
@@ -276,7 +278,7 @@
             
               <div class="markdown-body">
                 
-                <p>ApplicationContext 、BeanFactory二者都可以获取bean，但是ApplicationContext 更全面，解析配置类，注册beanDefinition。</p>
+                <h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><p>ApplicationContext 、BeanFactory二者都可以获取bean，但是ApplicationContext 更全面，解析配置类，注册beanDefinition。</p>
 <ul>
 <li>实例化bean，早期bean</li>
 <li>属性注入，@Autowried</li>
@@ -344,6 +346,91 @@
 <p>AP 保证访问的高可用性，可以持续对外提供服务，但不是保证数据的强一致性。</p>
 <p>CP 保证数据的强一致性，放弃高可用性。</p>
 <p>BASE理论是分布式系统设计中对CAP理论中AP方案的延伸，强调通过基本可用、软状态和最终一致性来实现系统设计。</p>
+<h5 id="修改spring默认线程池配置"><a href="#修改spring默认线程池配置" class="headerlink" title="修改spring默认线程池配置"></a>修改spring默认线程池配置</h5><blockquote>
+<p>spring中经常会使用到异步任务，如何修改其线程池配置？</p>
+</blockquote>
+<ul>
+<li>示例，比如事件框架前使用的@EnableAsync(放在任一配置类即可)以及@Async注解</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">class</span> <span class="hljs-selector-tag">xxx</span>&#123;<br>    <span class="hljs-variable">@Async</span><br>    <span class="hljs-variable">@EventListener</span><br>    public void <span class="hljs-built_in">xxx</span>() &#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>实现AsyncConfigurer即可</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DefaultAsyncThreadPoolConfig</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">AsyncConfigurer</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Executor <span class="hljs-title function_">getAsyncExecutor</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">ThreadPoolTaskExecutor</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPoolTaskExecutor</span>();<br>        <span class="hljs-comment">//核心线程池大小</span><br>        executor.setCorePoolSize(<span class="hljs-number">20</span>);<br>        <span class="hljs-comment">//最大线程数</span><br>        executor.setMaxPoolSize(<span class="hljs-number">150</span>);<br>        <span class="hljs-comment">//队列容量</span><br>        executor.setQueueCapacity(<span class="hljs-number">100</span>);<br>        <span class="hljs-comment">//活跃时间</span><br>        executor.setKeepAliveSeconds(<span class="hljs-number">300</span>);<br>        <span class="hljs-comment">//线程名字前缀</span><br>        executor.setThreadNamePrefix(<span class="hljs-string">&quot;DefaultExecutor-&quot;</span>);<br>        <span class="hljs-comment">// setRejectedExecutionHandler：当pool已经达到max size的时候，如何处理新任务</span><br>        <span class="hljs-comment">// CallerRunsPolicy：不在新线程中执行任务，而是由调用者所在的线程来执行</span><br>        executor.setRejectedExecutionHandler(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPoolExecutor</span>.CallerRunsPolicy());<br>        executor.setWaitForTasksToCompleteOnShutdown(<span class="hljs-literal">true</span>);<br>        executor.setThreadNamePrefix(<span class="hljs-string">&quot;cc-async-&quot;</span>);<br>        executor.initialize();<br>        <span class="hljs-keyword">return</span> executor;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>本人在定时任务中触发的事件框架，事件框架方法处使用的异步</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@EventListener</span><br><span class="hljs-meta">@Async</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">handleAutoApproveEvent</span><span class="hljs-params">(TestEvent testEvent)</span>&#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">info</span> <span class="hljs-operator">=</span> testEvent.getInfo();<br>    log.info(info);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>有个注意的点，异步线程池貌似是懒加载，第一次使用到的时候才会初始化</p>
+<p><img src="/../../../images/Spring_%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1_%E4%BA%8B%E4%BB%B6%E6%A1%86%E6%9E%B6_%E5%BC%82%E6%AD%A5_%E7%BA%BF%E7%A8%8B%E6%B1%A0.png" srcset="/img/loading.gif" lazyload></p>
+<p>todo，spring自带的线程池和jdk的有什么区别</p>
+<h3 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h3><h5 id=""><a href="#" class="headerlink" title=""></a></h5><h5 id="定时任务Schedule跟踪以及afterSingletonsInstantiated、onApplicationEvent-ContextRefreshedEvent-event"><a href="#定时任务Schedule跟踪以及afterSingletonsInstantiated、onApplicationEvent-ContextRefreshedEvent-event" class="headerlink" title="定时任务Schedule跟踪以及afterSingletonsInstantiated、onApplicationEvent(ContextRefreshedEvent event)"></a>定时任务Schedule跟踪以及afterSingletonsInstantiated、onApplicationEvent(ContextRefreshedEvent event)</h5><blockquote>
+<p>spring中经常看到实现一个接口然后修改配置类的情况，此次学习定时任务的时候也发现了，下面来分析下他是如何实现的</p>
+</blockquote>
+<ul>
+<li>代码示例</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ScheduleConfig</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">SchedulingConfigurer</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">configureTasks</span><span class="hljs-params">(ScheduledTaskRegistrar scheduledTaskRegistrar)</span> &#123;<br>   		scheduledTaskRegistrar.setScheduler(Executors.newScheduledThreadPool(corePoolSize));<br>        scheduledTaskRegistrar.setTaskScheduler(poolScheduler());<br>    &#125;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> TaskScheduler <span class="hljs-title function_">poolScheduler</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">ThreadPoolTaskScheduler</span> <span class="hljs-variable">scheduler</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPoolTaskScheduler</span>();<br>        scheduler.setThreadNamePrefix(<span class="hljs-string">&quot;poolScheduler&quot;</span>);<br>        scheduler.setPoolSize(<span class="hljs-number">10</span>);<br>        <span class="hljs-keyword">return</span> scheduler;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>通过打断点的方式，网上跟踪代码，发现这段代码实现的接口，是在如下部分被调用的</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.beanFactory <span class="hljs-keyword">instanceof</span> ListableBeanFactory) &#123;<br>    Map&lt;String, SchedulingConfigurer&gt; beans = ((ListableBeanFactory)<span class="hljs-built_in">this</span>.beanFactory).getBeansOfType(SchedulingConfigurer.class);<br>    List&lt;SchedulingConfigurer&gt; configurers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>(beans.values());<br>    AnnotationAwareOrderComparator.sort(configurers);<br>    <span class="hljs-type">Iterator</span> <span class="hljs-variable">var3</span> <span class="hljs-operator">=</span> configurers.iterator();<br><br>    <span class="hljs-keyword">while</span>(var3.hasNext()) &#123;<br>        <span class="hljs-type">SchedulingConfigurer</span> <span class="hljs-variable">configurer</span> <span class="hljs-operator">=</span> (SchedulingConfigurer)var3.next();<br>        configurer.configureTasks(<span class="hljs-built_in">this</span>.registrar);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>​	其获取了所有实现了SchedulingConfigurer类型的bean，然后依次执行configureTasks方法。</p>
+<ul>
+<li>此方法集成在finishRegistration()中，在afterSingletonsInstantiated和onApplicationEvent中均有调用</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">afterSingletonsInstantiated</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-built_in">this</span>.nonAnnotatedClasses.clear();<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.applicationContext == <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-built_in">this</span>.finishRegistration();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onApplicationEvent</span><span class="hljs-params">(ContextRefreshedEvent event)</span> &#123;<br>    <span class="hljs-keyword">if</span> (event.getApplicationContext() == <span class="hljs-built_in">this</span>.applicationContext) &#123;<br>        <span class="hljs-built_in">this</span>.finishRegistration();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>他们两个的区别</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th><code>afterSingletonsInstantiated()</code></th>
+<th><code>onApplicationEvent(ContextRefreshedEvent)</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>接口类型</strong></td>
+<td><code>SmartInitializingSingleton</code>（Spring 内置）</td>
+<td><code>ApplicationListener</code>（事件监听）</td>
+</tr>
+<tr>
+<td><strong>触发时机</strong></td>
+<td>所有单例 Bean <strong>初始化完成后</strong>立即触发</td>
+<td>整个应用上下文 <strong>刷新完成后</strong>触发</td>
+</tr>
+<tr>
+<td><strong>执行次数</strong></td>
+<td>仅执行 <strong>1 次</strong>（容器启动时）</td>
+<td>可能执行 <strong>多次</strong>（每次上下文刷新时）</td>
+</tr>
+<tr>
+<td><strong>上下文状态</strong></td>
+<td>Bean 已完成实例化和初始化（包括 <code>@PostConstruct</code>）</td>
+<td>整个上下文已刷新，可能包含 Bean 的销毁和重建</td>
+</tr>
+<tr>
+<td><strong>延迟加载 Bean</strong></td>
+<td>不考虑延迟加载 Bean（即使存在也会触发）</td>
+<td>延迟加载 Bean 可能尚未初始化</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>推荐使用 SmartInitializingSingleton 的场景</p>
+<p>需要确保所有单例 Bean 都已初始化完成（如注册全局拦截器、初始化缓存）。<br>避免多次执行（如加载基础数据到内存）</p>
+</li>
+<li><p>推荐使用 ContextRefreshedEvent 的场景</p>
+<p>需要响应上下文刷新事件（如重新加载配置、重置状态）。<br>在父子上下文环境中，需要区分不同上下文的刷新。</p>
+</li>
+</ul>
 
                 
               </div>
@@ -441,9 +528,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/04/24/java/spring/jdbc/" title="jdbc">
+                      <a href="/2025/04/24/java/spring/Spring%E4%BD%BF%E7%94%A8/" title="Spring使用">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">jdbc</span>
+                        <span class="hidden-mobile">Spring使用</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

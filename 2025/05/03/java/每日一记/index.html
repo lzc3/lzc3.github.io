@@ -26,11 +26,15 @@
 <meta property="og:site_name" content="Lzc">
 <meta property="og:description" content="代码方面见git，下面只记录一些知识点  2025&#x2F;5&#x2F;4 互联网项目一般建议单表查询  单表查询结果更易缓存，多表连接查询的话，每个表的记录都要引起缓存的变动 后续有变动的时候，我只需要关注一小部分，而不用关注整个查询 代码复用性高 占内存，资源的瓶颈在数据库上   left join 和 right join有什么区别  加了一个联合索引name_phone，分析下这几个">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0_bigdecimal.png">
+<meta property="og:image" content="http://example.com/images/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0%E5%BD%95_bigdecimal_add.png">
+<meta property="og:image" content="http://example.com/2025/05/03/images/ThreadLocal%E5%BC%95%E7%94%A8%E5%85%B3%E7%B3%BB%E5%9B%BE.jpg">
 <meta property="article:published_time" content="2025-05-03T14:19:22.000Z">
-<meta property="article:modified_time" content="2025-05-08T14:43:02.003Z">
+<meta property="article:modified_time" content="2025-06-10T14:51:26.158Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="学习">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0_bigdecimal.png">
   
   
   
@@ -223,7 +227,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.8k 字
+          4.7k 字
         
       </span>
     
@@ -234,7 +238,7 @@
         
         
         
-          16 分钟
+          39 分钟
         
       </span>
     
@@ -435,6 +439,218 @@
 </ul>
 <h5 id="2025-5-8"><a href="#2025-5-8" class="headerlink" title="2025&#x2F;5&#x2F;8"></a>2025&#x2F;5&#x2F;8</h5><p>dubbo</p>
 <p>triple协议</p>
+<h5 id="2025-5-11"><a href="#2025-5-11" class="headerlink" title="2025&#x2F;5&#x2F;11"></a>2025&#x2F;5&#x2F;11</h5><ul>
+<li><p>浮点数</p>
+<p>0.2转换成二进制，依次成2，记录整数部分</p>
+</li>
+</ul>
+<p>​	   0.0011 0011 0011  &#x3D;  1&#x2F; 8 + 1 &#x2F; 16 +  1&#x2F;128 + 1&#x2F;256 …</p>
+<ul>
+<li><p>BigDecimal</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;52.73&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>此代码使用一个long存储了5273，并记录了总位数以及小数点位数</p>
+<p><img src="/../../images/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0_bigdecimal.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;52.73&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;32.5&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimalAdd</span> <span class="hljs-operator">=</span> bigDecimal1.add(bigDecimal2);<br></code></pre></td></tr></table></figure>
+
+<p>此代码在计算的时候，会先对其小数位，然后相加</p>
+<p><img src="/../../images/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0%E5%BD%95_bigdecimal_add.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>equals方法会比较精度</p>
+</li>
+<li><p>jdk和jre</p>
+<ul>
+<li>jdk java开发环境，包含了jre、编译器javac和其他工具，比如javadoc、jconsole、javap等</li>
+<li>jre java运行时环境，主要包含jvm和java类库</li>
+</ul>
+<p>从java9开始，就不再区分二者关系，取而代之的是模块系统（JDK被重新组织成94个模块）+ jlink工具（随java9一起发布的新命令行工具，用于生成自定义java运行时映像，改映像仅包含给定应用程序所需的模块）。并且，从JDK11开始，oracle不再提供单独的jre下载。</p>
+<p>也就是说，可以用 jlink 根据自己的需求，创建一个更小的 runtime（运行时），而不是不管什么应用，都是同样的 JRE。</p>
+<p>定制的、模块化的 Java 运行时映像有助于简化 Java 应用的部署和节省内存并增强安全性和可维护性。这对于满足现代应用程序架构的需求，如虚拟化、容器化、微服务和云原生开发，是非常重要的</p>
+</li>
+<li><p>字节码、JIT</p>
+<p>在 Java 中，JVM 可以理解的代码就叫做字节码（即扩展名为 <code>.class</code> 的文件），它不面向任何特定的处理器，只面向虚拟机。</p>
+<p>JVM 类加载器首先加载字节码文件，然后通过解释器逐行解释执行，这种方式的执行速度会相对比较慢。而且，有些方法和代码块是经常需要被调用的(也就是所谓的热点代码)，所以后面引进了 <strong>JIT（Just in Time Compilation）</strong> 编译器，而 JIT 属于运行时编译。</p>
+<p>当 JIT 编译器完成第一次编译后，其会将字节码对应的机器码保存下来，下次可以直接使用。而我们知道，机器码的运行效率肯定是高于 Java 解释器的。这也解释了我们为什么经常会说 <strong>Java 是编译与解释共存的语言</strong> 。</p>
+<p><strong>HotSpot</strong> 采用了<strong>惰性评估(Lazy Evaluation)<strong>的做法，根据</strong>二八定律</strong>，消耗大部分系统资源的只有那一<strong>小部分的代码</strong>（热点代码），而这也就是 JIT 所需要编译的部分。JVM 会根据代码每次被执行的情况收集信息并相应地做出一些优化，因此执行的次数越多，它的速度就越快。</p>
+</li>
+<li><p>oracle jdk 和 openjdk</p>
+<ul>
+<li>一个不开源一个开源</li>
+<li>一个高版本后要收费</li>
+</ul>
+</li>
+<li><p>java和c++的区别</p>
+<ul>
+<li>java中不提供指针来直接访问内存</li>
+<li>java类是单继承的、c++支持多重继承</li>
+<li>java有自动垃圾回收GC，c++需要手动释放内存</li>
+<li>java是编译 + 解释型语言，c++是编译型语言</li>
+</ul>
+</li>
+<li><p>基本类型和泛型的区别</p>
+<ul>
+<li>内存的占用和默认值，比如代理的时候，返回null，基本数据类型会报错</li>
+<li>基本类型不可以被泛型使用</li>
+<li>局部变量基本类型存在jvm虚拟机栈的局部变量表中</li>
+</ul>
+<p>⚠️ 注意：<strong>基本数据类型存放在栈中是一个常见的误区！</strong> 基本数据类型的存储位置取决于它们的作用域和声明方式。如果它们是局部变量，那么它们会存放在栈中；如果它们是成员变量，那么它们会存放在堆&#x2F;方法区&#x2F;元空间中。</p>
+</li>
+<li><p>包装类型的缓存机制</p>
+<p>​        <code>Byte</code>,<code>Short</code>,<code>Integer</code>,<code>Long</code> 这 4 种包装类默认创建了数值 <strong>[-128，127]</strong> 的相应类型的缓存数据，<code>Character</code> 创建了数值在 <strong>[0,127]</strong> 范围的缓存数据，<code>Boolean</code> 直接返回 <code>TRUE</code> or <code>FALSE</code>。</p>
+</li>
+</ul>
+<p>​	</p>
+<ul>
+<li><p>自动装箱和拆箱</p>
+<ul>
+<li><strong>装箱</strong>：将基本类型用它们对应的引用类型包装起来；</li>
+<li><strong>拆箱</strong>：将包装类型转换为基本数据类型；</li>
+</ul>
+</li>
+<li><p>成员变量和局部变量</p>
+<p>从变量是否有默认值来看，成员变量如果没有被赋初始值，则会自动以类型的默认值而赋值（一种情况例外:被 <code>final</code> 修饰的成员变量也必须显式地赋值），而局部变量则不会自动赋值。</p>
+</li>
+<li><p>重载和重写</p>
+<ul>
+<li><p>重载就是一个类中多个同名方法根据不同的参数类型来确定执行对应方法。</p>
+</li>
+<li><p>重写是指子类对父类运行访问的方法实现过程进行重写。</p>
+<p>方法名、参数列表必须相同，子类方法返回值类型应比父类方法返回值类型更小或相等，抛出的异常范围小于等于父类，访问修饰符范围大于等于父类。</p>
+<p>如果方法的返回类型是 void 和基本数据类型，则返回值重写时不可修改。但是如果方法的返回值是引用类型，重写时是可以返回该引用类型的子类的。</p>
+</li>
+</ul>
+</li>
+<li><p>可变长参数</p>
+<ul>
+<li>可变参数只能作为函数的最后一个参数，但其前面可以有也可以没有任何其他参数</li>
+<li>遇到方法重载的情况会优先匹配固定参数的方法，因为固定参数的方法匹配度更高。</li>
+</ul>
+</li>
+<li><p>默认构造方法</p>
+<p>​    如果一个类没有声明构造方法，也可以执行！因为一个类即使没有声明构造方法也会有默认的不带参数的构造方法。如果我们自己添加了类的构造方法（无论是否有参），Java 就不会添加默认的无参数的构造方法了。</p>
+<p>​    构造方法<strong>不能被重写（override）</strong>，但<strong>可以被重载（overload）</strong>。因此，一个类中可以有多个构造方法，这些构造方法可以具有不同的参数列表，以提供不同的对象初始化方式</p>
+</li>
+<li><p>多态</p>
+<p>​    父类的引用指向子类的实例。</p>
+</li>
+<li><p>接口和抽象类</p>
+<ul>
+<li>都不能实例化</li>
+<li>定义了一个方法，（抽象方法、接口方法），都需要子类或者抽象类中去实现，default和static除外，java9后，接口可以包含private方法</li>
+<li>接口是行为的抽象，类是所属关系，用于代码复用。接口可以多实现</li>
+<li>接口中的成员变量只能是public static final类型，不能修改且必须有初始值。抽象类的成员变量可以有任何修饰符，在子类中可以被重写定义或者赋值。</li>
+</ul>
+</li>
+<li><p>String</p>
+<p>Java 9 将 <code>String</code> 的底层实现由 <code>char[]</code> 改成了 <code>byte[]</code> </p>
+<p>新版的 String 其实支持两个编码方案：Latin-1 和 UTF-16。如果字符串中包含的汉字没有超过 Latin-1 可表示范围内的字符，那就会使用 Latin-1 作为编码方案。Latin-1 编码方案下，<code>byte</code> 占一个字节(8 位)，<code>char</code> 占用 2 个字节（16），<code>byte</code> 相较 <code>char</code> 节省一半的内存空间</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">str1</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;str&quot;</span>;<br><span class="hljs-type">String</span> <span class="hljs-variable">str2</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ing&quot;</span>;<br><span class="hljs-type">String</span> <span class="hljs-variable">str3</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;str&quot;</span> + <span class="hljs-string">&quot;ing&quot;</span>;<br><span class="hljs-type">String</span> <span class="hljs-variable">str4</span> <span class="hljs-operator">=</span> str1 + str2;<br><span class="hljs-type">String</span> <span class="hljs-variable">str5</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;string&quot;</span>;<br>System.out.println(str3 == str4);<span class="hljs-comment">//false</span><br>System.out.println(str3 == str5);<span class="hljs-comment">//true</span><br>System.out.println(str4 == str5);<span class="hljs-comment">//false</span><br><span class="hljs-comment">// 对象引用和“+”的字符串拼接方式，实际上是通过 StringBuilder 调用 append() 方法实现的，拼接完成之后调用 toString() 得到一个 String 对象 </span><br><span class="hljs-comment">// 对于 String str3 = &quot;str&quot; + &quot;ing&quot;; 编译器会给你优化成 String str3 = &quot;string&quot;; 。并不是所有的常量都会进行折叠，只有编译器在程序编译期就可以确定值的常量</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>避免将异常定义为静态变量</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">当 <span class="hljs-keyword">Java </span>抛出一个异常时，<span class="hljs-keyword">JVM </span>会自动调用异常对象的 fillInStackTrace() 方法，记录当前的调用栈信息（包括类名、方法名、行号等）。每个异常实例的栈信息是抛出时的实时快照，且该信息会被存储在异常对象的 stackTrace 字段中<br>静态异常变量是共享实例，多次抛出时栈信息会被后续调用覆盖，导致调试时无法获取真实的异常发生位置。<br>解决方案：永远为每次异常抛出创建新的异常实例，确保每个异常对象携带独立的栈跟踪信息。<br>本质原则：异常是携带运行时上下文的 “事件对象”，应遵循 “按需创建，一事一议” 的设计，而非复用静态实例。<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>​		</p>
+<ul>
+<li><p>java中，写文件到磁盘中间经历了什么</p>
+</li>
+<li><p>kafka 0拷贝 DMA拷贝</p>
+</li>
+<li><p>http层到tcp层，中间传输数据经历了哪些过程</p>
+</li>
+<li><p>get请求和post请求有什么区别</p>
+</li>
+<li><p>怎么保证消息的顺序性</p>
+</li>
+<li><p>RBAC</p>
+</li>
+</ul>
+<h5 id="2025-5-13"><a href="#2025-5-13" class="headerlink" title="2025&#x2F;5&#x2F;13"></a>2025&#x2F;5&#x2F;13</h5><ul>
+<li>fifo</li>
+</ul>
+<p>异步、解耦、削峰</p>
+<p>Deque 和 Stack</p>
+<p>https中的对称加密和非对称加密</p>
+<p>stream和直接for循环的区别</p>
+<h5 id="2025-5-19"><a href="#2025-5-19" class="headerlink" title="2025&#x2F;5&#x2F;19"></a>2025&#x2F;5&#x2F;19</h5><p>几种配置文件、配置文件的区别</p>
+<p>死锁为什么会导致cpu占用率升高</p>
+<p>java中的线程和linux中的线程有什么区别</p>
+<ul>
+<li>java中的线程是通过调用系统api的方式去创建的，相当于java中的线程是抽象，linux底层是实现</li>
+</ul>
+<h5 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h5><img src="../../images/ThreadLocal引用关系图.jpg" srcset="/img/loading.gif" lazyload />
+
+<p>为什么ThreadLocalMap中的Entry将K设置为弱引用？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Entry</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">WeakReference</span>&lt;ThreadLocal&lt;?&gt;&gt; &#123;<br>    <span class="hljs-comment">/** The value associated with this ThreadLocal. */</span><br>    Object value;<br><br>    Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;<br>        <span class="hljs-built_in">super</span>(k);<br>        value = v;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<ul>
+<li><p>private 方法是隐式的final</p>
+</li>
+<li><p>final方法是可以被重载的</p>
+</li>
+<li><p>dubbo</p>
+</li>
+</ul>
+<p>k8s到底是什么</p>
+<p>​	介于应用服务和服务器之间，通过策略协调和管理多个应用服务，只需要通过一个yaml文件配置，定义应用的部署顺序等信息，就能自动部署应用到各个服务器上</p>
+<p>control plane 控制平面</p>
+<ul>
+<li><p>Api Service</p>
+</li>
+<li><p>Scheduler  Controller mgr</p>
+</li>
+<li><p>etcd</p>
+</li>
+</ul>
+<p>工作节点 node</p>
+<p>kubelet 负责管理和监控node</p>
+<p>kube proxy 负责node的网络通信</p>
+<ul>
+<li>pod k8s中最小的调度单位</li>
+</ul>
+<p>container</p>
+<p>cluster 集群</p>
+<p>kubectl </p>
+<p>怎么部署服务</p>
+<p>怎么调用服务</p>
+<p>令牌桶</p>
+<p><strong>Content Delivery Network，内容分发网络</strong>。</p>
+<p>具体来说，CDN就是采用更多的缓存服务器（CDN边缘节点），布放在用户访问相对集中的地区或网络中。当用户访问网站时，利用全局负载技术，将用户的访问指向距离最近的缓存服务器上，由缓存服务器响应用户请求。</p>
+<p>Mysql 和 Mongo db 有什么区别</p>
+<ul>
+<li><p>关系型数据库 文档型NoSQL数据库</p>
+</li>
+<li><p>Mongo 文档结构可随时变化</p>
+</li>
+</ul>
+<p>rpc 远程过程调用</p>
+<p>Remote procedure call </p>
+<p>tcp 粘包</p>
+<p>应用层协议 http rpc</p>
+<p>rpc不用考虑浏览器行为 302</p>
+<h5 id="job-worker模块之使用-power-job"><a href="#job-worker模块之使用-power-job" class="headerlink" title="job-worker模块之使用 power-job"></a>job-worker模块之使用 power-job</h5><blockquote>
+<p>项目已经在mysql中有专门的数据库来提供给job-worker使用，同时，在job-worker中也指定了改数据库信息，并且以docker的方式部署到了服务器上。</p>
+</blockquote>
+<ol>
+<li><p>引入依赖</p>
+<p>项目上使用的是com.github.kfcfans下的powerjob-worker-spring-boot-starter</p>
+</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>tech.powerjob<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>powerjob-worker-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>4.3.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
 <h5 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h5><ul>
 <li><p>feign中的configuration</p>
 </li>
@@ -454,11 +670,49 @@
 </li>
 <li><p>回表的理解</p>
 </li>
-<li><p>ScheduledTaskRegistrar</p>
+<li><p>注解来统一处理接口耗时</p>
 </li>
-<li><p>I18nInitListener implements ApplicationListener<ApplicationReadyEvent></p>
+<li><p>流程授权的功能，在注解中进行了统一处理，替换session中的信息</p>
+</li>
+<li><p>@Pointcut注解：统一定义切点表达式</p>
 </li>
 </ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@Aspect</span><br>public class LoggingAspect &#123;<br><br>    <span class="hljs-variable">@Pointcut</span>(<span class="hljs-string">&quot;execution(* com.example.service..*(..))&quot;</span>)<br>    public void <span class="hljs-built_in">serviceLayer</span>() &#123;<br>    &#125;<br><br>    <span class="hljs-comment">// 在切入点表达式匹配的方法执行之前执行通知</span><br>    <span class="hljs-variable">@Before</span>(<span class="hljs-string">&quot;serviceLayer()&quot;</span>)<br>    public void <span class="hljs-built_in">logBefore</span>() &#123;<br>        <span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(<span class="hljs-string">&quot;Executing logBefore advice on serviceLayer()&quot;</span>);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 
               </div>
