@@ -27,7 +27,7 @@
 <meta property="og:description" content="客户消息发送重复问题特殊Bug记录1、客户生产收到了重复消息背景​		客户提交了一个bug，问题是升级版本后，执行的某个事件，推送消息变成了两条。 ​		先说结论，是一次非空判断的遗漏导致了全表数据查询，然后查出了全表数据，对全表数据进行了循环发送mq消息。 初步分析 分析执行流程 执行过程如下，重点关注两种类型，一是发送Mq的过程，二是可能会重复的地方，比如for循环  提交数据触发事件埋点发送">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-18T10:34:20.000Z">
-<meta property="article:modified_time" content="2025-05-20T08:38:50.080Z">
+<meta property="article:modified_time" content="2025-11-17T15:01:39.726Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="生产消息重复问题">
 <meta name="twitter:card" content="summary_large_image">

@@ -19,15 +19,15 @@
   <meta name="author" content="lzc">
   <meta name="keywords" content="后端开发">
   
-    <meta name="description" content="打镜像 -t 标签   . 当前目录   1234docker build -t keking&#x2F;kkfileview:v4.0.0 -f miss-Dockerfile .REPOSITORY          TAG       IMAGE ID       CREATED         SIZEkeking&#x2F;kkfileview   v4.0.0    49067017aaf1   8 mi">
+    <meta name="description" content="Docker 常用命令 镜像相关构建镜像 -t 标签指定镜像名:标签 -f 指定 Dockerfile 文件 . 当前目录为构建上下文  1docker build -t keking&#x2F;kkfileview:v4.0.0 -f miss-Dockerfile .  示例输出： 12REPOSITORY          TAG       IMAGE ID       CREATED">
 <meta property="og:type" content="article">
 <meta property="og:title" content="docker篇">
 <meta property="og:url" content="http://example.com/2025/05/20/docker/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="Lzc">
-<meta property="og:description" content="打镜像 -t 标签   . 当前目录   1234docker build -t keking&#x2F;kkfileview:v4.0.0 -f miss-Dockerfile .REPOSITORY          TAG       IMAGE ID       CREATED         SIZEkeking&#x2F;kkfileview   v4.0.0    49067017aaf1   8 mi">
+<meta property="og:description" content="Docker 常用命令 镜像相关构建镜像 -t 标签指定镜像名:标签 -f 指定 Dockerfile 文件 . 当前目录为构建上下文  1docker build -t keking&#x2F;kkfileview:v4.0.0 -f miss-Dockerfile .  示例输出： 12REPOSITORY          TAG       IMAGE ID       CREATED">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-20T08:00:53.000Z">
-<meta property="article:modified_time" content="2025-05-20T08:16:13.799Z">
+<meta property="article:modified_time" content="2025-11-08T02:24:29.624Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          282 字
+          380 字
         
       </span>
     
@@ -234,7 +234,7 @@
         
         
         
-          3 分钟
+          4 分钟
         
       </span>
     
@@ -276,45 +276,49 @@
             
               <div class="markdown-body">
                 
-                <h5 id=""><a href="#" class="headerlink" title=""></a></h5><h5 id="打镜像"><a href="#打镜像" class="headerlink" title="打镜像"></a>打镜像</h5><ul>
-<li><p>-t 标签 </p>
-</li>
-<li><p>. 当前目录</p>
-</li>
+                <h1 id="Docker-常用命令"><a href="#Docker-常用命令" class="headerlink" title="Docker 常用命令"></a>Docker 常用命令</h1><hr>
+<h2 id="镜像相关"><a href="#镜像相关" class="headerlink" title="镜像相关"></a>镜像相关</h2><h3 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h3><ul>
+<li><code>-t</code> 标签指定镜像名:标签</li>
+<li><code>-f</code> 指定 Dockerfile 文件</li>
+<li><code>.</code> 当前目录为构建上下文</li>
 </ul>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> build -t keking/kkfileview:v4.<span class="hljs-number">0</span>.<span class="hljs-number">0</span> -f miss-Dockerfile .<br><br><span class="hljs-attribute">REPOSITORY</span>          TAG       IMAGE ID       CREATED         SIZE<br><span class="hljs-attribute">keking</span>/kkfileview   v4.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>    <span class="hljs-number">49067017</span>aaf1   <span class="hljs-number">8</span> minutes ago   <span class="hljs-number">1</span>.<span class="hljs-number">59</span>GB<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker build -t keking/kkfileview:v4.0.0 -f miss-Dockerfile .<br></code></pre></td></tr></table></figure>
+
+<p>示例输出：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">REPOSITORY</span>          TAG       IMAGE ID       CREATED         SIZE<br><span class="hljs-attribute">keking</span>/kkfileview   v4.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>    <span class="hljs-number">49067017</span>aaf1   <span class="hljs-number">8</span> minutes ago   <span class="hljs-number">1</span>.<span class="hljs-number">59</span>GB<br></code></pre></td></tr></table></figure>
+
+<h3 id="镜像打-tag"><a href="#镜像打-tag" class="headerlink" title="镜像打 tag"></a>镜像打 tag</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker tag keking/kkfileview:v4.0.0 keking/kkfileview:20250325<br></code></pre></td></tr></table></figure>
+
+<h3 id="导出本地镜像"><a href="#导出本地镜像" class="headerlink" title="导出本地镜像"></a>导出本地镜像</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker save -o [导出镜像文件名].tar [本地镜像]<br></code></pre></td></tr></table></figure>
+
+<h3 id="删除镜像"><a href="#删除镜像" class="headerlink" title="删除镜像"></a>删除镜像</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">删除指定镜像（支持正则过滤）</span><br>docker rmi $(docker images | grep &quot;apaas&quot;) --force<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="容器相关"><a href="#容器相关" class="headerlink" title="容器相关"></a>容器相关</h2><h3 id="运行容器"><a href="#运行容器" class="headerlink" title="运行容器"></a>运行容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker ps<br><span class="hljs-meta prompt_"># </span><span class="language-bash">停止容器</span><br>docker stop 0699d8e34ce9<br><span class="hljs-meta prompt_"># </span><span class="language-bash">运行容器（-d 后台，-p 端口映射，-v 挂载）</span><br>docker run -p 8012:8012 -v /data:/data -d hub.dfy.definesys.cn/common/kkfileview:20240723.1<br>docker run -p 8012:8012 -v /data:/data -d keking/kkfileview:v4.0.14<br><span class="hljs-meta prompt_"># </span><span class="language-bash">进入容器</span><br>docker exec -it 4ca043c2068b sh<br></code></pre></td></tr></table></figure>
 
 
 
-<h5 id="打tag"><a href="#打tag" class="headerlink" title="打tag"></a>打tag</h5><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> tag keking/kkfileview:v4.<span class="hljs-number">0</span>.<span class="hljs-number">0</span> keking/kkfileview:<span class="hljs-number">20250325</span><br></code></pre></td></tr></table></figure>
+<h3 id="数据卷"><a href="#数据卷" class="headerlink" title="数据卷"></a>数据卷</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs css">// 查看数据卷<span class="hljs-selector-tag">html</span>详情<br>docker volume inspect <span class="hljs-selector-tag">html</span><br></code></pre></td></tr></table></figure>
 
 
 
-<h5 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h5><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> ps<br><span class="hljs-attribute">docker</span> stop <span class="hljs-number">0699</span>d8e34ce9<br><span class="hljs-attribute">docker</span> run -p <span class="hljs-number">8012</span>:<span class="hljs-number">8012</span> -v /data:/data -d hub.dfy.definesys.cn/common/kkfileview:<span class="hljs-number">20240723</span>.<span class="hljs-number">1</span><br><span class="hljs-attribute">docker</span> run -p <span class="hljs-number">8012</span>:<span class="hljs-number">8012</span> -v /data:/data -d keking/kkfileview:v4.<span class="hljs-number">0</span>.<span class="hljs-number">14</span><br><span class="hljs-attribute">docker</span> exec -it <span class="hljs-number">4</span>ca043c2068b sh<br></code></pre></td></tr></table></figure>
+<h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">docker network <span class="hljs-comment">--help</span><br></code></pre></td></tr></table></figure>
 
 
 
-<h5 id="认证"><a href="#认证" class="headerlink" title="认证"></a>认证</h5><figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs subunit">// 认证私有docker<br>docker pull hub.dfy.definesys.cn/common/kkfileview:20240723.1<br><span class="hljs-keyword">Error </span>response from daemon: unauthorized: access to the requested resource is not authorized<br><br>// 登录、拉镜像<br>docker login hub.dfy.definesys.cn<br>docker pull hub.dfy.definesys.cn/common/kkfileview:20240723.1<br></code></pre></td></tr></table></figure>
+<h3 id="查看容器日志"><a href="#查看容器日志" class="headerlink" title="查看容器日志"></a>查看容器日志</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">docker logs -f --tail=100 [id]/[name]<br></code></pre></td></tr></table></figure>
 
+<h3 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">依稀记得<span class="hljs-built_in">id</span>和name都可以，待测试</span><br>docker rm [id]/[name]<br></code></pre></td></tr></table></figure>
 
+<h3 id="清理未使用资源"><a href="#清理未使用资源" class="headerlink" title="清理未使用资源"></a>清理未使用资源</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">删除未使用的 Docker 资源，包括：</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">停止的容器、悬空镜像、未使用的网络、构建缓存</span><br>docker system prune<br></code></pre></td></tr></table></figure>
 
-<h5 id="导出本地镜像"><a href="#导出本地镜像" class="headerlink" title="导出本地镜像"></a>导出本地镜像</h5><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">docker save -o <span class="hljs-selector-attr">[导出镜像文件名]</span><span class="hljs-selector-class">.tar</span> <span class="hljs-selector-attr">[本地镜像]</span><br></code></pre></td></tr></table></figure>
+<hr>
+<h2 id="认证与拉取私有镜像"><a href="#认证与拉取私有镜像" class="headerlink" title="认证与拉取私有镜像"></a>认证与拉取私有镜像</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">拉取私有镜像时如遇 unauthorized 错误：</span><br>docker pull hub.dfy.definesys.cn/common/kkfileview:20240723.1<br><span class="hljs-meta prompt_"># </span><span class="language-bash">登录私有仓库</span><br>docker login hub.dfy.definesys.cn<br><span class="hljs-meta prompt_"># </span><span class="language-bash">登录后再次拉取</span><br>docker pull hub.dfy.definesys.cn/common/kkfileview:20240723.1<br></code></pre></td></tr></table></figure>
 
+<hr>
+<h2 id="Kubernetes-相关"><a href="#Kubernetes-相关" class="headerlink" title="Kubernetes 相关"></a>Kubernetes 相关</h2><h3 id="获取命名空间下-Pod"><a href="#获取命名空间下-Pod" class="headerlink" title="获取命名空间下 Pod"></a>获取命名空间下 Pod</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">kubectl get pods -n apaas<br><span class="hljs-meta prompt_"># </span><span class="language-bash">进入 Pod 容器</span><br>kubectl exec -it -n apaas xdap-app-dingxuewei01-nkjx-749b987974-4xnm4 bash<br></code></pre></td></tr></table></figure>
 
-
-<h5 id="获取命名空间下pod"><a href="#获取命名空间下pod" class="headerlink" title="获取命名空间下pod"></a>获取命名空间下pod</h5><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs maxima">kubectl <span class="hljs-built_in">get</span> pods -n apaas<br>kubectl exec -it -n apaas xdap-app-dingxuewei01-nkjx-<span class="hljs-number">749b987974</span>-4xnm4 bash<br></code></pre></td></tr></table></figure>
-
-
-
-<h5 id="查看容器日志"><a href="#查看容器日志" class="headerlink" title="查看容器日志"></a>查看容器日志</h5><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">docker logs -f <span class="hljs-attr">--tail</span>=<span class="hljs-number">100</span> <span class="hljs-selector-attr">[id]</span>/<span class="hljs-selector-attr">[name]</span><br></code></pre></td></tr></table></figure>
-
-
-
-<h5 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h5><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-comment">// 删除镜像</span><br>docker rmi <span class="hljs-symbol">$</span>(docker images | grep <span class="hljs-string">&quot;apaas&quot;</span>) --force <br><br><span class="hljs-comment">// 依稀记得id和name都可以，待测试</span><br>docker rm [id]/[name]<br><br><span class="hljs-comment">// 删除未使用的 Docker 资源，包括：</span><br><span class="hljs-comment">// 停止的容器（已停止但未删除的容器）</span><br><span class="hljs-comment">// 悬空镜像（dangling images，即无标签的镜像层）</span><br><span class="hljs-comment">// 未使用的网络（未被任何容器引用的网络）</span><br><span class="hljs-comment">// 构建缓存（build cache，通过 docker build 生成的临时层）</span><br>docker <span class="hljs-keyword">system</span> prune<br></code></pre></td></tr></table></figure>
-
-
-
-<h5 id="文件复制"><a href="#文件复制" class="headerlink" title="文件复制"></a>文件复制</h5><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">kubectl cp 命名空间<span class="hljs-regexp">/POD名:/</span>路径<span class="hljs-regexp">/文件名 /</span>本地路径/文件名<br><br><span class="hljs-regexp">//</span> -r 递归复制目录<br>kubectl cp -r <span class="hljs-regexp">/本地路径/</span>文件名 命名空间<span class="hljs-regexp">/POD名:/</span>路径/文件名<br></code></pre></td></tr></table></figure>
+<h3 id="文件复制"><a href="#文件复制" class="headerlink" title="文件复制"></a>文件复制</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">从 Pod 拷贝到本地</span><br>kubectl cp 命名空间/POD名:/路径/文件名 /本地路径/文件名<br><span class="hljs-meta prompt_"># </span><span class="language-bash">-r 递归复制目录</span><br>kubectl cp -r /本地路径/文件名 命名空间/POD名:/路径/文件名<br></code></pre></td></tr></table></figure>
 
 
                 

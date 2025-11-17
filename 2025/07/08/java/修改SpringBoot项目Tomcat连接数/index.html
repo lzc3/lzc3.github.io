@@ -1,0 +1,723 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/%E8%B1%B9%E5%A5%B3.jpg">
+  <link rel="icon" href="/img/%E8%B1%B9%E5%A5%B3.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="lzc">
+  <meta name="keywords" content="后端开发">
+  
+    <meta name="description" content="🚀 Spring Boot 修改 Tomcat 最大连接数指南Spring Boot 内置了 Tomcat 作为默认的 Web 服务器。默认情况下，Tomcat 的最大连接数（maxConnections）有一定限制。若并发量较大，建议根据实际需求调整该参数。  1️⃣ 通过 application.properties 配置在 src&#x2F;main&#x2F;resources&#x2F;application.pr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="修改 Spring Boot 项目中 Tomcat 的最大连接数">
+<meta property="og:url" content="http://example.com/2025/07/08/java/%E4%BF%AE%E6%94%B9SpringBoot%E9%A1%B9%E7%9B%AETomcat%E8%BF%9E%E6%8E%A5%E6%95%B0/index.html">
+<meta property="og:site_name" content="Lzc">
+<meta property="og:description" content="🚀 Spring Boot 修改 Tomcat 最大连接数指南Spring Boot 内置了 Tomcat 作为默认的 Web 服务器。默认情况下，Tomcat 的最大连接数（maxConnections）有一定限制。若并发量较大，建议根据实际需求调整该参数。  1️⃣ 通过 application.properties 配置在 src&#x2F;main&#x2F;resources&#x2F;application.pr">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-07-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-08T09:31:05.015Z">
+<meta property="article:author" content="lzc">
+<meta property="article:tag" content="Spring Boot">
+<meta property="article:tag" content="Tomcat">
+<meta property="article:tag" content="配置">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>修改 Spring Boot 项目中 Tomcat 的最大连接数 - Lzc</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="修改 Spring Boot 项目中 Tomcat 的最大连接数"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-08 00:00" pubdate>
+          2025年7月8日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          710 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">修改 Spring Boot 项目中 Tomcat 的最大连接数</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="🚀-Spring-Boot-修改-Tomcat-最大连接数指南"><a href="#🚀-Spring-Boot-修改-Tomcat-最大连接数指南" class="headerlink" title="🚀 Spring Boot 修改 Tomcat 最大连接数指南"></a>🚀 Spring Boot 修改 Tomcat 最大连接数指南</h1><p>Spring Boot 内置了 Tomcat 作为默认的 Web 服务器。默认情况下，Tomcat 的最大连接数（maxConnections）有一定限制。若并发量较大，建议根据实际需求调整该参数。</p>
+<hr>
+<h2 id="1️⃣-通过-application-properties-配置"><a href="#1️⃣-通过-application-properties-配置" class="headerlink" title="1️⃣ 通过 application.properties 配置"></a>1️⃣ 通过 application.properties 配置</h2><p>在 <code>src/main/resources/application.properties</code> 文件中添加或修改如下配置：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># 设置 Tomcat 最大连接数（默认为 8192）</span><br><span class="hljs-attr">spring.servlet.multipart.max-file-size</span>=<span class="hljs-string">10MB</span><br><span class="hljs-attr">spring.servlet.multipart.max-request-size</span>=<span class="hljs-string">10MB</span><br><span class="hljs-attr">server.tomcat.max-connections</span>=<span class="hljs-string">2000</span><br><span class="hljs-attr">server.tomcat.threads.max</span>=<span class="hljs-string">500</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>server.tomcat.max-connections</code>：设置最大连接数（如 2000）。</li>
+<li><code>server.tomcat.threads.max</code>：设置最大工作线程数（如 500）。</li>
+</ul>
+<hr>
+<h2 id="2️⃣-通过-application-yml-配置"><a href="#2️⃣-通过-application-yml-配置" class="headerlink" title="2️⃣ 通过 application.yml 配置"></a>2️⃣ 通过 application.yml 配置</h2><p>在 <code>src/main/resources/application.yml</code> 文件中添加如下内容：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">server:</span><br>  <span class="hljs-attr">tomcat:</span><br>    <span class="hljs-attr">max-connections:</span> <span class="hljs-number">2000</span>   <span class="hljs-comment"># 最大连接数</span><br>    <span class="hljs-attr">threads:</span><br>      <span class="hljs-attr">max:</span> <span class="hljs-number">500</span>              <span class="hljs-comment"># 最大工作线程数</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3️⃣-通过-Java-代码方式自定义-Tomcat-Connector"><a href="#3️⃣-通过-Java-代码方式自定义-Tomcat-Connector" class="headerlink" title="3️⃣ 通过 Java 代码方式自定义 Tomcat Connector"></a>3️⃣ 通过 Java 代码方式自定义 Tomcat Connector</h2><p>如果需要更灵活的配置，可以通过 Java 代码自定义 Tomcat Connector：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;<br><span class="hljs-keyword">import</span> org.springframework.boot.web.server.WebServerFactoryCustomizer;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;<br><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TomcatConfig</span> &#123;<br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> WebServerFactoryCustomizer&lt;TomcatServletWebServerFactory&gt; <span class="hljs-title function_">customizer</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> factory -&gt; factory.addConnectorCustomizers(connector -&gt; &#123;<br>            connector.setProperty(<span class="hljs-string">&quot;maxConnections&quot;</span>, <span class="hljs-string">&quot;2000&quot;</span>);<br>            connector.setProperty(<span class="hljs-string">&quot;maxThreads&quot;</span>, <span class="hljs-string">&quot;500&quot;</span>);<br>        &#125;);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="⚠️-注意事项"><a href="#⚠️-注意事项" class="headerlink" title="⚠️ 注意事项"></a>⚠️ 注意事项</h2><ul>
+<li>增大连接数和线程数会增加服务器资源消耗，请根据服务器硬件配置合理设置。</li>
+<li>若部署在云服务器或容器环境，需同步调整操作系统的最大文件句柄数（ulimit）等参数。</li>
+<li>修改配置后需重启 Spring Boot 服务以生效。</li>
+</ul>
+<hr>
+<blockquote>
+<p>参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.server.server.tomcat.max-connections">Spring Boot 官方文档 - Tomcat 配置</a></li>
+<li><a target="_blank" rel="noopener" href="https://tomcat.apache.org/tomcat-9.0-doc/config/http.html">Tomcat 官方文档</a></li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="4️⃣-在-Kubernetes-k8s-环境下的配置方法"><a href="#4️⃣-在-Kubernetes-k8s-环境下的配置方法" class="headerlink" title="4️⃣ 在 Kubernetes (k8s) 环境下的配置方法"></a>4️⃣ 在 Kubernetes (k8s) 环境下的配置方法</h2><p>在 Kubernetes 部署 Spring Boot 项目时，Tomcat 最大连接数的配置同样重要。常见做法如下：</p>
+<h3 id="4-1-通过-ConfigMap-挂载配置文件"><a href="#4-1-通过-ConfigMap-挂载配置文件" class="headerlink" title="4.1 通过 ConfigMap 挂载配置文件"></a>4.1 通过 ConfigMap 挂载配置文件</h3><p>可以将 <code>application.properties</code> 或 <code>application.yml</code> 配置通过 ConfigMap 挂载到容器内，实现参数灵活管理。例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">ConfigMap</span><br><span class="hljs-attr">metadata:</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">springboot-config</span><br>  <span class="hljs-attr">namespace:</span> <span class="hljs-string">default</span><br><span class="hljs-attr">data:</span><br>  <span class="hljs-attr">application.yml:</span> <span class="hljs-string">|</span><br><span class="hljs-string">    server:</span><br><span class="hljs-string">      tomcat:</span><br><span class="hljs-string">        max-connections: 2000</span><br><span class="hljs-string">        threads:</span><br><span class="hljs-string">          max: 500</span><br></code></pre></td></tr></table></figure>
+
+<p>在 Deployment 中挂载 ConfigMap：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span><br><span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span><br><span class="hljs-attr">spec:</span><br>  <span class="hljs-attr">template:</span><br>    <span class="hljs-attr">spec:</span><br>      <span class="hljs-attr">containers:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">springboot-app</span><br>          <span class="hljs-attr">image:</span> <span class="hljs-string">your-image:latest</span><br>          <span class="hljs-attr">volumeMounts:</span><br>            <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">config-volume</span><br>              <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/app/config/application.yml</span><br>              <span class="hljs-attr">subPath:</span> <span class="hljs-string">application.yml</span><br>      <span class="hljs-attr">volumes:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">config-volume</span><br>          <span class="hljs-attr">configMap:</span><br>            <span class="hljs-attr">name:</span> <span class="hljs-string">springboot-config</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="4-2-通过环境变量注入"><a href="#4-2-通过环境变量注入" class="headerlink" title="4.2 通过环境变量注入"></a>4.2 通过环境变量注入</h3><p>Spring Boot 支持通过环境变量覆盖配置。例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">env:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">SERVER_TOMCAT_MAX_CONNECTIONS</span><br>    <span class="hljs-attr">value:</span> <span class="hljs-string">&quot;2000&quot;</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">SERVER_TOMCAT_THREADS_MAX</span><br>    <span class="hljs-attr">value:</span> <span class="hljs-string">&quot;500&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="4-3-资源限制与最佳实践"><a href="#4-3-资源限制与最佳实践" class="headerlink" title="4.3 资源限制与最佳实践"></a>4.3 资源限制与最佳实践</h3><ul>
+<li><strong>合理设置 Pod 资源限制</strong>：<ul>
+<li>Tomcat 连接数和线程数受限于容器的 CPU&#x2F;内存资源，建议结合实际负载设置 <code>resources.limits</code> 和 <code>resources.requests</code>。</li>
+</ul>
+</li>
+<li><strong>多副本横向扩展</strong>：<ul>
+<li>若单 Pod 资源有限，可通过增加副本数（Replica）提升整体并发能力。</li>
+</ul>
+</li>
+<li><strong>健康检查</strong>：<ul>
+<li>配置 <code>readinessProbe</code> 和 <code>livenessProbe</code>，确保服务健康。</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-4-注意事项"><a href="#4-4-注意事项" class="headerlink" title="4.4 注意事项"></a>4.4 注意事项</h3><ul>
+<li>配置变更后需重启 Pod 以生效。</li>
+<li>云原生环境下，建议将连接数和线程数设置为适合单 Pod 的合理值，避免单实例资源耗尽。</li>
+<li>结合 HPA（Horizontal Pod Autoscaler）实现弹性伸缩。</li>
+</ul>
+<hr>
+<blockquote>
+<p>参考文档：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html#application-properties.server.server.tomcat.max-connections">Spring Boot 官方文档 - Kubernetes 配置</a></li>
+<li><a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/concepts/configuration/configmap/">Kubernetes ConfigMap 官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/tasks/inject-data-application/environment-variable-expose-pod-information/">Kubernetes 环境变量配置</a></li>
+</ul>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Spring-Boot/" class="print-no-link">#Spring Boot</a>
+      
+        <a href="/tags/Tomcat/" class="print-no-link">#Tomcat</a>
+      
+        <a href="/tags/%E9%85%8D%E7%BD%AE/" class="print-no-link">#配置</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>修改 Spring Boot 项目中 Tomcat 的最大连接数</div>
+      <div>http://example.com/2025/07/08/java/修改SpringBoot项目Tomcat连接数/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>lzc</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/09/cartoon/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/06/windows/%E5%B8%B8%E8%A7%81%E6%93%8D%E4%BD%9C/" title="常见操作">
+                        <span class="hidden-mobile">常见操作</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

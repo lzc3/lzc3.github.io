@@ -27,7 +27,7 @@
 <meta property="og:description" content="网关-gateway部分​	todo nacos部分自动配置报错记录配置了bootstrap.yaml文件，指定了nacos中的共享配置，但是，本地启动的时候，报错：spring 加载HikariDataSource的时候，如下代码找不到数据库配置导致 1HikariDataSource dataSource &#x3D; (HikariDataSource)DataSourceConfiguration.">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-21T12:55:21.000Z">
-<meta property="article:modified_time" content="2025-04-22T15:13:49.096Z">
+<meta property="article:modified_time" content="2025-11-17T15:12:52.431Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="微服务">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          330 字
+          322 字
         
       </span>
     
@@ -284,8 +284,8 @@
 
 <p><strong>为什么？</strong></p>
 <p>​		一开始以为是这部分的执行顺序在nacos的自动配置之前。</p>
-<p>​		先把数据库配置写了一个必要的url在原始配置文件中，结果真的能启动，查看启动日志，发现后续也启动了bootstrap.yaml，但是跑接口的时候发现，启动并没有把我在nacos中的共享配置加载进来。</p>
-<p>​		最后实在没办法了，想着总不会是我名字没对上吧，结果还真是，nacos中的配置文件，是我几个月前建立好的共享配置，但是，今天的代码中bootstrap中的共享配置是我直接粘贴的文档内容，还真没对上，有福了，看了半个小时。</p>
+<p>​		先把数据库配置写了一个必要的url在原始配置文件中，结果能正常启动，查看启动日志，发现后续也启动了bootstrap.yaml，但是跑接口的时候发现，启动并没有把我在nacos中的共享配置加载进来。</p>
+<p>​		最后怀疑是我名字没对上，结果还真是，nacos中的配置文件，是我几个月前建立好的共享配置，但是，今天的代码中bootstrap中的共享配置是我直接粘贴的文档内容，还真没对上，需要反省下，看了半个小时。</p>
 <p>后续问题，在第二个模块中，引入如下依赖的时候，没有指定版本号，但是没报错，项目启动不会启动nacos的自动配置。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-starter-bootstrap<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
@@ -405,8 +405,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/04/21/java/spring/%E6%B3%A8%E8%A7%A3%E4%BD%BF%E7%94%A8/" title="注解使用">
-                        <span class="hidden-mobile">注解使用</span>
+                      <a href="/2025/04/21/hexo/%E9%83%A8%E7%BD%B2github/" title="部署github">
+                        <span class="hidden-mobile">部署github</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

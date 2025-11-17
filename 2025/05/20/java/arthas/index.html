@@ -27,7 +27,7 @@
 <meta property="og:description" content="下载 wget下载  1wget https:&#x2F;&#x2F;arthas.aliyun.com&#x2F;arthas-boot.jar   端口冲突解决  1234567pid&#x3D;1 ;\touch &#x2F;proc&#x2F;$&#123;pid&#125;&#x2F;cwd&#x2F;.attach_pid$&#123;pid&#125; &amp;&amp; \  kill -SIGQUIT $&#123;pid&#125; &amp;&amp;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-20T08:22:28.000Z">
-<meta property="article:modified_time" content="2025-05-20T08:27:10.786Z">
+<meta property="article:modified_time" content="2025-11-17T15:16:34.927Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="arthas">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          146 字
+          165 字
         
       </span>
     
@@ -276,7 +276,7 @@
             
               <div class="markdown-body">
                 
-                <h5 id=""><a href="#" class="headerlink" title=""></a></h5><h5 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h5><ul>
+                <h5 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h5><ul>
 <li>wget下载</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">wget https://arthas.aliyun.com/arthas-boot.jar<br></code></pre></td></tr></table></figure>
@@ -297,6 +297,15 @@
 <li>returnObj过滤</li>
 </ul>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">watch com<span class="hljs-selector-class">.definesys</span><span class="hljs-selector-class">.mpaas</span><span class="hljs-selector-class">.query</span><span class="hljs-selector-class">.MpaasQuery</span> buildQuerySql <span class="hljs-string">&#x27;&#123;returnObj&#125;&#x27;</span> <span class="hljs-string">&#x27;returnObj.contains(&quot;distinct xu.phone&quot;)&#x27;</span> -n <span class="hljs-number">10</span>  -<span class="hljs-attribute">x</span> <span class="hljs-number">3</span> <br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>trace</strong></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">trace com<span class="hljs-selector-class">.xdap</span><span class="hljs-selector-class">.app</span><span class="hljs-selector-class">.moudle</span><span class="hljs-selector-class">.process</span><span class="hljs-selector-class">.service</span><span class="hljs-selector-class">.ProcessService</span> processBusinessObjectSubmit  -n <span class="hljs-number">5</span> <span class="hljs-attr">--skipJDKMethod</span> false <span class="hljs-string">&#x27;#cost&gt;1000&#x27;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="ognl表达式实例"><a href="#ognl表达式实例" class="headerlink" title="ognl表达式实例"></a>ognl表达式实例</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs"><br></code></pre></td></tr></table></figure>
 
 
 
@@ -407,9 +416,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/05/20/Git/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="Git">
+                      <a href="/2025/05/20/java/Maven/" title="arthas篇">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Git</span>
+                        <span class="hidden-mobile">arthas篇</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

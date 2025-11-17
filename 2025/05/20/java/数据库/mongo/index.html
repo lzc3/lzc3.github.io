@@ -19,15 +19,15 @@
   <meta name="author" content="lzc">
   <meta name="keywords" content="后端开发">
   
-    <meta name="description" content="常用命令命令行下的操作 进入mongo  1mongo --host 172.27.4.216 --port 37017 --username admin --password apaas2021    查看&#x2F;使用数据库  1234&#x2F;&#x2F; 进入对应库use xdap_app_505331235694837761;&#x2F;&#x2F; 查看当前库db;">
+    <meta name="description" content="常用命令命令行下的操作 进入mongo  1mongo --host 172.xx.xx.xx --port 37017 --username user --password [password]    查看&#x2F;使用数据库  1234&#x2F;&#x2F; 进入对应库use database_xx;&#x2F;&#x2F; 查看当前库db;    常用Sql查询mongo中query_data_filter表里面tabId、d">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mongo篇">
 <meta property="og:url" content="http://example.com/2025/05/20/java/%E6%95%B0%E6%8D%AE%E5%BA%93/mongo/index.html">
 <meta property="og:site_name" content="Lzc">
-<meta property="og:description" content="常用命令命令行下的操作 进入mongo  1mongo --host 172.27.4.216 --port 37017 --username admin --password apaas2021    查看&#x2F;使用数据库  1234&#x2F;&#x2F; 进入对应库use xdap_app_505331235694837761;&#x2F;&#x2F; 查看当前库db;">
+<meta property="og:description" content="常用命令命令行下的操作 进入mongo  1mongo --host 172.xx.xx.xx --port 37017 --username user --password [password]    查看&#x2F;使用数据库  1234&#x2F;&#x2F; 进入对应库use database_xx;&#x2F;&#x2F; 查看当前库db;    常用Sql查询mongo中query_data_filter表里面tabId、d">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-20T07:50:51.000Z">
-<meta property="article:modified_time" content="2025-05-20T07:52:21.441Z">
+<meta property="article:modified_time" content="2025-11-07T02:15:10.928Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="mongo">
 <meta name="twitter:card" content="summary_large_image">
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          42 字
+          119 字
         
       </span>
     
@@ -279,12 +279,23 @@
                 <h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><h5 id="命令行下的操作"><a href="#命令行下的操作" class="headerlink" title="命令行下的操作"></a><strong>命令行下的操作</strong></h5><ul>
 <li>进入mongo</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mongo">mongo --host 172.27.4.216 --port 37017 --username admin --password apaas2021 <br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mongo">mongo --host 172.xx.xx.xx --port 37017 --username user --password [password] <br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>查看&#x2F;使用数据库</li>
 </ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mongo">// 进入对应库<br>use xdap_app_505331235694837761;<br>// 查看当前库<br>db;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mongo">// 进入对应库<br>use database_xx;<br>// 查看当前库<br>db;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="常用Sql"><a href="#常用Sql" class="headerlink" title="常用Sql"></a>常用Sql</h3><p>查询mongo中query_data_filter表里面tabId、docOwner、filterName一样，出现了两次的数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql">db.query_data_filter.aggregate([<br>  &#123; $<span class="hljs-keyword">group</span>: &#123; _id: &#123; A: &quot;$tabId&quot;, B: &quot;$docOwner&quot;, C: &quot;$filterName&quot; &#125;, count: &#123; $sum: <span class="hljs-number">1</span> &#125; &#125; &#125;,<br>  &#123; $<span class="hljs-keyword">match</span>: &#123; count: <span class="hljs-number">2</span> &#125; &#125;,<br>  &#123; $project: &#123;A: &quot;$_id.A&quot;, B: &quot;$_id.B&quot;, C: &quot;$_id.C&quot;&#125; &#125;<br>]);<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
                 
               </div>
             
@@ -381,9 +392,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/05/20/java/%E6%95%B0%E6%8D%AE%E5%BA%93/sqlserver/" title="sqlserver篇">
+                      <a href="/2025/05/20/java/%E6%95%B0%E6%8D%AE%E5%BA%93/pg/" title="pg篇">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">sqlserver篇</span>
+                        <span class="hidden-mobile">pg篇</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     

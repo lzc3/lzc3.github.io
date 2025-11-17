@@ -19,18 +19,18 @@
   <meta name="author" content="lzc">
   <meta name="keywords" content="后端开发">
   
-    <meta name="description" content="代码方面见git，下面只记录一些知识点  2025&#x2F;5&#x2F;4 互联网项目一般建议单表查询  单表查询结果更易缓存，多表连接查询的话，每个表的记录都要引起缓存的变动 后续有变动的时候，我只需要关注一小部分，而不用关注整个查询 代码复用性高 占内存，资源的瓶颈在数据库上   left join 和 right join有什么区别  加了一个联合索引name_phone，分析下这几个">
+    <meta name="description" content="每日一记 代码方面见git，下面只记录一些知识点   目录 2025&#x2F;5&#x2F;4 2025&#x2F;5&#x2F;5 2025&#x2F;5&#x2F;6 2025&#x2F;5&#x2F;8 2025&#x2F;5&#x2F;11 2025&#x2F;5&#x2F;13 2025&#x2F;5&#x2F;19 ThreadLocal 集合 多线程 Dubbo OOM排查 JVi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="每日一记">
 <meta property="og:url" content="http://example.com/2025/05/03/java/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Lzc">
-<meta property="og:description" content="代码方面见git，下面只记录一些知识点  2025&#x2F;5&#x2F;4 互联网项目一般建议单表查询  单表查询结果更易缓存，多表连接查询的话，每个表的记录都要引起缓存的变动 后续有变动的时候，我只需要关注一小部分，而不用关注整个查询 代码复用性高 占内存，资源的瓶颈在数据库上   left join 和 right join有什么区别  加了一个联合索引name_phone，分析下这几个">
+<meta property="og:description" content="每日一记 代码方面见git，下面只记录一些知识点   目录 2025&#x2F;5&#x2F;4 2025&#x2F;5&#x2F;5 2025&#x2F;5&#x2F;6 2025&#x2F;5&#x2F;8 2025&#x2F;5&#x2F;11 2025&#x2F;5&#x2F;13 2025&#x2F;5&#x2F;19 ThreadLocal 集合 多线程 Dubbo OOM排查 JVi">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/images/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0_bigdecimal.png">
 <meta property="og:image" content="http://example.com/images/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0%E5%BD%95_bigdecimal_add.png">
-<meta property="og:image" content="http://example.com/2025/05/03/images/ThreadLocal%E5%BC%95%E7%94%A8%E5%85%B3%E7%B3%BB%E5%9B%BE.jpg">
+<meta property="og:image" content="http://example.com/images/ThreadLocal%E5%BC%95%E7%94%A8%E5%85%B3%E7%B3%BB%E5%9B%BE.jpg">
 <meta property="article:published_time" content="2025-05-03T14:19:22.000Z">
-<meta property="article:modified_time" content="2025-06-10T14:51:26.158Z">
+<meta property="article:modified_time" content="2025-11-03T03:31:58.058Z">
 <meta property="article:author" content="lzc">
 <meta property="article:tag" content="学习">
 <meta name="twitter:card" content="summary_large_image">
@@ -227,7 +227,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          4.7k 字
+          5.4k 字
         
       </span>
     
@@ -238,7 +238,7 @@
         
         
         
-          39 分钟
+          45 分钟
         
       </span>
     
@@ -280,439 +280,524 @@
             
               <div class="markdown-body">
                 
-                <blockquote>
+                <h1 id="每日一记"><a href="#每日一记" class="headerlink" title="每日一记"></a>每日一记</h1><blockquote>
 <p>代码方面见git，下面只记录一些知识点</p>
 </blockquote>
-<h5 id="2025-5-4"><a href="#2025-5-4" class="headerlink" title="2025&#x2F;5&#x2F;4"></a>2025&#x2F;5&#x2F;4</h5><ul>
-<li><p>互联网项目一般建议单表查询</p>
-<ul>
+<hr>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="#202554">2025&#x2F;5&#x2F;4</a></li>
+<li><a href="#202555">2025&#x2F;5&#x2F;5</a></li>
+<li><a href="#202556">2025&#x2F;5&#x2F;6</a></li>
+<li><a href="#202558">2025&#x2F;5&#x2F;8</a></li>
+<li><a href="#2025511">2025&#x2F;5&#x2F;11</a></li>
+<li><a href="#2025513">2025&#x2F;5&#x2F;13</a></li>
+<li><a href="#2025519">2025&#x2F;5&#x2F;19</a></li>
+<li><a href="#threadlocal">ThreadLocal</a></li>
+<li><a href="#%E9%9B%86%E5%90%88">集合</a></li>
+<li><a href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B">多线程</a></li>
+<li><a href="#dubbo">Dubbo</a></li>
+<li><a href="#oom%E6%8E%92%E6%9F%A5">OOM排查</a></li>
+<li><a href="#jvisualvm%E7%9A%84%E4%BD%BF%E7%94%A8">JVisualVM的使用</a></li>
+<li><a href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%97%E6%B3%95">负载均衡算法</a></li>
+<li><a href="#job-worker%E6%A8%A1%E5%9D%97%E4%B9%8B%E4%BD%BF%E7%94%A8-power-job">job-worker模块之使用 power-job</a></li>
+<li><a href="#%E9%A1%B9%E7%9B%AE">项目</a></li>
+</ul>
+<hr>
+<h2 id="2025-5-4"><a href="#2025-5-4" class="headerlink" title="2025&#x2F;5&#x2F;4"></a>2025&#x2F;5&#x2F;4</h2><h3 id="互联网项目一般建议单表查询"><a href="#互联网项目一般建议单表查询" class="headerlink" title="互联网项目一般建议单表查询"></a>互联网项目一般建议单表查询</h3><ul>
 <li>单表查询结果更易缓存，多表连接查询的话，每个表的记录都要引起缓存的变动</li>
 <li>后续有变动的时候，我只需要关注一小部分，而不用关注整个查询</li>
 <li>代码复用性高</li>
 <li>占内存，资源的瓶颈在数据库上</li>
 </ul>
-</li>
-<li><p>left join 和 right join有什么区别</p>
-</li>
-<li><p>加了一个联合索引name_phone，分析下这几个sql会走索引吗？</p>
-<ul>
-<li>select * from user where phone &#x3D; “%130” and name &#x3D; “w”</li>
-<li>select * from user where name &#x3D; “w” and phone like “%130”</li>
-<li>select * from user where name like “w%” and phone like “130”</li>
-<li>select * from user where name like “%w%” and phone like “130”</li>
+<hr>
+<h3 id="left-join-和-right-join-有什么区别"><a href="#left-join-和-right-join-有什么区别" class="headerlink" title="left join 和 right join 有什么区别"></a>left join 和 right join 有什么区别</h3><hr>
+<h3 id="联合索引分析"><a href="#联合索引分析" class="headerlink" title="联合索引分析"></a>联合索引分析</h3><blockquote>
+<p>加了一个联合索引 name_phone，分析下这几个 SQL 会走索引吗？</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">where</span> phone <span class="hljs-operator">=</span> &quot;%130&quot; <span class="hljs-keyword">and</span> name <span class="hljs-operator">=</span> &quot;w&quot;;<br><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">where</span> name <span class="hljs-operator">=</span> &quot;w&quot; <span class="hljs-keyword">and</span> phone <span class="hljs-keyword">like</span> &quot;%130&quot;;<br><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">where</span> name <span class="hljs-keyword">like</span> &quot;w%&quot; <span class="hljs-keyword">and</span> phone <span class="hljs-keyword">like</span> &quot;130&quot;;<br><span class="hljs-keyword">select</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">from</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">where</span> name <span class="hljs-keyword">like</span> &quot;%w%&quot; <span class="hljs-keyword">and</span> phone <span class="hljs-keyword">like</span> &quot;130&quot;;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="如何计算数据量占用内存"><a href="#如何计算数据量占用内存" class="headerlink" title="如何计算数据量占用内存"></a>如何计算数据量占用内存</h3><hr>
+<h3 id="Java-线程池参数"><a href="#Java-线程池参数" class="headerlink" title="Java 线程池参数"></a>Java 线程池参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>核心线程数</td>
+<td>线程池长期保持存活的线程数量</td>
+</tr>
+<tr>
+<td>最大线程数</td>
+<td>当任务队列已满，且当前线程数小于 maximumPoolSize 时，线程池会创建新的线程来处理任务，直到达到 maximumPoolSize</td>
+</tr>
+<tr>
+<td>拒绝策略</td>
+<td>handler，任务无法处理时的策略</td>
+</tr>
+<tr>
+<td>workQueue</td>
+<td>用于存储待执行任务的阻塞队列。当提交的任务数超过 corePoolSize 时，新任务会被放入这个队列中等待处理。</td>
+</tr>
+<tr>
+<td>keepAliveTime</td>
+<td>线程池中的线程数量超过 corePoolSize 时，多余的空闲线程在被销毁之前等待新任务的最长时间。</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="为什么线程池里面要设置一个队列？"><a href="#为什么线程池里面要设置一个队列？" class="headerlink" title="为什么线程池里面要设置一个队列？"></a>为什么线程池里面要设置一个队列？</h3><hr>
+<h3 id="无界队列一直往里面放，会先达到最大线程数还是会先内存溢出？救急线程？"><a href="#无界队列一直往里面放，会先达到最大线程数还是会先内存溢出？救急线程？" class="headerlink" title="无界队列一直往里面放，会先达到最大线程数还是会先内存溢出？救急线程？"></a>无界队列一直往里面放，会先达到最大线程数还是会先内存溢出？救急线程？</h3><ul>
+<li>创建救急线程的前提是队列满</li>
+<li>线程数会一直维持在核心线程数，不会达到最大线程数</li>
+<li>随着任务持续加入队列，队列会不断占用内存。若任务生成速度远超核心线程处理速度，最终会因队列占用过多内存而导致内存溢出</li>
 </ul>
+<hr>
+<h3 id="MySQL-执行很慢，如何排查"><a href="#MySQL-执行很慢，如何排查" class="headerlink" title="MySQL 执行很慢，如何排查"></a>MySQL 执行很慢，如何排查</h3><hr>
+<h3 id="索引失效的场景"><a href="#索引失效的场景" class="headerlink" title="索引失效的场景"></a>索引失效的场景</h3><ul>
+<li><p><strong>索引列使用了函数</strong></p>
 </li>
-<li><p>怎么计算数据量会占用多大内存，从mysql查出来数据有看过占用多大内存吗</p>
+<li><p><strong>使用 OR 导致索引失效</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">WHERE</span> a <span class="hljs-operator">=</span> <span class="hljs-number">1</span> <span class="hljs-keyword">OR</span> b <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; <span class="hljs-comment">-- 若 b 无索引，全表扫描</span><br><span class="hljs-comment">--MySQL 无法对 OR 条件合并索引。</span><br><span class="hljs-comment">--拆分为 UNION ALL 或为 b 添加索引</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">WHERE</span> a <span class="hljs-operator">=</span> <span class="hljs-number">1</span> <br><span class="hljs-keyword">UNION</span> <span class="hljs-keyword">ALL</span> <br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">WHERE</span> b <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p>java中，线程池中有哪些参数？</p>
-<ul>
-<li>核心线程数：线程池长期保持存活的线程数量</li>
-<li>最大线程数：当任务队列已满，且当前线程数小于 maximumPoolSize 时，线程池会创建新的线程来处理任务，直到达到 maximumPoolSize</li>
-<li>拒绝策略<code>handler</code>：</li>
-<li>workQueue：用于存储待执行任务的阻塞队列。当提交的任务数超过 corePoolSize 时，新任务会被放入这个队列中等待处理。</li>
-<li>等待时间<code>keepAliveTime</code>：线程池中的线程数量超过 corePoolSize 时，多余的空闲线程在被销毁之前等待新任务的最长时间。</li>
-<li>线程池</li>
-</ul>
+<li><p><strong>模糊查询以 % 开头</strong></p>
 </li>
-<li><p>为什么线程池里面要设置一个队列呢？</p>
+<li><p><strong>索引列与查询值类型不一致</strong></p>
 </li>
-<li><p>无界队列一直往里面放，是会先达到最大线程数还是会先内存溢出呢？救急线程？</p>
-<ul>
-<li><p>创建救急线程的前提是队列满</p>
-</li>
-<li><p>线程数会一直维持在核心线程数，不会达到最大线程数</p>
-</li>
-<li><p>随着任务持续加入队列，队列会不断占用内存。若任务生成速度远超核心线程处理速度，最终会因队列占用过多内存而导致内存溢出</p>
-</li>
-</ul>
-</li>
-<li><p>mysql执行的很慢，如何排查</p>
-</li>
-<li><p>索引失效的场景</p>
-<ul>
-<li><p>索引列使用了函数</p>
-</li>
-<li><p>使用 OR 导致索引失效</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql">ELECT <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">WHERE</span> a <span class="hljs-operator">=</span> <span class="hljs-number">1</span> <span class="hljs-keyword">OR</span> b <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; <span class="hljs-comment">-- 若 b 无索引，全表扫描</span><br><span class="hljs-comment">--MySQL 无法对 OR 条件合并索引。</span><br><span class="hljs-comment">--拆分为 UNION ALL 或为 b 添加索引</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">WHERE</span> a <span class="hljs-operator">=</span> <span class="hljs-number">1</span> <br><span class="hljs-keyword">UNION</span> <span class="hljs-keyword">ALL</span> <br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">WHERE</span> b <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>模糊查询以 % 开头</p>
-</li>
-<li><p>索引列与查询值类型不一致</p>
-</li>
-<li><p>非等值查询</p>
+<li><p><strong>非等值查询</strong></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">!=</span> <span class="hljs-string">&#x27;active&#x27;</span>; <span class="hljs-comment">-- 可能全表扫描</span><br><span class="hljs-comment">-- 非等值操作符难以通过索引快速定位数据</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p>查询索引列的 <code>NULL</code> 值</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-type">name</span> <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>; <span class="hljs-comment">-- 若 NULL 值极少，可能走索引</span><br><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-type">name</span> <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>; <span class="hljs-comment">-- 可能全表扫描</span><br></code></pre></td></tr></table></figure>
+<li><p><strong>查询索引列的 NULL 值</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">WHERE</span> name <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>; <span class="hljs-comment">-- 若 NULL 值极少，可能走索引</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">WHERE</span> name <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span>; <span class="hljs-comment">-- 可能全表扫描</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p>数据量过小，优化器认为全表扫描比索引更快</p>
+<li><p><strong>数据量过小，优化器认为全表扫描比索引更快</strong></p>
 </li>
-<li><p>范围查询后的索引列失效</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-comment">-- 联合索引 (age, name)</span><br><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">WHERE</span> age &gt; <span class="hljs-number">18</span> <span class="hljs-keyword">AND</span> <span class="hljs-type">name</span> = <span class="hljs-string">&#x27;John&#x27;</span>; <span class="hljs-comment">-- name 无法使用索引</span><br></code></pre></td></tr></table></figure></li>
+<li><p><strong>范围查询后的索引列失效</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 联合索引 (age, name)</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">WHERE</span> age <span class="hljs-operator">&gt;</span> <span class="hljs-number">18</span> <span class="hljs-keyword">AND</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;John&#x27;</span>; <span class="hljs-comment">-- name 无法使用索引</span><br></code></pre></td></tr></table></figure></li>
 </ul>
-</li>
-<li><p>走了索引也很慢，会怎么办</p>
-<p>先判断是不是索引创建的有问题，索引基数小的放在了左边</p>
-<p>是不是没使用覆盖索引，走了回表</p>
-<p>看cpu占用</p>
-<p>看连接数</p>
-</li>
-<li><p>count (*) 和 count（1）有什么区别</p>
-</li>
+<hr>
+<h3 id="走了索引也很慢怎么办"><a href="#走了索引也很慢怎么办" class="headerlink" title="走了索引也很慢怎么办"></a>走了索引也很慢怎么办</h3><ul>
+<li>先判断是不是索引创建的有问题，索引基数小的放在了左边</li>
+<li>是不是没使用覆盖索引，走了回表</li>
+<li>看 CPU 占用</li>
+<li>看连接数</li>
 </ul>
-<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs delphi">数据库会将 <span class="hljs-number">1</span> 视为一个常量，作为一个伪列，每行都会生成一个值为 <span class="hljs-number">1</span> 的伪列<br>性能上一般与 COUNT(\*) 接近，但 COUNT<span class="hljs-comment">(*) 在 MySQL 经过了更多优化，因此通常优先选择 COUNT(*)</span>。<br>某些旧版的数据库系统在处理COUNT<span class="hljs-comment">(*)时，可能会去解析整行数据，而COUNT(1)可以直接统计行数，因此会有一些微小的性能差异。</span><br></code></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li><p>有10w条数据，写在一张表里面，怎么写最快，</p>
-<p>多线程插入，其中一个线程插入失败了，怎么办呢？</p>
-</li>
-<li><p>多个线程怎么去用事务控制</p>
-</li>
-<li><p>前端页面要导出一个文件16G，后端应用内存就只有4G，如何导出？</p>
-</li>
-<li><p>设计抖音</p>
-</li>
-<li><p>为什么要设计出编译时异常、运行时异常，还有error</p>
-<ul>
-<li>强制开发者在编译阶段预见并处理可预期的、程序外部的异常情况（如 IO 操作失败、网络连接中断、用户输入错误等）。这类异常通常与程序外部环境相关（如文件不存在、数据库连接失败），而非程序本身的逻辑错误。</li>
-<li>运行时异常表示程序逻辑错误，这类错误应在开发阶段通过代码审查、测试等手段避免，而非强制在运行时处理。例如空指针引用、数组越界、类型转换错误等，本质上是开发者的错误，而非外部环境不可控的问题。</li>
-<li>表示系统级的严重错误，如 JVM 内存溢出、栈溢出、类文件损坏等。这类问题通常超出程序控制范围，即使捕获也无法恢复，强行处理可能导致更严重的后果（如数据不一致）。</li>
+<hr>
+<h3 id="count-和-count-1-有什么区别"><a href="#count-和-count-1-有什么区别" class="headerlink" title="count(*) 和 count(1) 有什么区别"></a>count(*) 和 count(1) 有什么区别</h3><blockquote>
+<p>数据库会将 1 视为一个常量，作为一个伪列，每行都会生成一个值为 1 的伪列。性能上一般与 COUNT(<em>) 接近，但 COUNT(</em>) 在 MySQL 经过了更多优化，因此通常优先选择 COUNT(<em>)。某些旧版的数据库系统在处理COUNT(</em>)时，可能会去解析整行数据，而COUNT(1)可以直接统计行数，因此会有一些微小的性能差异。</p>
+</blockquote>
+<hr>
+<h3 id="多线程插入失败如何处理"><a href="#多线程插入失败如何处理" class="headerlink" title="多线程插入失败如何处理"></a>多线程插入失败如何处理</h3><ul>
+<li>多线程插入，其中一个线程插入失败了，怎么办？</li>
 </ul>
-</li>
+<hr>
+<h3 id="多线程事务控制"><a href="#多线程事务控制" class="headerlink" title="多线程事务控制"></a>多线程事务控制</h3><hr>
+<h3 id="前端页面导出大文件，后端内存不足如何导出？"><a href="#前端页面导出大文件，后端内存不足如何导出？" class="headerlink" title="前端页面导出大文件，后端内存不足如何导出？"></a>前端页面导出大文件，后端内存不足如何导出？</h3><hr>
+<h3 id="设计抖音"><a href="#设计抖音" class="headerlink" title="设计抖音"></a>设计抖音</h3><hr>
+<h3 id="Java异常体系设计"><a href="#Java异常体系设计" class="headerlink" title="Java异常体系设计"></a>Java异常体系设计</h3><ul>
+<li><strong>编译时异常</strong>：强制开发者在编译阶段预见并处理可预期的、程序外部的异常情况（如 IO 操作失败、网络连接中断、用户输入错误等）。</li>
+<li><strong>运行时异常</strong>：表示程序逻辑错误，这类错误应在开发阶段通过代码审查、测试等手段避免，而非强制在运行时处理。</li>
+<li><strong>Error</strong>：表示系统级的严重错误，如 JVM 内存溢出、栈溢出、类文件损坏等。</li>
 </ul>
-<h5 id="2025-5-5"><a href="#2025-5-5" class="headerlink" title="2025&#x2F;5&#x2F;5"></a>2025&#x2F;5&#x2F;5</h5><ul>
-<li><p>n皇后问题</p>
-</li>
-<li><p>dfs bfs</p>
-</li>
-<li><p>单点登录</p>
-<ul>
-<li>系统的登录页放弃原有逻辑（若子系统想保留原有登录页，则需要新建一个前端页面作为登录页），直接在js里window.location跳转到认证中心的授权接口</li>
+<hr>
+<h2 id="2025-5-5"><a href="#2025-5-5" class="headerlink" title="2025&#x2F;5&#x2F;5"></a>2025&#x2F;5&#x2F;5</h2><h3 id="n皇后问题"><a href="#n皇后问题" class="headerlink" title="n皇后问题"></a>n皇后问题</h3><hr>
+<h3 id="DFS、BFS"><a href="#DFS、BFS" class="headerlink" title="DFS、BFS"></a>DFS、BFS</h3><hr>
+<h3 id="单点登录（SSO）流程"><a href="#单点登录（SSO）流程" class="headerlink" title="单点登录（SSO）流程"></a>单点登录（SSO）流程</h3><ol>
+<li>系统的登录页放弃原有逻辑，直接在js里window.location跳转到认证中心的授权接口</li>
 <li>用户输入用户名、密码进行验证。认证通过后，生成AuthonrizeCode，认证中心会发送请求到子系统给的redirect_uri，请求参数中包含AuthonrizeCode。</li>
 <li>子系统接收到AuthonrizeCode，根据AuthonrizeCode调用获取Token接口，获取Token。</li>
 <li>子系统根据返回的AccessToken调用获取认证用户接口，获取到用户信息，然后到子系统数据库中校验该用户是否存在，即是否有权限，有则放行，用户就能正常进入子系统。</li>
+</ol>
+<hr>
+<h3 id="Maven依赖冲突解决"><a href="#Maven依赖冲突解决" class="headerlink" title="Maven依赖冲突解决"></a>Maven依赖冲突解决</h3><ul>
+<li>最近定义优先，依赖树中路径最短的版本胜出</li>
+<li>声明顺序优先，假如深度相同，最先声明的依赖版本胜出</li>
+<li>显示声明版本</li>
 </ul>
-</li>
-<li><p>maven是如何加载的，如何load的，假如两个依赖都依赖了log4j，版本不一样，那么加载哪个呢？</p>
-<ul>
-<li><p>最近定义优先，依赖树中路径最短的版本胜出</p>
-</li>
-<li><p>声明顺序优先，假如深度相同，最先声明的依赖版本胜出</p>
-</li>
-<li><p>显示声明版本</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>log4j-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.14.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span> <span class="hljs-comment">&lt;!-- 强制指定版本 --&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure></li>
-</ul>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">mvn dependency:tree -Dincludes=org<span class="hljs-selector-class">.apache</span><span class="hljs-selector-class">.logging</span><span class="hljs-selector-class">.log4j</span>:log4j-core<br></code></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>log4j-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.14.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span> <span class="hljs-comment">&lt;!-- 强制指定版本 --&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">mvn dependency:tree -Dincludes=org.apache.logging.log4j:log4j-core<br></code></pre></td></tr></table></figure>
 
-</li>
-<li><p>如何打破双亲委派的规则</p>
-</li>
-<li><p>jvm内存分区的概念</p>
-</li>
-<li><p>元注解</p>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@Retention</span>(RetentionPolicy.RUNTIME)<br><span class="hljs-variable">@Target</span>(ElementType.ANNOTATION_TYPE)<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>为什么int[3]必须要指定大小？</p>
-</li>
-</ul>
-<h5 id="2025-5-6"><a href="#2025-5-6" class="headerlink" title="2025&#x2F;5&#x2F;6"></a>2025&#x2F;5&#x2F;6</h5><ul>
-<li><p>https</p>
-<ul>
+<hr>
+<h3 id="如何打破双亲委派的规则"><a href="#如何打破双亲委派的规则" class="headerlink" title="如何打破双亲委派的规则"></a>如何打破双亲委派的规则</h3><hr>
+<h3 id="JVM内存分区的概念"><a href="#JVM内存分区的概念" class="headerlink" title="JVM内存分区的概念"></a>JVM内存分区的概念</h3><hr>
+<h3 id="元注解"><a href="#元注解" class="headerlink" title="元注解"></a>元注解</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="hljs-meta">@Target(ElementType.ANNOTATION_TYPE)</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="为什么int-3-必须要指定大小？"><a href="#为什么int-3-必须要指定大小？" class="headerlink" title="为什么int[3]必须要指定大小？"></a>为什么int[3]必须要指定大小？</h3><hr>
+<h2 id="2025-5-6"><a href="#2025-5-6" class="headerlink" title="2025&#x2F;5&#x2F;6"></a>2025&#x2F;5&#x2F;6</h2><h3 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h3><ul>
 <li>为什么https下不能使用http</li>
 <li>协商缓存、强制缓存</li>
 </ul>
-</li>
-<li><p>tcp</p>
-<ul>
+<hr>
+<h3 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h3><ul>
 <li>粘包</li>
 </ul>
-</li>
-<li><p>Comparable 侵入式    整数、零或正整数，对应对象小于、等于或大于指定对象。</p>
-</li>
-<li><p>Comparator 非侵入性</p>
-</li>
-<li><p>二叉平衡树，前序、中序、后序遍历</p>
-</li>
+<hr>
+<h3 id="Comparable-与-Comparator"><a href="#Comparable-与-Comparator" class="headerlink" title="Comparable 与 Comparator"></a>Comparable 与 Comparator</h3><ul>
+<li>Comparable 侵入式    整数、零或正整数，对应对象小于、等于或大于指定对象。</li>
+<li>Comparator 非侵入性</li>
 </ul>
-<h5 id="2025-5-8"><a href="#2025-5-8" class="headerlink" title="2025&#x2F;5&#x2F;8"></a>2025&#x2F;5&#x2F;8</h5><p>dubbo</p>
-<p>triple协议</p>
-<h5 id="2025-5-11"><a href="#2025-5-11" class="headerlink" title="2025&#x2F;5&#x2F;11"></a>2025&#x2F;5&#x2F;11</h5><ul>
-<li><p>浮点数</p>
+<hr>
+<h3 id="二叉平衡树遍历"><a href="#二叉平衡树遍历" class="headerlink" title="二叉平衡树遍历"></a>二叉平衡树遍历</h3><ul>
+<li>前序、中序、后序遍历</li>
+</ul>
+<hr>
+<h2 id="2025-5-8"><a href="#2025-5-8" class="headerlink" title="2025&#x2F;5&#x2F;8"></a>2025&#x2F;5&#x2F;8</h2><h3 id="Dubbo"><a href="#Dubbo" class="headerlink" title="Dubbo"></a>Dubbo</h3><hr>
+<h3 id="triple协议"><a href="#triple协议" class="headerlink" title="triple协议"></a>triple协议</h3><hr>
+<h2 id="2025-5-11"><a href="#2025-5-11" class="headerlink" title="2025&#x2F;5&#x2F;11"></a>2025&#x2F;5&#x2F;11</h2><h3 id="浮点数二进制表示"><a href="#浮点数二进制表示" class="headerlink" title="浮点数二进制表示"></a>浮点数二进制表示</h3><blockquote>
 <p>0.2转换成二进制，依次成2，记录整数部分</p>
-</li>
-</ul>
-<p>​	   0.0011 0011 0011  &#x3D;  1&#x2F; 8 + 1 &#x2F; 16 +  1&#x2F;128 + 1&#x2F;256 …</p>
-<ul>
-<li><p>BigDecimal</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;52.73&quot;</span>);<br></code></pre></td></tr></table></figure>
+<p>0.0011 0011 0011  &#x3D;  1&#x2F; 8 + 1 &#x2F; 16 +  1&#x2F;128 + 1&#x2F;256 …</p>
+</blockquote>
+<hr>
+<h3 id="BigDecimal"><a href="#BigDecimal" class="headerlink" title="BigDecimal"></a>BigDecimal</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;52.73&quot;</span>);<br></code></pre></td></tr></table></figure>
 
+<blockquote>
 <p>此代码使用一个long存储了5273，并记录了总位数以及小数点位数</p>
-<p><img src="/../../images/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0_bigdecimal.png" srcset="/img/loading.gif" lazyload></p>
+</blockquote>
+<p><img src="/../../images/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0_bigdecimal.png" srcset="/img/loading.gif" lazyload alt="BigDecimal存储原理"></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;52.73&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimal2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;32.5&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bigDecimalAdd</span> <span class="hljs-operator">=</span> bigDecimal1.add(bigDecimal2);<br></code></pre></td></tr></table></figure>
 
+<blockquote>
 <p>此代码在计算的时候，会先对其小数位，然后相加</p>
-<p><img src="/../../images/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0%E5%BD%95_bigdecimal_add.png" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>equals方法会比较精度</p>
-</li>
-<li><p>jdk和jre</p>
-<ul>
-<li>jdk java开发环境，包含了jre、编译器javac和其他工具，比如javadoc、jconsole、javap等</li>
-<li>jre java运行时环境，主要包含jvm和java类库</li>
+</blockquote>
+<p><img src="/../../images/%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0%E5%BD%95_bigdecimal_add.png" srcset="/img/loading.gif" lazyload alt="BigDecimal加法原理"></p>
+<hr>
+<h3 id="equals方法会比较精度"><a href="#equals方法会比较精度" class="headerlink" title="equals方法会比较精度"></a>equals方法会比较精度</h3><hr>
+<h3 id="JDK-和-JRE"><a href="#JDK-和-JRE" class="headerlink" title="JDK 和 JRE"></a>JDK 和 JRE</h3><ul>
+<li>JDK：Java开发环境，包含了JRE、编译器javac和其他工具，比如javadoc、jconsole、javap等</li>
+<li>JRE：Java运行时环境，主要包含JVM和Java类库</li>
 </ul>
-<p>从java9开始，就不再区分二者关系，取而代之的是模块系统（JDK被重新组织成94个模块）+ jlink工具（随java9一起发布的新命令行工具，用于生成自定义java运行时映像，改映像仅包含给定应用程序所需的模块）。并且，从JDK11开始，oracle不再提供单独的jre下载。</p>
-<p>也就是说，可以用 jlink 根据自己的需求，创建一个更小的 runtime（运行时），而不是不管什么应用，都是同样的 JRE。</p>
-<p>定制的、模块化的 Java 运行时映像有助于简化 Java 应用的部署和节省内存并增强安全性和可维护性。这对于满足现代应用程序架构的需求，如虚拟化、容器化、微服务和云原生开发，是非常重要的</p>
-</li>
-<li><p>字节码、JIT</p>
-<p>在 Java 中，JVM 可以理解的代码就叫做字节码（即扩展名为 <code>.class</code> 的文件），它不面向任何特定的处理器，只面向虚拟机。</p>
-<p>JVM 类加载器首先加载字节码文件，然后通过解释器逐行解释执行，这种方式的执行速度会相对比较慢。而且，有些方法和代码块是经常需要被调用的(也就是所谓的热点代码)，所以后面引进了 <strong>JIT（Just in Time Compilation）</strong> 编译器，而 JIT 属于运行时编译。</p>
-<p>当 JIT 编译器完成第一次编译后，其会将字节码对应的机器码保存下来，下次可以直接使用。而我们知道，机器码的运行效率肯定是高于 Java 解释器的。这也解释了我们为什么经常会说 <strong>Java 是编译与解释共存的语言</strong> 。</p>
-<p><strong>HotSpot</strong> 采用了<strong>惰性评估(Lazy Evaluation)<strong>的做法，根据</strong>二八定律</strong>，消耗大部分系统资源的只有那一<strong>小部分的代码</strong>（热点代码），而这也就是 JIT 所需要编译的部分。JVM 会根据代码每次被执行的情况收集信息并相应地做出一些优化，因此执行的次数越多，它的速度就越快。</p>
-</li>
-<li><p>oracle jdk 和 openjdk</p>
+<blockquote>
+<p>从Java9开始，不再区分JDK和JRE，取而代之的是模块系统+ jlink工具。JDK11开始，oracle不再提供单独的JRE下载。</p>
+</blockquote>
 <ul>
+<li>可以用 jlink 根据自己的需求，创建一个更小的 runtime（运行时）</li>
+<li>定制的、模块化的 Java 运行时映像有助于简化 Java 应用的部署和节省内存并增强安全性和可维护性。</li>
+</ul>
+<hr>
+<h3 id="字节码、JIT"><a href="#字节码、JIT" class="headerlink" title="字节码、JIT"></a>字节码、JIT</h3><blockquote>
+<p>在 Java 中，JVM 可以理解的代码就叫做字节码（即扩展名为 <code>.class</code> 的文件），它不面向任何特定的处理器，只面向虚拟机。</p>
+</blockquote>
+<ul>
+<li>JVM 类加载器首先加载字节码文件，然后通过解释器逐行解释执行，这种方式的执行速度会相对比较慢。</li>
+<li>JIT（Just in Time Compilation）编译器，属于运行时编译。</li>
+<li>HotSpot 采用了惰性评估(Lazy Evaluation)的做法，根据二八定律，消耗大部分系统资源的只有那一小部分的代码（热点代码），而这也就是 JIT 所需要编译的部分。</li>
+</ul>
+<hr>
+<h3 id="Oracle-JDK-和-OpenJDK"><a href="#Oracle-JDK-和-OpenJDK" class="headerlink" title="Oracle JDK 和 OpenJDK"></a>Oracle JDK 和 OpenJDK</h3><ul>
 <li>一个不开源一个开源</li>
 <li>一个高版本后要收费</li>
 </ul>
-</li>
-<li><p>java和c++的区别</p>
-<ul>
-<li>java中不提供指针来直接访问内存</li>
-<li>java类是单继承的、c++支持多重继承</li>
-<li>java有自动垃圾回收GC，c++需要手动释放内存</li>
-<li>java是编译 + 解释型语言，c++是编译型语言</li>
+<hr>
+<h3 id="Java-和-C-的区别"><a href="#Java-和-C-的区别" class="headerlink" title="Java 和 C++ 的区别"></a>Java 和 C++ 的区别</h3><ul>
+<li>Java中不提供指针来直接访问内存</li>
+<li>Java类是单继承的、C++支持多重继承</li>
+<li>Java有自动垃圾回收GC，C++需要手动释放内存</li>
+<li>Java是编译 + 解释型语言，C++是编译型语言</li>
 </ul>
-</li>
-<li><p>基本类型和泛型的区别</p>
-<ul>
+<hr>
+<h3 id="基本类型和泛型的区别"><a href="#基本类型和泛型的区别" class="headerlink" title="基本类型和泛型的区别"></a>基本类型和泛型的区别</h3><ul>
 <li>内存的占用和默认值，比如代理的时候，返回null，基本数据类型会报错</li>
 <li>基本类型不可以被泛型使用</li>
-<li>局部变量基本类型存在jvm虚拟机栈的局部变量表中</li>
+<li>局部变量基本类型存在JVM虚拟机栈的局部变量表中</li>
 </ul>
+<blockquote>
 <p>⚠️ 注意：<strong>基本数据类型存放在栈中是一个常见的误区！</strong> 基本数据类型的存储位置取决于它们的作用域和声明方式。如果它们是局部变量，那么它们会存放在栈中；如果它们是成员变量，那么它们会存放在堆&#x2F;方法区&#x2F;元空间中。</p>
-</li>
-<li><p>包装类型的缓存机制</p>
-<p>​        <code>Byte</code>,<code>Short</code>,<code>Integer</code>,<code>Long</code> 这 4 种包装类默认创建了数值 <strong>[-128，127]</strong> 的相应类型的缓存数据，<code>Character</code> 创建了数值在 <strong>[0,127]</strong> 范围的缓存数据，<code>Boolean</code> 直接返回 <code>TRUE</code> or <code>FALSE</code>。</p>
-</li>
+</blockquote>
+<hr>
+<h3 id="包装类型的缓存机制"><a href="#包装类型的缓存机制" class="headerlink" title="包装类型的缓存机制"></a>包装类型的缓存机制</h3><ul>
+<li><code>Byte</code>,<code>Short</code>,<code>Integer</code>,<code>Long</code> 这 4 种包装类默认创建了数值 <strong>[-128，127]</strong> 的相应类型的缓存数据，<code>Character</code> 创建了数值在 <strong>[0,127]</strong> 范围的缓存数据，<code>Boolean</code> 直接返回 <code>TRUE</code> or <code>FALSE</code>。</li>
 </ul>
-<p>​	</p>
-<ul>
-<li><p>自动装箱和拆箱</p>
-<ul>
+<hr>
+<h3 id="自动装箱和拆箱"><a href="#自动装箱和拆箱" class="headerlink" title="自动装箱和拆箱"></a>自动装箱和拆箱</h3><ul>
 <li><strong>装箱</strong>：将基本类型用它们对应的引用类型包装起来；</li>
 <li><strong>拆箱</strong>：将包装类型转换为基本数据类型；</li>
 </ul>
-</li>
-<li><p>成员变量和局部变量</p>
+<hr>
+<h3 id="成员变量和局部变量"><a href="#成员变量和局部变量" class="headerlink" title="成员变量和局部变量"></a>成员变量和局部变量</h3><blockquote>
 <p>从变量是否有默认值来看，成员变量如果没有被赋初始值，则会自动以类型的默认值而赋值（一种情况例外:被 <code>final</code> 修饰的成员变量也必须显式地赋值），而局部变量则不会自动赋值。</p>
-</li>
-<li><p>重载和重写</p>
-<ul>
-<li><p>重载就是一个类中多个同名方法根据不同的参数类型来确定执行对应方法。</p>
-</li>
-<li><p>重写是指子类对父类运行访问的方法实现过程进行重写。</p>
-<p>方法名、参数列表必须相同，子类方法返回值类型应比父类方法返回值类型更小或相等，抛出的异常范围小于等于父类，访问修饰符范围大于等于父类。</p>
-<p>如果方法的返回类型是 void 和基本数据类型，则返回值重写时不可修改。但是如果方法的返回值是引用类型，重写时是可以返回该引用类型的子类的。</p>
-</li>
+</blockquote>
+<hr>
+<h3 id="重载和重写"><a href="#重载和重写" class="headerlink" title="重载和重写"></a>重载和重写</h3><ul>
+<li><strong>重载</strong>：一个类中多个同名方法根据不同的参数类型来确定执行对应方法。</li>
+<li><strong>重写</strong>：子类对父类运行访问的方法实现过程进行重写。</li>
 </ul>
-</li>
-<li><p>可变长参数</p>
-<ul>
+<blockquote>
+<p>方法名、参数列表必须相同，子类方法返回值类型应比父类方法返回值类型更小或相等，抛出的异常范围小于等于父类，访问修饰符范围大于等于父类。<br>如果方法的返回类型是 void 和基本数据类型，则返回值重写时不可修改。但是如果方法的返回值是引用类型，重写时是可以返回该引用类型的子类的。</p>
+</blockquote>
+<hr>
+<h3 id="可变长参数"><a href="#可变长参数" class="headerlink" title="可变长参数"></a>可变长参数</h3><ul>
 <li>可变参数只能作为函数的最后一个参数，但其前面可以有也可以没有任何其他参数</li>
 <li>遇到方法重载的情况会优先匹配固定参数的方法，因为固定参数的方法匹配度更高。</li>
 </ul>
-</li>
-<li><p>默认构造方法</p>
-<p>​    如果一个类没有声明构造方法，也可以执行！因为一个类即使没有声明构造方法也会有默认的不带参数的构造方法。如果我们自己添加了类的构造方法（无论是否有参），Java 就不会添加默认的无参数的构造方法了。</p>
-<p>​    构造方法<strong>不能被重写（override）</strong>，但<strong>可以被重载（overload）</strong>。因此，一个类中可以有多个构造方法，这些构造方法可以具有不同的参数列表，以提供不同的对象初始化方式</p>
-</li>
-<li><p>多态</p>
-<p>​    父类的引用指向子类的实例。</p>
-</li>
-<li><p>接口和抽象类</p>
-<ul>
+<hr>
+<h3 id="默认构造方法"><a href="#默认构造方法" class="headerlink" title="默认构造方法"></a>默认构造方法</h3><blockquote>
+<p>如果一个类没有声明构造方法，也可以执行！因为一个类即使没有声明构造方法也会有默认的不带参数的构造方法。如果我们自己添加了类的构造方法（无论是否有参），Java 就不会添加默认的无参数的构造方法了。<br>构造方法<strong>不能被重写（override）</strong>，但<strong>可以被重载（overload）</strong>。因此，一个类中可以有多个构造方法，这些构造方法可以具有不同的参数列表，以提供不同的对象初始化方式。</p>
+</blockquote>
+<hr>
+<h3 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h3><blockquote>
+<p>父类的引用指向子类的实例。</p>
+</blockquote>
+<hr>
+<h3 id="接口和抽象类"><a href="#接口和抽象类" class="headerlink" title="接口和抽象类"></a>接口和抽象类</h3><ul>
 <li>都不能实例化</li>
 <li>定义了一个方法，（抽象方法、接口方法），都需要子类或者抽象类中去实现，default和static除外，java9后，接口可以包含private方法</li>
 <li>接口是行为的抽象，类是所属关系，用于代码复用。接口可以多实现</li>
 <li>接口中的成员变量只能是public static final类型，不能修改且必须有初始值。抽象类的成员变量可以有任何修饰符，在子类中可以被重写定义或者赋值。</li>
 </ul>
-</li>
-<li><p>String</p>
-<p>Java 9 将 <code>String</code> 的底层实现由 <code>char[]</code> 改成了 <code>byte[]</code> </p>
-<p>新版的 String 其实支持两个编码方案：Latin-1 和 UTF-16。如果字符串中包含的汉字没有超过 Latin-1 可表示范围内的字符，那就会使用 Latin-1 作为编码方案。Latin-1 编码方案下，<code>byte</code> 占一个字节(8 位)，<code>char</code> 占用 2 个字节（16），<code>byte</code> 相较 <code>char</code> 节省一半的内存空间</p>
+<hr>
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><blockquote>
+<p>Java 9 将 <code>String</code> 的底层实现由 <code>char[]</code> 改成了 <code>byte[]</code><br>新版的 String 其实支持两个编码方案：Latin-1 和 UTF-16。如果字符串中包含的汉字没有超过 Latin-1 可表示范围内的字符，那就会使用 Latin-1 作为编码方案。Latin-1 编码方案下，<code>byte</code> 占一个字节(8 位)，<code>char</code> 占用 2 个字节（16），<code>byte</code> 相较 <code>char</code> 节省一半的内存空间</p>
+</blockquote>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">str1</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;str&quot;</span>;<br><span class="hljs-type">String</span> <span class="hljs-variable">str2</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ing&quot;</span>;<br><span class="hljs-type">String</span> <span class="hljs-variable">str3</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;str&quot;</span> + <span class="hljs-string">&quot;ing&quot;</span>;<br><span class="hljs-type">String</span> <span class="hljs-variable">str4</span> <span class="hljs-operator">=</span> str1 + str2;<br><span class="hljs-type">String</span> <span class="hljs-variable">str5</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;string&quot;</span>;<br>System.out.println(str3 == str4);<span class="hljs-comment">//false</span><br>System.out.println(str3 == str5);<span class="hljs-comment">//true</span><br>System.out.println(str4 == str5);<span class="hljs-comment">//false</span><br><span class="hljs-comment">// 对象引用和“+”的字符串拼接方式，实际上是通过 StringBuilder 调用 append() 方法实现的，拼接完成之后调用 toString() 得到一个 String 对象 </span><br><span class="hljs-comment">// 对于 String str3 = &quot;str&quot; + &quot;ing&quot;; 编译器会给你优化成 String str3 = &quot;string&quot;; 。并不是所有的常量都会进行折叠，只有编译器在程序编译期就可以确定值的常量</span><br></code></pre></td></tr></table></figure>
-</li>
-<li><p>避免将异常定义为静态变量</p>
-<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">当 <span class="hljs-keyword">Java </span>抛出一个异常时，<span class="hljs-keyword">JVM </span>会自动调用异常对象的 fillInStackTrace() 方法，记录当前的调用栈信息（包括类名、方法名、行号等）。每个异常实例的栈信息是抛出时的实时快照，且该信息会被存储在异常对象的 stackTrace 字段中<br>静态异常变量是共享实例，多次抛出时栈信息会被后续调用覆盖，导致调试时无法获取真实的异常发生位置。<br>解决方案：永远为每次异常抛出创建新的异常实例，确保每个异常对象携带独立的栈跟踪信息。<br>本质原则：异常是携带运行时上下文的 “事件对象”，应遵循 “按需创建，一事一议” 的设计，而非复用静态实例。<br></code></pre></td></tr></table></figure></li>
-</ul>
-<p>​		</p>
-<ul>
-<li><p>java中，写文件到磁盘中间经历了什么</p>
-</li>
-<li><p>kafka 0拷贝 DMA拷贝</p>
-</li>
-<li><p>http层到tcp层，中间传输数据经历了哪些过程</p>
-</li>
-<li><p>get请求和post请求有什么区别</p>
-</li>
-<li><p>怎么保证消息的顺序性</p>
-</li>
-<li><p>RBAC</p>
-</li>
-</ul>
-<h5 id="2025-5-13"><a href="#2025-5-13" class="headerlink" title="2025&#x2F;5&#x2F;13"></a>2025&#x2F;5&#x2F;13</h5><ul>
-<li>fifo</li>
-</ul>
+
+<hr>
+<h3 id="避免将异常定义为静态变量"><a href="#避免将异常定义为静态变量" class="headerlink" title="避免将异常定义为静态变量"></a>避免将异常定义为静态变量</h3><blockquote>
+<p>当 Java 抛出一个异常时，JVM 会自动调用异常对象的 fillInStackTrace() 方法，记录当前的调用栈信息（包括类名、方法名、行号等）。每个异常实例的栈信息是抛出时的实时快照，且该信息会被存储在异常对象的 stackTrace 字段中<br>静态异常变量是共享实例，多次抛出时栈信息会被后续调用覆盖，导致调试时无法获取真实的异常发生位置。<br>解决方案：永远为每次异常抛出创建新的异常实例，确保每个异常对象携带独立的栈跟踪信息。<br>本质原则：异常是携带运行时上下文的 “事件对象”，应遵循 “按需创建，一事一议” 的设计，而非复用静态实例。</p>
+</blockquote>
+<hr>
+<h3 id="Java中，写文件到磁盘中间经历了什么"><a href="#Java中，写文件到磁盘中间经历了什么" class="headerlink" title="Java中，写文件到磁盘中间经历了什么"></a>Java中，写文件到磁盘中间经历了什么</h3><hr>
+<h3 id="Kafka-0拷贝-DMA拷贝"><a href="#Kafka-0拷贝-DMA拷贝" class="headerlink" title="Kafka 0拷贝 DMA拷贝"></a>Kafka 0拷贝 DMA拷贝</h3><hr>
+<h3 id="http层到tcp层，中间传输数据经历了哪些过程"><a href="#http层到tcp层，中间传输数据经历了哪些过程" class="headerlink" title="http层到tcp层，中间传输数据经历了哪些过程"></a>http层到tcp层，中间传输数据经历了哪些过程</h3><hr>
+<h3 id="get请求和post请求有什么区别"><a href="#get请求和post请求有什么区别" class="headerlink" title="get请求和post请求有什么区别"></a>get请求和post请求有什么区别</h3><hr>
+<h3 id="怎么保证消息的顺序性"><a href="#怎么保证消息的顺序性" class="headerlink" title="怎么保证消息的顺序性"></a>怎么保证消息的顺序性</h3><hr>
+<h3 id="RBAC"><a href="#RBAC" class="headerlink" title="RBAC"></a>RBAC</h3><hr>
+<h2 id="2025-5-13"><a href="#2025-5-13" class="headerlink" title="2025&#x2F;5&#x2F;13"></a>2025&#x2F;5&#x2F;13</h2><h3 id="FIFO"><a href="#FIFO" class="headerlink" title="FIFO"></a>FIFO</h3><blockquote>
 <p>异步、解耦、削峰</p>
-<p>Deque 和 Stack</p>
-<p>https中的对称加密和非对称加密</p>
-<p>stream和直接for循环的区别</p>
-<h5 id="2025-5-19"><a href="#2025-5-19" class="headerlink" title="2025&#x2F;5&#x2F;19"></a>2025&#x2F;5&#x2F;19</h5><p>几种配置文件、配置文件的区别</p>
-<p>死锁为什么会导致cpu占用率升高</p>
-<p>java中的线程和linux中的线程有什么区别</p>
-<ul>
+</blockquote>
+<hr>
+<h3 id="Deque-和-Stack"><a href="#Deque-和-Stack" class="headerlink" title="Deque 和 Stack"></a>Deque 和 Stack</h3><hr>
+<h3 id="https中的对称加密和非对称加密"><a href="#https中的对称加密和非对称加密" class="headerlink" title="https中的对称加密和非对称加密"></a>https中的对称加密和非对称加密</h3><hr>
+<h3 id="stream和直接for循环的区别"><a href="#stream和直接for循环的区别" class="headerlink" title="stream和直接for循环的区别"></a>stream和直接for循环的区别</h3><hr>
+<h2 id="2025-5-19"><a href="#2025-5-19" class="headerlink" title="2025&#x2F;5&#x2F;19"></a>2025&#x2F;5&#x2F;19</h2><h3 id="几种配置文件、配置文件的区别"><a href="#几种配置文件、配置文件的区别" class="headerlink" title="几种配置文件、配置文件的区别"></a>几种配置文件、配置文件的区别</h3><hr>
+<h3 id="死锁为什么会导致cpu占用率升高"><a href="#死锁为什么会导致cpu占用率升高" class="headerlink" title="死锁为什么会导致cpu占用率升高"></a>死锁为什么会导致cpu占用率升高</h3><hr>
+<h3 id="java中的线程和linux中的线程有什么区别"><a href="#java中的线程和linux中的线程有什么区别" class="headerlink" title="java中的线程和linux中的线程有什么区别"></a>java中的线程和linux中的线程有什么区别</h3><ul>
 <li>java中的线程是通过调用系统api的方式去创建的，相当于java中的线程是抽象，linux底层是实现</li>
 </ul>
-<h5 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h5><img src="../../images/ThreadLocal引用关系图.jpg" srcset="/img/loading.gif" lazyload />
-
+<hr>
+<h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><p><img src="/../../images/ThreadLocal%E5%BC%95%E7%94%A8%E5%85%B3%E7%B3%BB%E5%9B%BE.jpg" srcset="/img/loading.gif" lazyload alt="ThreadLocal引用关系图"></p>
+<blockquote>
 <p>为什么ThreadLocalMap中的Entry将K设置为弱引用？</p>
+</blockquote>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Entry</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">WeakReference</span>&lt;ThreadLocal&lt;?&gt;&gt; &#123;<br>    <span class="hljs-comment">/** The value associated with this ThreadLocal. */</span><br>    Object value;<br><br>    Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;<br>        <span class="hljs-built_in">super</span>(k);<br>        value = v;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
+<hr>
 <ul>
-<li><p>private 方法是隐式的final</p>
-</li>
-<li><p>final方法是可以被重载的</p>
-</li>
-<li><p>dubbo</p>
-</li>
+<li>private 方法是隐式的final</li>
+<li>final方法是可以被重载的</li>
 </ul>
-<p>k8s到底是什么</p>
-<p>​	介于应用服务和服务器之间，通过策略协调和管理多个应用服务，只需要通过一个yaml文件配置，定义应用的部署顺序等信息，就能自动部署应用到各个服务器上</p>
-<p>control plane 控制平面</p>
-<ul>
-<li><p>Api Service</p>
-</li>
-<li><p>Scheduler  Controller mgr</p>
-</li>
-<li><p>etcd</p>
-</li>
+<hr>
+<h3 id="Dubbo-1"><a href="#Dubbo-1" class="headerlink" title="Dubbo"></a>Dubbo</h3><hr>
+<h3 id="k8s到底是什么"><a href="#k8s到底是什么" class="headerlink" title="k8s到底是什么"></a>k8s到底是什么</h3><blockquote>
+<p>介于应用服务和服务器之间，通过策略协调和管理多个应用服务，只需要通过一个yaml文件配置，定义应用的部署顺序等信息，就能自动部署应用到各个服务器上</p>
+</blockquote>
+<h4 id="control-plane-控制平面"><a href="#control-plane-控制平面" class="headerlink" title="control plane 控制平面"></a>control plane 控制平面</h4><ul>
+<li>Api Service</li>
+<li>Scheduler  Controller mgr</li>
+<li>etcd</li>
 </ul>
-<p>工作节点 node</p>
-<p>kubelet 负责管理和监控node</p>
-<p>kube proxy 负责node的网络通信</p>
-<ul>
-<li>pod k8s中最小的调度单位</li>
+<h4 id="工作节点-node"><a href="#工作节点-node" class="headerlink" title="工作节点 node"></a>工作节点 node</h4><ul>
+<li>kubelet 负责管理和监控node</li>
+<li>kube proxy 负责node的网络通信</li>
 </ul>
-<p>container</p>
-<p>cluster 集群</p>
-<p>kubectl </p>
-<p>怎么部署服务</p>
-<p>怎么调用服务</p>
-<p>令牌桶</p>
-<p><strong>Content Delivery Network，内容分发网络</strong>。</p>
-<p>具体来说，CDN就是采用更多的缓存服务器（CDN边缘节点），布放在用户访问相对集中的地区或网络中。当用户访问网站时，利用全局负载技术，将用户的访问指向距离最近的缓存服务器上，由缓存服务器响应用户请求。</p>
-<p>Mysql 和 Mongo db 有什么区别</p>
-<ul>
-<li><p>关系型数据库 文档型NoSQL数据库</p>
-</li>
-<li><p>Mongo 文档结构可随时变化</p>
-</li>
+<h4 id="pod-k8s中最小的调度单位"><a href="#pod-k8s中最小的调度单位" class="headerlink" title="pod k8s中最小的调度单位"></a>pod k8s中最小的调度单位</h4><ul>
+<li>container</li>
 </ul>
-<p>rpc 远程过程调用</p>
+<h4 id="cluster-集群"><a href="#cluster-集群" class="headerlink" title="cluster 集群"></a>cluster 集群</h4><ul>
+<li>kubectl </li>
+<li>怎么部署服务</li>
+<li>怎么调用服务</li>
+</ul>
+<hr>
+<h3 id="令牌桶"><a href="#令牌桶" class="headerlink" title="令牌桶"></a>令牌桶</h3><hr>
+<h3 id="CDN（内容分发网络）"><a href="#CDN（内容分发网络）" class="headerlink" title="CDN（内容分发网络）"></a>CDN（内容分发网络）</h3><blockquote>
+<p>CDN就是采用更多的缓存服务器（CDN边缘节点），布放在用户访问相对集中的地区或网络中。当用户访问网站时，利用全局负载技术，将用户的访问指向距离最近的缓存服务器上，由缓存服务器响应用户请求。</p>
+</blockquote>
+<hr>
+<h3 id="Mysql-和-Mongo-db-有什么区别"><a href="#Mysql-和-Mongo-db-有什么区别" class="headerlink" title="Mysql 和 Mongo db 有什么区别"></a>Mysql 和 Mongo db 有什么区别</h3><ul>
+<li>关系型数据库 文档型NoSQL数据库</li>
+<li>Mongo 文档结构可随时变化</li>
+</ul>
+<hr>
+<h3 id="rpc-远程过程调用"><a href="#rpc-远程过程调用" class="headerlink" title="rpc 远程过程调用"></a>rpc 远程过程调用</h3><blockquote>
 <p>Remote procedure call </p>
-<p>tcp 粘包</p>
-<p>应用层协议 http rpc</p>
-<p>rpc不用考虑浏览器行为 302</p>
-<h5 id="job-worker模块之使用-power-job"><a href="#job-worker模块之使用-power-job" class="headerlink" title="job-worker模块之使用 power-job"></a>job-worker模块之使用 power-job</h5><blockquote>
+</blockquote>
+<hr>
+<h3 id="tcp-粘包"><a href="#tcp-粘包" class="headerlink" title="tcp 粘包"></a>tcp 粘包</h3><hr>
+<h3 id="应用层协议-http-rpc"><a href="#应用层协议-http-rpc" class="headerlink" title="应用层协议 http rpc"></a>应用层协议 http rpc</h3><ul>
+<li>rpc不用考虑浏览器行为 302</li>
+</ul>
+<hr>
+<h1 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h1><h2 id="List"><a href="#List" class="headerlink" title="List"></a>List</h2><ul>
+<li>ArrayList 扩容后1.5倍</li>
+<li>LinkedList</li>
+<li>Vector 线程安全（Stack基于Vector，是栈，Vector是链表）</li>
+</ul>
+<blockquote>
+<p>RandomAccess 标记接口，表示可以通过get(index)获取元素</p>
+</blockquote>
+<ul>
+<li>快速失败 fail-fast 迭代器 </li>
+<li>安全失败 fail-safe CopyOnWriteArrayList</li>
+</ul>
+<h3 id="Comparable和Comparator"><a href="#Comparable和Comparator" class="headerlink" title="Comparable和Comparator"></a>Comparable和Comparator</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Comparable</span> &lt;T&gt; &#123;<br>    <span class="hljs-type">int</span> <span class="hljs-title function_">compareTo</span><span class="hljs-params">(T t)</span>;<br>&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Comparator</span>&lt;T&gt; &#123;<br>    <span class="hljs-type">int</span> <span class="hljs-title function_">compare</span><span class="hljs-params">(T t1 , T t2)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><ul>
+<li>HashSet</li>
+<li>LinkedHashSet </li>
+<li>TreeSet</li>
+</ul>
+<blockquote>
+<p>HashSet 的底层数据结构是哈希表（基于 HashMap 实现）。LinkedHashSet 的底层数据结构是链表和哈希表，元素的插入和取出顺序满足 FIFO。TreeSet 底层数据结构是红黑树，元素是有序的，排序的方式有自然排序和定制排序。<br>HashSet 用于不需要保证元素插入和取出顺序的场景，LinkedHashSet 用于保证元素的插入和取出顺序满足 FIFO 的场景，TreeSet 用于支持对元素自定义排序规则的场景。</p>
+</blockquote>
+<h2 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h2><ul>
+<li>ArrayDeque 与 LinkedList</li>
+</ul>
+<blockquote>
+<p>ArrayDeque 是基于可变长的数组和头尾双指针来实现，因此不允许存null<br>而LinkedList </p>
+</blockquote>
+<ul>
+<li>PriorityQueue</li>
+</ul>
+<blockquote>
+<p>堆排序、求第 K 大的数、带权图的遍历等</p>
+</blockquote>
+<h2 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h2><ul>
+<li>HashMap 和 Hashtable 的区别，后者线程安全</li>
+<li>TreeMap  排序</li>
+</ul>
+<blockquote>
+<p>JDK1.8 之后在解决哈希冲突时有了较大的变化，当链表长度大于阈值（默认为 8）（将链表转换成红黑树前会判断，如果当前数组的长度小于 64，那么会选择先进行数组扩容，而不是转换为红黑树）时，将链表转化为红黑树</p>
+</blockquote>
+<blockquote>
+<p>数组扩容能减少哈希冲突的发生概率（即将元素重新分散到新的、更大的数组中），这在多数情况下比直接转换为红黑树更高效。<br>红黑树需要保持自平衡，维护成本较高。并且，过早引入红黑树反而会增加复杂度。</p>
+</blockquote>
+<blockquote>
+<p>泊松分布表明，链表长度达到 8 的概率极低（小于千万分之一）。在绝大多数情况下，链表长度都不会超过 8。阈值设置为 8，可以保证性能和空间效率的平衡。数组长度阈值 64 同样是经过实践验证的经验值。在小数组中扩容成本低，优先扩容可以避免过早引入红黑树。数组大小达到 64 时，冲突概率较高，此时红黑树的性能优势开始显现。</p>
+</blockquote>
+<hr>
+<h1 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h1><ul>
+<li>synchronized 和 ReentrantLock 两者都是可重入锁</li>
+<li>线程池中线程异常后，销毁还是复用？</li>
+</ul>
+<hr>
+<h1 id="Dubbo-2"><a href="#Dubbo-2" class="headerlink" title="Dubbo"></a>Dubbo</h1><ul>
+<li>protobuf</li>
+<li>RPC和http的区别</li>
+</ul>
+<hr>
+<h1 id="OOM排查"><a href="#OOM排查" class="headerlink" title="OOM排查"></a>OOM排查</h1><p>1.一次查询数据库内容太多<br>2.内存资源耗尽未释放</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看java进程</span><br>jps<br><span class="hljs-comment"># 查看存活对象</span><br>jmap -histo:live 进程<span class="hljs-built_in">id</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>提前设置JVM参数</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">-XX:+HeapDumpOnOutOfMemoryErro -XX:HeapDumpPath=<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>运行中导出dump文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">jmap -dump:format=b,file=xx.hprof 24068<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>分析dump文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 1.使用jhat xx.hprof文件，生成一个网页，但是不够具体</span><br>jhat xx.hprof<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>STW 的定义：在 JVM 开展垃圾回收工作时，会暂停所有应用线程的执行，此时整个应用就像被按下了暂停键，处于停滞状态，这一现象便是 STW</p>
+</blockquote>
+<hr>
+<p>CPU飙升排查</p>
+<p>1.top </p>
+<p>​	找到cpu使用最多进程的pid</p>
+<p>2.top -H -p 进程id (不同环境命令不一样，有可能没有-p参数)</p>
+<p>​	找到cpu耗用最多的线程id</p>
+<p>3.将线程id转换为16进制</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">printf</span> <span class="hljs-string">&#x27;0x%x\n&#x27;</span> xxx<br></code></pre></td></tr></table></figure>
+
+<p>4.jstack 进程pid | grep 16进制线程PID -A 20</p>
+<h1 id="JVisualVM的使用"><a href="#JVisualVM的使用" class="headerlink" title="JVisualVM的使用"></a>JVisualVM的使用</h1><blockquote>
+<p>下载地址 <a target="_blank" rel="noopener" href="https://visualvm.github.io/index.html">VisualVM: Home</a></p>
+</blockquote>
+<ul>
+<li>下载完成后，打开etc下的visualvm.conf，修改</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">visualvm_jdkhome=<span class="hljs-string">&quot;C:/Program Files/Java/jdk1.8.0_361&quot;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>安装visual GC插件</li>
+</ul>
+<hr>
+<h1 id="负载均衡算法"><a href="#负载均衡算法" class="headerlink" title="负载均衡算法"></a>负载均衡算法</h1><ul>
+<li>随机法、两次随机法（多选出一个服务器，两台服务器根据负载情况选取）</li>
+<li>轮询法、加权轮询法</li>
+<li>哈希法，将ip通过哈希函数映射到服务器，同一个ip一定会跑到一个服务器</li>
+<li>一致哈希法</li>
+<li>最小连接</li>
+<li>最少活跃</li>
+<li>最快响应时间法</li>
+</ul>
+<hr>
+<h1 id="Token"><a href="#Token" class="headerlink" title="Token"></a>Token</h1><ul>
+<li>Access Token 获取受保护资源，生命周期短</li>
+<li>Refresh Token 获取Access Token，生命周期长</li>
+</ul>
+<p>Token</p>
+<h1 id="job-worker模块之使用-power-job"><a href="#job-worker模块之使用-power-job" class="headerlink" title="job-worker模块之使用 power-job"></a>job-worker模块之使用 power-job</h1><blockquote>
 <p>项目已经在mysql中有专门的数据库来提供给job-worker使用，同时，在job-worker中也指定了改数据库信息，并且以docker的方式部署到了服务器上。</p>
 </blockquote>
-<ol>
-<li><p>引入依赖</p>
-<p>项目上使用的是com.github.kfcfans下的powerjob-worker-spring-boot-starter</p>
-</li>
-</ol>
+<h2 id="1-引入依赖"><a href="#1-引入依赖" class="headerlink" title="1. 引入依赖"></a>1. 引入依赖</h2><p>项目上使用的是com.github.kfcfans下的powerjob-worker-spring-boot-starter</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>tech.powerjob<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>powerjob-worker-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>4.3.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
+<hr>
+<h1 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h1><ul>
+<li>feign中的configuration</li>
+<li>事件框架</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 继承</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CusEvent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ApplicationEvent</span> <br><br><span class="hljs-comment">// 监听方法</span><br><span class="hljs-meta">@Async(&quot;指定线程池名称&quot;)</span><br><span class="hljs-meta">@EventListener</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">method</span><span class="hljs-params">(CusEvent cusEvent)</span> &#123;<br>&#125;<br><br><span class="hljs-comment">// 推送消息</span><br>eventPublisher.publishEvent(<span class="hljs-keyword">new</span> <span class="hljs-title class_">CusEvent</span>(xx));<br><br><span class="hljs-comment">// 指定时间框架线程池参数</span><br><span class="hljs-meta">@Bean(&quot;指定线程池名称&quot;)</span><br><span class="hljs-keyword">public</span> Executor <span class="hljs-title function_">cusExecutor</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-type">ThreadPoolTaskExecutor</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPoolTaskExecutor</span>();<br>    executor.setCorePoolSize(corePoolSize);<br>    executor.setMaxPoolSize(maxPoolSize);<br>    executor.setQueueCapacity(queueCapacity);<br>    executor.setThreadNamePrefix(DOMAIN_EXECUTOR);<br>    <span class="hljs-comment">// rejection-policy：当pool已经达到max size的时候，如何处理新任务</span><br>    <span class="hljs-comment">// ThreadPoolExecutor#DiscardPolicy：这个策略将会直接丢弃任务</span><br>    <span class="hljs-comment">// ThreadPoolExecutor#CallerRunsPolicy：不在新线程中执行任务，而是有调用者所在的线程来执行策略</span><br>    executor.setRejectedExecutionHandler(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPoolExecutor</span>.CallerRunsPolicy());<br>    executor.initialize();<br>    <span class="hljs-keyword">return</span> executor;<br>&#125;<br></code></pre></td></tr></table></figure>
 
+<ul>
+<li>自定义异常处理器</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">restTemplate.setErrorHandler(<span class="hljs-keyword">new</span> <span class="hljs-title class_">RestTemplateResponseErrorHandler</span>());<br></code></pre></td></tr></table></figure>
 
+<ul>
+<li>内存溢出和内存泄漏</li>
+<li>sql语句的执行过程</li>
+<li>innodb和myism区别</li>
+<li>回表的理解</li>
+</ul>
+<hr>
+<ul>
+<li>注解来统一处理接口耗时</li>
+<li>流程授权的功能，在注解中进行了统一处理，替换session中的信息</li>
+</ul>
+<hr>
+<ul>
+<li>@Pointcut注解：统一定义切点表达式</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Aspect</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LoggingAspect</span> &#123;<br><br>    <span class="hljs-meta">@Pointcut(&quot;execution(* com.example.service..*(..))&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">serviceLayer</span><span class="hljs-params">()</span> &#123;<br>    &#125;<br><br>    <span class="hljs-comment">// 在切入点表达式匹配的方法执行之前执行通知</span><br>    <span class="hljs-meta">@Before(&quot;serviceLayer()&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">logBefore</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;Executing logBefore advice on serviceLayer()&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-
-
-
-<h5 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h5><ul>
-<li><p>feign中的configuration</p>
-</li>
-<li><p>事件框架</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-comment">// 继承</span><br>public <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CusEvent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ApplicationEvent</span> </span><br><br><span class="hljs-comment">// 监听方法</span><br><span class="hljs-meta">@Async</span>(<span class="hljs-string">&quot;指定线程池名称&quot;</span>)<br><span class="hljs-meta">@EventListener</span><br>public void method(<span class="hljs-type">CusEvent</span> cusEvent) &#123;<br>&#125;<br><br><span class="hljs-comment">// 推送消息</span><br>eventPublisher.publishEvent(<span class="hljs-keyword">new</span> <span class="hljs-type">CusEvent</span>(xx));<br><br><span class="hljs-comment">// 指定时间框架线程池参数</span><br><span class="hljs-meta">@Bean</span>(<span class="hljs-string">&quot;指定线程池名称&quot;</span>)<br>public <span class="hljs-type">Executor</span> cusExecutor() &#123;<br>    <span class="hljs-type">ThreadPoolTaskExecutor</span> executor = <span class="hljs-keyword">new</span> <span class="hljs-type">ThreadPoolTaskExecutor</span>();<br>    executor.setCorePoolSize(corePoolSize);<br>    executor.setMaxPoolSize(maxPoolSize);<br>    executor.setQueueCapacity(queueCapacity);<br>    executor.setThreadNamePrefix(<span class="hljs-type">DOMAIN_EXECUTOR</span>);<br>    <span class="hljs-comment">// rejection-policy：当pool已经达到max size的时候，如何处理新任务</span><br>    <span class="hljs-comment">// ThreadPoolExecutor#DiscardPolicy：这个策略将会直接丢弃任务</span><br>    <span class="hljs-comment">// ThreadPoolExecutor#CallerRunsPolicy：不在新线程中执行任务，而是有调用者所在的线程来执行策略</span><br>    executor.setRejectedExecutionHandler(<span class="hljs-keyword">new</span> <span class="hljs-type">ThreadPoolExecutor</span>.<span class="hljs-type">CallerRunsPolicy</span>());<br>    executor.initialize();<br>    <span class="hljs-keyword">return</span> executor;<br>&#125;<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>自定义异常处理器</p>
-<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler())<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
-
-
-</li>
-<li><p>内存溢出和内存泄漏</p>
-</li>
-<li><p>sql语句的执行过程</p>
-</li>
-<li><p>innodb和myism区别</p>
-</li>
-<li><p>回表的理解</p>
-</li>
-<li><p>注解来统一处理接口耗时</p>
-</li>
-<li><p>流程授权的功能，在注解中进行了统一处理，替换session中的信息</p>
-</li>
-<li><p>@Pointcut注解：统一定义切点表达式</p>
+<hr>
+<h2 id="RequiredArgsConstructor"><a href="#RequiredArgsConstructor" class="headerlink" title="@RequiredArgsConstructor"></a>@RequiredArgsConstructor</h2><p>此注解常用于生成类的构造函数，当成员变量满足下面两个条件：</p>
+<ul>
+<li>final</li>
+<li>未被初始化</li>
+</ul>
+<p>一般用在spring类上，当其生成构造函数后，spring会进行构造函数注入</p>
+<h2 id="spring存在多个构造函数的情况"><a href="#spring存在多个构造函数的情况" class="headerlink" title="spring存在多个构造函数的情况"></a>spring存在多个构造函数的情况</h2><ul>
+<li>某个构造函数上有@Autowired，使用此构造函数</li>
+<li>多个构造函数，且都没有@Autowired<ul>
+<li>存在无参构造函数，使用此构造函数</li>
+<li>无参以及一个有参，使用有参</li>
+<li>多个有参，无无参，抛异常</li>
+</ul>
 </li>
 </ul>
-<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-variable">@Aspect</span><br>public class LoggingAspect &#123;<br><br>    <span class="hljs-variable">@Pointcut</span>(<span class="hljs-string">&quot;execution(* com.example.service..*(..))&quot;</span>)<br>    public void <span class="hljs-built_in">serviceLayer</span>() &#123;<br>    &#125;<br><br>    <span class="hljs-comment">// 在切入点表达式匹配的方法执行之前执行通知</span><br>    <span class="hljs-variable">@Before</span>(<span class="hljs-string">&quot;serviceLayer()&quot;</span>)<br>    public void <span class="hljs-built_in">logBefore</span>() &#123;<br>        <span class="hljs-selector-tag">System</span><span class="hljs-selector-class">.out</span><span class="hljs-selector-class">.println</span>(<span class="hljs-string">&quot;Executing logBefore advice on serviceLayer()&quot;</span>);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<p>特殊情况：构造函数中某个bean存在多个候选对象，需要通过@Qualifier指定具体 Bean 名称，否则会报错。</p>
 
                 
               </div>
