@@ -19,22 +19,25 @@
   <meta name="author" content="lzc">
   <meta name="keywords" content="后端开发">
   
-    <meta name="description" content="Mysql innodb myisam区别  innodb支持事务，支持表级锁行级锁、外键，myisam支持表级锁， 二者都用B+树作为索引结构  B+ B-树的区别  双向链表、范围查询 叶子节点：IO次数更少，查询更稳定  聚簇索引和非聚簇索引  一张表只能有一个聚簇索引，非聚簇索引叶子节点存的主键id，执行实际的数据 innodb表中一定会有一聚簇个索引，其表数据本身就是按照索引数据组织的，">
+    <meta name="description" content="背景 使用Spring AI调用大模型时，JSON Schema不规范导致报错，报错内容为Grammar error: Pointer ‘&#x2F;$defs&#x2F;ResourceTypeEnum’ does not exist   JSON Schema规范正确的JSON Schema，其$defs应该在参数中的最外层 12345678910111213141516&#123;  &amp;qu">
 <meta property="og:type" content="article">
-<meta property="og:title" content="训练">
-<meta property="og:url" content="http://example.com/2025/11/17/%E9%9A%8F%E7%AC%94/%E8%AE%AD%E7%BB%83/index.html">
+<meta property="og:title" content="Spring AI的JsonSchema">
+<meta property="og:url" content="http://example.com/2025/11/18/%E9%9A%8F%E7%AC%94/Spring%20AI%E7%9A%84JsonSchema/index.html">
 <meta property="og:site_name" content="Lzc">
-<meta property="og:description" content="Mysql innodb myisam区别  innodb支持事务，支持表级锁行级锁、外键，myisam支持表级锁， 二者都用B+树作为索引结构  B+ B-树的区别  双向链表、范围查询 叶子节点：IO次数更少，查询更稳定  聚簇索引和非聚簇索引  一张表只能有一个聚簇索引，非聚簇索引叶子节点存的主键id，执行实际的数据 innodb表中一定会有一聚簇个索引，其表数据本身就是按照索引数据组织的，">
+<meta property="og:description" content="背景 使用Spring AI调用大模型时，JSON Schema不规范导致报错，报错内容为Grammar error: Pointer ‘&#x2F;$defs&#x2F;ResourceTypeEnum’ does not exist   JSON Schema规范正确的JSON Schema，其$defs应该在参数中的最外层 12345678910111213141516&#123;  &amp;qu">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-11-17T14:59:12.000Z">
-<meta property="article:modified_time" content="2025-11-18T14:05:30.619Z">
+<meta property="og:image" content="http://example.com/images/%E6%B6%A6%E7%94%B5%E6%8A%A5%E9%94%99.jpg">
+<meta property="article:published_time" content="2025-11-18T10:35:34.000Z">
+<meta property="article:modified_time" content="2025-11-18T14:05:52.037Z">
 <meta property="article:author" content="lzc">
-<meta property="article:tag" content="训练">
+<meta property="article:tag" content="Spring">
+<meta property="article:tag" content="JsonSchema">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/%E6%B6%A6%E7%94%B5%E6%8A%A5%E9%94%99.jpg">
   
   
   
-  <title>训练 - Lzc</title>
+  <title>Spring AI的JsonSchema - Lzc</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -200,7 +203,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="训练"></span>
+            <span id="subtitle" data-typed-text="Spring AI的JsonSchema"></span>
           
         </div>
 
@@ -211,8 +214,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-11-17 22:59" pubdate>
-          2025年11月17日 晚上
+        <time datetime="2025-11-18 18:35" pubdate>
+          2025年11月18日 晚上
         </time>
       </span>
     
@@ -223,7 +226,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          487 字
         
       </span>
     
@@ -234,7 +237,7 @@
         
         
         
-          17 分钟
+          5 分钟
         
       </span>
     
@@ -271,112 +274,67 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">训练</h1>
+            <h1 id="seo-header">Spring AI的JsonSchema</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a>Mysql</h3><ul>
-<li>innodb myisam区别</li>
-</ul>
-<p>innodb支持事务，支持表级锁行级锁、外键，myisam支持表级锁，</p>
-<p>二者都用B+树作为索引结构</p>
-<ul>
-<li>B+ B-树的区别</li>
-</ul>
-<p>双向链表、范围查询</p>
-<p>叶子节点：IO次数更少，查询更稳定</p>
-<ul>
-<li>聚簇索引和非聚簇索引</li>
-</ul>
-<p>一张表只能有一个聚簇索引，非聚簇索引叶子节点存的主键id，执行实际的数据</p>
-<p>innodb表中一定会有一聚簇个索引，其表数据本身就是按照索引数据组织的，有主键用主键、无主键使用第一个unique字段、都无生成隐藏字段</p>
-<ul>
-<li>默认隔离级别</li>
-</ul>
-<p>PP，不能解决幻读问题</p>
-<p>MVCC、临隙锁很大程度上解决了幻读问题 </p>
-<p>MVCC在不加锁的情况下，让不同操作的读写可以同时进行</p>
-<ul>
-<li>EXPLAIN</li>
-</ul>
-<p>type 类型 system const ref range index all</p>
-<p>key 实际使用的索引</p>
-<p>extra 额外信息</p>
-<p>rows 估算的扫描行 B数</p>
-<ul>
-<li>主从复制</li>
-</ul>
-<p>binlog，从库，写入本地relay_log，重放操作</p>
-<p>主库写，从库读</p>
-<p>数据备份</p>
-<p>主库故障时，快速切换到从库 高可用</p>
-<h2 id="Java集合"><a href="#Java集合" class="headerlink" title="Java集合"></a>Java集合</h2><h3 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h3><p>ensureCapacity(int minCapacity)</p>
-<p>扩容1.5倍</p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-type">void</span> <span class="hljs-title">grow</span><span class="hljs-params">(<span class="hljs-type">int</span> minCapacity)</span> </span>&#123;<br>        <span class="hljs-comment">// overflow-conscious code</span><br>        <span class="hljs-type">int</span> oldCapacity = elementData.length;<br>        <span class="hljs-type">int</span> newCapacity = oldCapacity + (oldCapacity &gt;&gt; <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">if</span> (newCapacity - minCapacity &lt; <span class="hljs-number">0</span>)<br>            newCapacity = minCapacity;<br>        <span class="hljs-keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="hljs-number">0</span>)<br>            newCapacity = <span class="hljs-built_in">hugeCapacity</span>(minCapacity);<br>        <span class="hljs-comment">// minCapacity is usually close to size, so this is a win:</span><br>        elementData = Arrays.<span class="hljs-built_in">copyOf</span>(elementData, newCapacity);<br>    &#125;<br></code></pre></td></tr></table></figure>
+                <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><blockquote>
+<p>使用Spring AI调用大模型时，JSON Schema不规范导致报错，报错内容为Grammar error: Pointer ‘&#x2F;$defs&#x2F;ResourceTypeEnum’ does not exist</p>
+</blockquote>
+<p><img src="/../../images/%E6%B6%A6%E7%94%B5%E6%8A%A5%E9%94%99.jpg" srcset="/img/loading.gif" lazyload></p>
+<h2 id="JSON-Schema规范"><a href="#JSON-Schema规范" class="headerlink" title="JSON Schema规范"></a>JSON Schema规范</h2><p>正确的JSON Schema，其$defs应该在参数中的最外层</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs bash">&#123;<br>  <span class="hljs-string">&quot;<span class="hljs-variable">$id</span>&quot;</span>: <span class="hljs-string">&quot;https://example.com/schemas/customer&quot;</span>,<br><br>  <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;object&quot;</span>,<br>  <span class="hljs-string">&quot;properties&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;first_name&quot;</span>: &#123; <span class="hljs-string">&quot;<span class="hljs-variable">$ref</span>&quot;</span>: <span class="hljs-string">&quot;#/<span class="hljs-variable">$defs</span>/name&quot;</span> &#125;,<br>    <span class="hljs-string">&quot;last_name&quot;</span>: &#123; <span class="hljs-string">&quot;<span class="hljs-variable">$ref</span>&quot;</span>: <span class="hljs-string">&quot;#/<span class="hljs-variable">$defs</span>/name&quot;</span> &#125;,<br>    <span class="hljs-string">&quot;shipping_address&quot;</span>: &#123; <span class="hljs-string">&quot;<span class="hljs-variable">$ref</span>&quot;</span>: <span class="hljs-string">&quot;/schemas/address&quot;</span> &#125;,<br>    <span class="hljs-string">&quot;billing_address&quot;</span>: &#123; <span class="hljs-string">&quot;<span class="hljs-variable">$ref</span>&quot;</span>: <span class="hljs-string">&quot;/schemas/address&quot;</span> &#125;<br>  &#125;,<br>  <span class="hljs-string">&quot;required&quot;</span>: [<span class="hljs-string">&quot;first_name&quot;</span>, <span class="hljs-string">&quot;last_name&quot;</span>, <span class="hljs-string">&quot;shipping_address&quot;</span>, <span class="hljs-string">&quot;billing_address&quot;</span>],<br><br>  <span class="hljs-string">&quot;<span class="hljs-variable">$defs</span>&quot;</span>: &#123;<br>    <span class="hljs-string">&quot;name&quot;</span>: &#123; <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;string&quot;</span> &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 
 
-<ul>
-<li>快速失败</li>
-</ul>
-<h3 id="比较-HashSet、LinkedHashSet-和-TreeSet-三者的异同"><a href="#比较-HashSet、LinkedHashSet-和-TreeSet-三者的异同" class="headerlink" title="比较 HashSet、LinkedHashSet 和 TreeSet 三者的异同"></a>比较 HashSet、LinkedHashSet 和 TreeSet 三者的异同</h3><p>HashSet、LinkedHashSet 和 TreeSet 都是 Set 接口的实现类，都能保证元素唯一，并且都不是线程安全的。</p>
-<p>HashSet、LinkedHashSet 和 TreeSet 的主要区别在于底层数据结构不同。</p>
-<p>HashSet 的底层数据结构是哈希表（基于 HashMap 实现）。</p>
-<p>LinkedHashSet 的底层数据结构是链表和哈希表，元素的插入和取出顺序满足 FIFO。</p>
-<p>TreeSet 底层数据结构是红黑树，元素是有序的，排序的方式有自然排序和定制排序。底层数据结构不同又导致这三者的应用场景不同。</p>
-<p>HashSet 用于不需要保证元素插入和取出顺序的场景，LinkedHashSet 用于保证元素的插入和取出顺序满足 FIFO 的场景，TreeSet 用于支持对元素自定义排序规则的场景</p>
-<h3 id="PriorityQueue"><a href="#PriorityQueue" class="headerlink" title="PriorityQueue"></a>PriorityQueue</h3><p>PriorityQueue 是在 JDK1.5 中被引入的, 其与 Queue 的区别在于元素出队顺序是与优先级相关的，即总是优先级最高的元素先出队。</p>
-<p>这里列举其相关的一些要点：PriorityQueue 利用了二叉堆的数据结构来实现的，底层使用可变长的数组来存储数据。</p>
-<p>PriorityQueue 通过堆元素的上浮和下沉，实现了在 O(logn) 的时间复杂度内插入元素和删除堆顶元素。</p>
-<p>PriorityQueue 是非线程安全的，且不支持存储 NULL 和 non-comparable 的对象。</p>
-<p>PriorityQueue 默认是小顶堆，但可以接收一个 Comparator 作为构造参数，从而来自定义元素优先级的先后。</p>
-<p>PriorityQueue 在面试中可能更多的会出现在手撕算法的时候，典型例题包括堆排序、求第 K 大的数、带权图的遍历等，所以需要会熟练使用才行。</p>
-<h3 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h3><ul>
-<li>扰动</li>
-</ul>
-<p><code>HashMap</code> 中的扰动函数（<code>hash</code> 方法）是用来优化哈希值的分布。通过对原始的 <code>hashCode()</code> 进行额外处理，扰动函数可以减小由于糟糕的 <code>hashCode()</code> 实现导致的碰撞，从而提高数据的分布均匀性。</p>
-<figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs processing">  <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-title function_">hash</span>(<span class="hljs-built_in">Object</span> <span class="hljs-built_in">key</span>) &#123;<br>    <span class="hljs-type">int</span> h;<br>    <span class="hljs-comment">// key.hashCode()：返回散列值也就是hashcode</span><br>    <span class="hljs-comment">// ^：按位异或</span><br>    <span class="hljs-comment">// &gt;&gt;&gt;:无符号右移，忽略符号位，空位都以0补齐</span><br>    <span class="hljs-title function_">return</span> (<span class="hljs-built_in">key</span> == <span class="hljs-literal">null</span>) ? <span class="hljs-number">0</span> : (h = <span class="hljs-built_in">key</span>.<span class="hljs-property">hashCode</span>()) ^ (h &gt;&gt;&gt; <span class="hljs-number">16</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>参考地址 <a target="_blank" rel="noopener" href="https://json-schema.apifox.cn/#defs">JSON Schema 规范（中文版） - JSON Schema 规范（中文版）</a></p>
+</blockquote>
+<h2 id="Spring-AI中的JSON-Schema"><a href="#Spring-AI中的JSON-Schema" class="headerlink" title="Spring AI中的JSON Schema"></a>Spring AI中的JSON Schema</h2><h3 id="问题溯源"><a href="#问题溯源" class="headerlink" title="问题溯源"></a>问题溯源</h3><p>原始代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">chatClient.prompt(...)<br>                .options(...)<br>                .tools()<br>                .call()<br>                .entity(DashboardDesignDto.class);<br></code></pre></td></tr></table></figure>
 
-<ul>
-<li>Hash冲突</li>
-</ul>
-<p>JDK1.8 之后在解决哈希冲突时有了较大的变化，当链表长度大于阈值（默认为 8）（将链表转换成红黑树前会判断，如果当前数组的长度小于 64，那么会选择先进行数组扩容，而不是转换为红黑树）时，将链表转化为红黑树</p>
-<p>1.数据扩容能减少哈希冲突的概率</p>
-<p>2.过早引入红黑树反而会增加复杂度</p>
-<p>3.泊松分布，数组长度到达64后，hash冲突会更高；链表长度达到 8 的概率极低（小于千万分之一）。在绝大多数情况下，链表长度都不会超过 8。阈值设置为 8，可以保证性能和空间效率的平衡</p>
-<ul>
-<li>长度为什么是2的n次幂</li>
-</ul>
-<p>1.获取数组位置可以使用位运算，效率更高</p>
-<p>2.扩容后，只需要判断最高位即可辨别是否需要移动到新位置，同时，可以保证数据尽量均匀分布。</p>
-<ul>
-<li>HashMap死循环问题</li>
-</ul>
-<p>1.7及以前，扩容使用头插法进行迁移，每次都会把当前进行到的元素插入到新链表头部，假如插入前，另外一个线程扩容完毕，插入元素就会指向其前一个元素，进而引起当前线程插入的错乱。</p>
-<h3 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h3><p>1.7  分段的数组+链表 分段锁 </p>
-<p>在 JDK1.7 的时候，ConcurrentHashMap 对整个桶数组进行了分割分段(Segment，分段锁)，每一把锁只锁容器其中一部分数据，多线程访问容器里不同数据段的数据，就不会存在锁竞争，提高并发访问率。</p>
-<p>到了 JDK1.8 的时候，ConcurrentHashMap 已经摒弃了 Segment 的概念，而是直接用 Node 数组+链表+红黑树的数据结构来实现，并发控制使用 synchronized 和 CAS 来操作。整个看起来就像是优化过且线程安全的 HashMap，虽然在 JDK1.8 中还能看到 Segment 的数据结构，但是已经简化了属性，只是为了兼容旧版本；Hashtable(同一把锁) </p>
-<p>使用 synchronized 来保证线程安全，效率非常低下。当一个线程访问同步方法时，其他线程也访问同步方法，可能会进入阻塞或轮询状态，如使用 put 添加元素，另一个线程不能使用 put 添加元素，也不能使用 get，竞争会越来越激烈效率越低。</p>
-<p>Java 8 中，锁粒度更细，synchronized 只锁定当前链表或红黑二叉树的首节点，这样只要 hash 不冲突，就不会产生并发，就不会影响其他 Node 的读写，效率大幅提升。</p>
-<p><strong>线程安全实现方式</strong>：JDK 1.7 采用 <code>Segment</code> 分段锁来保证安全， <code>Segment</code> 是继承自 <code>ReentrantLock</code>。JDK1.8 放弃了 <code>Segment</code> 分段锁的设计，采用 <code>Node + CAS + synchronized</code> 保证线程安全，锁粒度更细，<code>synchronized</code> 只锁定当前链表或红黑二叉树的首节点。</p>
-<p><strong>Hash 碰撞解决方法</strong> : JDK 1.7 采用拉链法，JDK1.8 采用拉链法结合红黑树（链表长度超过一定阈值时，将链表转换为红黑树）。</p>
-<p><strong>并发度</strong>：JDK 1.7 最大并发度是 Segment 的个数，默认是 16。JDK 1.8 最大并发度是 Node 数组的大小，并发度更大。</p>
-<h3 id="HashMap-和-Hashtable-的区别"><a href="#HashMap-和-Hashtable-的区别" class="headerlink" title="HashMap 和 Hashtable 的区别"></a>HashMap 和 Hashtable 的区别</h3><ul>
-<li>线程安全，后者使用synchronized 保证线程安全</li>
-<li>容量，HashMap初始大小为16，扩容为2倍，Hashtable 默认的初始大小为 11，之后每次扩充，容量变为原来的 2n+1。创建时如果给定了容量初始值，那么 Hashtable 会直接使用你给定的大小，而 HashMap 会将其扩充为 2 的幂次方大小</li>
-<li>底层数据结构，JDK1.8后，HashMap底层会使用数组加红黑树，在解决哈希冲突时，单个table长度超过8且整体容量大于64，会使用红黑树。</li>
-<li>哈希函数的实现：HashMap 对哈希值进行了高位和低位的混合扰动处理以减少冲突，而 Hashtable 直接使用键的 hashCode() 值</li>
-</ul>
-<h3 id="HashSet"><a href="#HashSet" class="headerlink" title="HashSet"></a>HashSet</h3><p>​	其就是基于HashMap实现的</p>
-<h3 id="TreeMap"><a href="#TreeMap" class="headerlink" title="TreeMap"></a>TreeMap</h3><ul>
-<li>红黑树</li>
-<li><code>NavigableMap</code> 接口让 <code>TreeMap</code> 有了对集合内元素的搜索的能力</li>
-<li><code>SortedMap</code>接口让 <code>TreeMap</code> 有了对集合中的元素根据键排序的能力，默认是按 key 的升序排序</li>
-</ul>
-<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><h3 id="贪心"><a href="#贪心" class="headerlink" title="贪心"></a>贪心</h3><h2 id="AI"><a href="#AI" class="headerlink" title="AI"></a>AI</h2><p>cursor内置规则</p>
-<p>设置团队代码规范 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/1906795650714146104">(58 封私信 &#x2F; 21 条消息) Cursor Rules 详细教程，花5分钟写规则，让Cursor不再瞎改代码，AI编程必备 - 知乎</a></p>
-<h3 id="Docker以及Kubernetes"><a href="#Docker以及Kubernetes" class="headerlink" title="Docker以及Kubernetes"></a>Docker以及Kubernetes</h3>
+
+
+<p>其中，chatClient为DefaultChatClient实例，使用tools时，ToolCallbacks.from会将传入的对象转换成ToolCallback</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> ChatClient.ChatClientRequestSpec <span class="hljs-title function_">tools</span><span class="hljs-params">(Object... toolObjects)</span> &#123;<br>    Assert.notNull(toolObjects, <span class="hljs-string">&quot;toolObjects cannot be null&quot;</span>);<br>    Assert.noNullElements(toolObjects, <span class="hljs-string">&quot;toolObjects cannot contain null elements&quot;</span>);<br>    <span class="hljs-built_in">this</span>.toolCallbacks.addAll(Arrays.asList(ToolCallbacks.from(toolObjects)));<br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>其通过如下代码getToolCallbacks()转换ToolCallback</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">MethodToolCallbackProvider.builder().toolObjects(sources).build().getToolCallbacks();<br></code></pre></td></tr></table></figure>
+
+
+
+<p>getToolCallbacks()中核心逻辑如下，通过ToolDefinitions.from(toolMethod)构建了toolDefinition</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">MethodToolCallback.builder()<br>    .toolDefinition(ToolDefinitions.from(toolMethod))<br>    .toolMetadata(ToolMetadata.from(toolMethod))<br>    .toolMethod(toolMethod)<br>    .toolObject(toolObject)<br>    .toolCallResultConverter(ToolUtils.getToolCallResultConverter(toolMethod)).build();<br></code></pre></td></tr></table></figure>
+
+
+
+<p>最终使用JsonSchemaGenerator.generateForMethodInput构建inputSchema，其即为拼接在最终请求的tool中的参数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">DefaultToolDefinition.builder()<br>    .name(ToolUtils.getToolName(method))<br>    .description(ToolUtils.getToolDescription(method))<br>    .inputSchema(JsonSchemaGenerator.generateForMethodInput(method, <span class="hljs-keyword">new</span> <span class="hljs-title class_">JsonSchemaGenerator</span>.SchemaOption[<span class="hljs-number">0</span>]))<br></code></pre></td></tr></table></figure>
+
+
+
+<p>获取一个schema Node</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">ObjectNode schema <span class="hljs-operator">=</span> JsonParser.getObjectMapper().createObjectNode()<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>在其中创建一个对象properties</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">ObjectNode properties <span class="hljs-operator">=</span> schema.putObject(<span class="hljs-string">&quot;properties&quot;</span>)<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>生成参数Node，在生成的properties中放入参数值</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs dart">ObjectNode parameterNode = SUBTYPE_SCHEMA_GENERATOR.generateSchema(parameterType, <span class="hljs-keyword">new</span> <span class="hljs-built_in">Type</span>[<span class="hljs-number">0</span>]);<br>...<br>properties.<span class="hljs-keyword">set</span>(parameterName, parameterNode);<br></code></pre></td></tr></table></figure>
+
+
+
+<p>最终生成的”$defs”嵌在了properties内，正常来说应该和properties同级别</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-attr">&quot;tools&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>        <span class="hljs-punctuation">&#123;</span><br>            <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;function&quot;</span><span class="hljs-punctuation">,</span><br>            <span class="hljs-attr">&quot;function&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>                <span class="hljs-attr">&quot;description&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;方法描述&quot;</span><span class="hljs-punctuation">,</span><br>                <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;方法名称&quot;</span><span class="hljs-punctuation">,</span><br>                <span class="hljs-attr">&quot;parameters&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>                    <span class="hljs-attr">&quot;$schema&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://json-schema.org/draft/2020-12/schema&quot;</span><span class="hljs-punctuation">,</span><br>                    <span class="hljs-attr">&quot;additionalProperties&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>                    <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;object&quot;</span><span class="hljs-punctuation">,</span><br>                    <span class="hljs-attr">&quot;properties&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>                        <span class="hljs-attr">&quot;methodParam1&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>                            <span class="hljs-attr">&quot;$defs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>                            <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;object&quot;</span><span class="hljs-punctuation">,</span><br>                            <span class="hljs-attr">&quot;properties&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>                            <span class="hljs-attr">&quot;required&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><br>                        <span class="hljs-punctuation">&#125;</span><br>                    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>                    <span class="hljs-attr">&quot;required&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><br>                <span class="hljs-punctuation">&#125;</span><br>            <span class="hljs-punctuation">&#125;</span><br>        <span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">]</span><br></code></pre></td></tr></table></figure>
+
+
                 
               </div>
             
@@ -394,8 +352,15 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E8%AE%AD%E7%BB%83/" class="category-chain-item">训练</a>
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/Java/spring/" class="category-chain-item">spring</a>
+  
+  
+
   
 
       </span>
@@ -409,7 +374,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E8%AE%AD%E7%BB%83/" class="print-no-link">#训练</a>
+        <a href="/tags/Spring/" class="print-no-link">#Spring</a>
+      
+        <a href="/tags/JsonSchema/" class="print-no-link">#JsonSchema</a>
       
     </div>
   
@@ -421,8 +388,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>训练</div>
-      <div>http://example.com/2025/11/17/随笔/训练/</div>
+      <div>Spring AI的JsonSchema</div>
+      <div>http://example.com/2025/11/18/随笔/Spring AI的JsonSchema/</div>
     </div>
     <div class="license-meta">
       
@@ -434,7 +401,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年11月17日</div>
+          <div>2025年11月18日</div>
         </div>
       
       
@@ -466,18 +433,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/11/17/java/%E5%9F%BA%E7%A1%80/%E6%8E%A5%E5%8F%A3%E3%80%81%E5%8D%8F%E8%AE%AE/%E6%8E%A5%E5%8F%A3-%E5%8D%8F%E8%AE%AE/" title="接口-协议">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">接口-协议</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/11/15/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" title="操作系统">
-                        <span class="hidden-mobile">操作系统</span>
+                      <a href="/2025/11/17/java/%E5%9F%BA%E7%A1%80/%E6%8E%A5%E5%8F%A3%E3%80%81%E5%8D%8F%E8%AE%AE/%E6%8E%A5%E5%8F%A3-%E5%8D%8F%E8%AE%AE/" title="接口-协议">
+                        <span class="hidden-mobile">接口-协议</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
